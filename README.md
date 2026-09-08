@@ -16,15 +16,16 @@ Mathematics is therefore not assumed to *be* universal meaning. It is used as a 
 
 ## Core research question
 
-Can two agents with:
+Can interacting systems with:
 
 - zero shared symbols,
 - no assumed linguistic communication channel,
 - potentially different sensory systems,
 - potentially different internal ontologies,
-- and only a shared observable environment,
+- no guaranteed shared segmentation of objects/events/agents/messages,
+- and only whatever causal or observational interaction surface is actually available,
 
-**discover signalhood, establish grounded semantic invariants, create compositional communication, and identify both translatable and genuinely non-equivalent concepts?**
+**discover signalhood or other stable interaction regularities, establish grounded semantic invariants, create compositional communication, and identify both translatable and genuinely non-equivalent concepts?**
 
 If that can be demonstrated under increasingly hostile controls, UNVTRSLR becomes more than a translator. It becomes a candidate **semantic bootstrap protocol**.
 
@@ -42,30 +43,61 @@ UNVTRSLR does not assume:
 - shared sensory categories,
 - a shared ontology,
 - a shared concept of an object,
+- fixed message boundaries,
+- exactly two naturally individuated agents,
 - or even that a behavior is intended as communication.
 
-The system must be able to consider continuous signals, timing, motion, geometry, environmental modification, multimodal behavior, and contextual meaning.
+The system must be able to consider continuous signals, timing, motion, geometry, environmental modification, multimodal behavior, distributed processes, and contextual meaning.
 
 ## Foundational design commitments
 
 1. **Ground before translating.** Formal symbols do not become meaningful merely by referring to other symbols.
 2. **Do not assume language.** Linguistic communication is one possible channel, not the architecture.
-3. **The environment is the first Rosetta Stone.** Shared observations and interventions provide candidate common reference.
+3. **Do not assume the Rosetta Stone.** A shared environment or interaction surface is a candidate source of common reference, but it can silently smuggle shared segmentation, salience, timing, objecthood, or evaluator-authored structure. Those assumptions must be audited.
 4. **Signalhood is a hypothesis.** The system must distinguish behavior from communication rather than receiving a pre-labeled message stream.
-5. **Meaning is contextual.** Signal + environment + history + sender state + receiver state may be required to infer meaning.
+5. **Meaning is contextual.** Signal + environment + history + producer state + receiver state may be required to infer meaning.
 6. **Uncertainty is part of meaning.** Ambiguity must not be silently collapsed.
-7. **Provenance is part of meaning.** Observation, supplied claim, inference, prediction, and evaluator truth must remain distinct.
-8. **Translation may be lossy or impossible.** `NO_FAITHFUL_EQUIVALENT` is a valid result.
+7. **Provenance is part of meaning.** Observation, supplied claim, inference, prediction, negotiated convention, and evaluator truth must remain distinct.
+8. **Translation may be lossy or impossible.** A scoped no-equivalent result is valid; the system must not force a mapping.
 9. **Communication success is not enough.** Agents can invent private codes that solve a task without learning reusable grounded distinctions.
 10. **Arbitrary notation is not failure.** A convention may use arbitrary signs; the failure is hidden common ground or task-bound code that does not survive grounding tests.
 11. **Meaning must survive tests.** Novel instances, context changes, role reversal, composition, intervention, cross-task transfer, partner transfer, and counterfactual prediction are stronger evidence than agreement on a symbol.
 12. **English is a renderer, not the semantic center.** Other natural languages, diagrams, equations, actions, or other modalities are equally valid target realizations.
 13. **A universal ontology is not assumed.** The universal layer should be a grammar for representing hypotheses, relationships, uncertainty, provenance, and evidence—not an encyclopedia of human concepts.
-14. **Grounding claims are scoped.** No finite evaluator proves a uniquely correct ontology or universal meaning; certificates bind the exact worlds, interventions, controls, and threats survived.
+14. **Grounding claims are scoped.** No finite evaluator proves a uniquely correct ontology or universal meaning; certificates bind the exact worlds, interventions, controls, rival families, and threats survived.
+15. **Experiment integrity precedes semantic credit.** If preprocessing destroys a distinction, instrumentation leaks simulator truth, or a hidden bridge performs semantic normalization, the learner does not get credit for recovering that distinction.
+16. **Semantic naming must be earned separately.** A real operational partition may remain semantically unnamed. Post-hoc human interpretations are exploratory until frozen and tested on claim-discriminating fresh evidence.
+17. **Stronger semantic words incur stronger empirical burdens.** If `semantic correspondence` adds no falsifiable obligation beyond `reusable operational relation`, use the weaker claim.
+
+## R0.5 — pre-R1 information and experiment-integrity audit
+
+Before the R1 substrates are compared, UNVTRSLR now inserts a deliberately thin **R0.5** layer.
+
+R0.5 does not attempt to solve semantics. It asks:
+
+- is the declared distinction empirically identifiable from learner-accessible evidence?
+- did preprocessing preserve the distinctions the experiment later credits the learner with recovering?
+- did an adapter, renderer, simulator, instrumentation path, task API, or evaluator secretly supply the bridge?
+- who authored the rival hypothesis family, and was it frozen before candidate evidence was inspected?
+- are participant/agent boundaries experimenter-declared or independently earned?
+- is an open/null rival available, and has structured rival misspecification actually been stressed?
+
+Important controls include:
+
+- `CTRL_BRIDGE_ORACLE`
+- `CTRL_RAW_SCENE_ORACLE`
+- `CTRL_GLOBAL_STATE_WATERMARK`
+- `CTRL_DESTRUCTIVE_QUOTIENT`
+- `CTRL_POSTHOC_SEMANTIC_NAMING`
+- `CTRL_IID_HOLDOUT_ILLUSION`
+
+R0.5 may legitimately return `UNIDENTIFIABLE_WITHIN_INTERACTION_SURFACE`, `PREPROCESSING_PRESERVATION_UNKNOWN`, or `GENERATIVE_PROVENANCE_UNVERIFIED` rather than forcing a semantic conclusion.
+
+See [`docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md`](docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md).
 
 ## Current R1/R2 architecture challenge
 
-The project now has three deliberately competing minimal semantic substrates:
+The project has three deliberately competing minimal semantic substrates:
 
 - **TPH — Typed Probabilistic Hypergraph:** explicit structured relational hypotheses;
 - **DCA — Denotational Constraint Algebra:** executable constraints/operators over compatible situations and trajectories;
@@ -75,6 +107,10 @@ No substrate is architecture canon. The richer candidates must empirically earn 
 
 The R2 evaluator is designed to distinguish grounded convention from private shortcut code using causal message interventions, world-factor interventions, nuisance shifts, role reversal, cross-task transfer, partner swap, sensor shifts, counterfactual tests, ontology mismatch, conservation audits, and a required suite of intentionally deceptive negative controls.
 
+R2 now also separates **operational relation verification** from **semantic interpretation confirmation**. A post-hoc label cannot be confirmed using the same evidence that selected it; fresh IID evidence is not enough if it preserves the original confound; and a stronger semantic claim must carry an explicit `SEMANTIC_SURPLUS_OBLIGATION`—some additional falsifiable prediction or qualification burden beyond ordinary operational success.
+
+See [`docs/R2_SEMANTIC_CLAIM_CONTROLS.md`](docs/R2_SEMANTIC_CLAIM_CONTROLS.md).
+
 A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is intentionally no `UNIVERSALLY_GROUNDED` status.
 
 ## Repository map
@@ -82,10 +118,12 @@ A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is
 - [`docs/PROJECT_THESIS.md`](docs/PROJECT_THESIS.md) — the refined concept and hypotheses.
 - [`docs/DESIGN_PRINCIPLES.md`](docs/DESIGN_PRINCIPLES.md) — architecture-level constraints.
 - [`docs/SEMANTIC_SUBSTRATE.md`](docs/SEMANTIC_SUBSTRATE.md) — proposed semantic responsibilities before R1 competition.
+- [`docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md`](docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md) — pre-R1 identifiability, preprocessing, generative-provenance, bridge-attribution, and hypothesis-family audit.
 - [`docs/R1_SUBSTRATE_COMPETITION.md`](docs/R1_SUBSTRATE_COMPETITION.md) — three genuinely competing minimal semantic substrates and the fair competition rule.
 - [`docs/R2_ADVERSARIAL_EVALUATOR.md`](docs/R2_ADVERSARIAL_EVALUATOR.md) — adversarial semantic-grounding evaluator and scoped certificate.
-- [`docs/R2_NEGATIVE_CONTROLS.md`](docs/R2_NEGATIVE_CONTROLS.md) — 25 shortcut systems plus positive oracles the harness must classify correctly.
-- [`specs/R1R2_EVALUATION_CONTRACT_V1.yaml`](specs/R1R2_EVALUATION_CONTRACT_V1.yaml) — machine-readable R1/R2 evaluation contract.
+- [`docs/R2_NEGATIVE_CONTROLS.md`](docs/R2_NEGATIVE_CONTROLS.md) — shortcut systems plus positive oracles the harness must classify correctly.
+- [`docs/R2_SEMANTIC_CLAIM_CONTROLS.md`](docs/R2_SEMANTIC_CLAIM_CONTROLS.md) — confirmatory/exploratory interpretation discipline, structured-rival adequacy, claim-discriminating holdouts, and semantic-surplus obligations.
+- [`specs/R1R2_EVALUATION_CONTRACT_V1.yaml`](specs/R1R2_EVALUATION_CONTRACT_V1.yaml) — machine-readable R1/R2 evaluation contract; a future revision must bind the R0.5 fields and new claim controls before implementation qualification.
 - [`docs/BOOTSTRAP_PROTOCOL.md`](docs/BOOTSTRAP_PROTOCOL.md) — how communication could be established from zero shared symbols.
 - [`docs/SEMANTIC_CONSERVATION.md`](docs/SEMANTIC_CONSERVATION.md) — what it means to preserve meaning.
 - [`docs/EXPERIMENTAL_PROGRAM.md`](docs/EXPERIMENTAL_PROGRAM.md) — staged falsification program.
@@ -121,9 +159,13 @@ A candidate distinction should survive, where applicable:
 13. ontology-mismatch/non-equivalence traps;
 14. independent evaluator reconstruction;
 15. provenance and semantic-conservation audit;
-16. automated search for simpler shortcut explanations.
+16. automated search for simpler shortcut explanations;
+17. R0.5 preprocessing/generative-provenance and bridge-attribution controls;
+18. confirmatory-vs-post-hoc hypothesis-family provenance;
+19. claim-discriminating holdout or intervention against strongest live structured alternatives;
+20. an explicit semantic-surplus obligation for any claim stronger than an operational relation.
 
-The system must also be rewarded for correctly saying that two conceptual structures are only partially overlapping or non-equivalent.
+The system must also be rewarded for correctly preserving unmodeled relations, uncertainty, partial overlap, and non-equivalence rather than forcing them into evaluator-authored categories.
 
 ## Interstellar motivation
 
@@ -131,10 +173,10 @@ Historical interstellar messages such as the Pioneer plaques, Arecibo transmissi
 
 > **What if the transmitted artifact is not primarily the message, but the machinery for constructing a shared semantics?**
 
-For an embodied probe, that machinery could interact locally with a recipient and a shared environment. For a broadcast, it could be a progressively self-describing semantic curriculum and protocol. A hybrid architecture could use both.
+For an embodied probe, that machinery could interact locally with a recipient and a shared environment. For a broadcast, it could be a progressively self-demonstrating, convention-forming, and eventually self-describing semantic curriculum and protocol. A hybrid architecture could use both.
 
 ## Status
 
-`R1_R2_DESIGN_BASELINED / IMPLEMENTATION_NOT_STARTED / NO_SEMANTIC_QUALIFICATION`
+`R0_5_R1_R2_DESIGN_BASELINED / IMPLEMENTATION_NOT_STARTED / NO_SEMANTIC_QUALIFICATION`
 
-The repository currently defines a research program and an adversarial qualification design, not a proven universal language, universal ontology, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.
+The repository currently defines a research program, a pre-R1 experiment-integrity audit, competing semantic representations, and an adversarial qualification design. It is not a proven universal language, universal ontology, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.

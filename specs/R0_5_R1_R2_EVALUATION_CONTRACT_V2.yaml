@@ -1,5 +1,6 @@
 schema_version: UNVTRSLR_R0_5_R1_R2_EVALUATION_CONTRACT_V2
 status: PROVISIONAL_SPECIFIED_NOT_IMPLEMENTED
+revision_note: THIRTEEN_HOSTILE_SELF_REVIEW_1
 supersedes_for_new_work:
   - specs/R1R2_EVALUATION_CONTRACT_V1.yaml
 source_base:
@@ -14,11 +15,6 @@ scope:
 
 r0_5:
   reference_doc: docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md
-  purpose: >-
-    Determine whether the declared learner-accessible surface contains enough
-    trustworthy and non-subsidized structure to distinguish the target claim
-    from declared rivals, and whether the distinguishing structure can be
-    attributed to the coupled system rather than evaluator or instrumentation leakage.
   non_goals:
     - true_meaning_proof
     - communicative_intent_proof
@@ -75,6 +71,7 @@ r0_5:
     - REJECTION_ESCAPE_ABSENT
     - STRUCTURED_ALTERNATIVE_STRESS_NOT_ESTABLISHED
     - STRUCTURED_ALTERNATIVE_STRESS_TESTED
+    - RIVAL_FAMILY_CLOSED_AND_JUSTIFIED
     - RIVAL_FAMILY_MISSPECIFICATION_DETECTED
     - BEST_SUPPORTED_AMONG_DECLARED_RIVALS_ONLY
   boundary_model_statuses:
@@ -114,7 +111,9 @@ common_candidate_contract:
     - evaluator_query_adapter_without_truth_labels
     - conservation_ledger_support
     - UNKNOWN_outcome
-    - NO_FAITHFUL_EQUIVALENT_outcome
+    - NO_FAITHFUL_EQUIVALENT_FOUND_WITHIN_DECLARED_SCOPE_outcome
+  prohibited_unscoped_outcomes:
+    - NO_FAITHFUL_EQUIVALENT
   prohibited_inputs:
     - evaluator_variable_names
     - evaluator_semantic_labels
@@ -142,6 +141,7 @@ trust_zones:
 
 harness_sequence:
   - bind_generator_renderer_sensor_and_instrumentation_artifacts
+  - bind_target_claim_rivals_strategy_and_interaction_surface
   - deterministic_generator_and_replay
   - r0_5_identifiability_and_provenance_audit
   - positive_oracle_controls
@@ -151,6 +151,8 @@ harness_sequence:
   - freeze_qualification_profile
   - candidate_hidden_evaluation
   - claim_discriminating_followup_where_semantic_promotion_requires_it
+  - semantic_promotion_gate
+  - emit_certificate
 
 stable_adversarial_controls:
   - CTRL_PRIVATE_ALIAS
@@ -165,32 +167,34 @@ stable_adversarial_controls:
   - CTRL_SEMANTIC_NULL_CONTENT
   - CTRL_ARBITRARY_SEMANTIC_SURPLUS
 
-negative_controls_legacy:
-  - N00_random_communicator
-  - N01_silent_competent_receiver
-  - N02_correlated_noncausal_signaler
-  - N03_episode_id_code
-  - N04_shared_latent_leak
-  - N05_lookup_memorizer
-  - N06_private_pair_codebook
-  - N07_action_plan_code
-  - N08_receiver_policy_index
-  - N09_reward_side_channel
-  - N10_serialization_artifact_code
-  - N11_coordinate_frame_shortcut
-  - N12_message_length_or_timing_leak
-  - N13_forced_translator
-  - N14_english_concept_probe_leak
-  - N15_shared_pretrained_ontology
-  - N16_context_shuffler
-  - N17_correlation_as_causation
-  - N18_overfit_denotation_table
-  - N19_opaque_predictive_task_specialist
-  - N20_sender_only_labeler
-  - N21_receiver_hallucinated_semantics
-  - N22_identity_specific_convention
-  - N23_evaluation_language_mimic
-  - N24_conservation_liar
+legacy_negative_control_set:
+  reference: specs/R1R2_EVALUATION_CONTRACT_V1.yaml
+  ids:
+    - N00_random_communicator
+    - N01_silent_competent_receiver
+    - N02_correlated_noncausal_signaler
+    - N03_episode_id_code
+    - N04_shared_latent_leak
+    - N05_lookup_memorizer
+    - N06_private_pair_codebook
+    - N07_action_plan_code
+    - N08_receiver_policy_index
+    - N09_reward_side_channel
+    - N10_serialization_artifact_code
+    - N11_coordinate_frame_shortcut
+    - N12_message_length_or_timing_leak
+    - N13_forced_translator
+    - N14_english_concept_probe_leak
+    - N15_shared_pretrained_ontology
+    - N16_context_shuffler
+    - N17_correlation_as_causation
+    - N18_overfit_denotation_table
+    - N19_opaque_predictive_task_specialist
+    - N20_sender_only_labeler
+    - N21_receiver_hallucinated_semantics
+    - N22_identity_specific_convention
+    - N23_evaluation_language_mimic
+    - N24_conservation_liar
 
 positive_controls:
   - P00_evaluator_oracle
@@ -226,8 +230,9 @@ r2_claim_qualification:
   interpretation_statuses:
     - CONFIRMATORY_TARGET_CLAIM
     - EXPLORATORY_POST_HOC_INTERPRETATION
+    - POST_HOC_INTERPRETATION_FROZEN_FOR_FUTURE_TEST
+    - POST_HOC_INTERPRETATION_INDEPENDENTLY_CONFIRMED
     - OPERATIONAL_RELATION_VERIFIED_SEMANTIC_NAMING_UNRESOLVED
-    - POST_HOC_INTERPRETATION_RETESTED
   evidence_discrimination_statuses:
     - FRESH_BUT_NONDISCRIMINATING_EVIDENCE
     - CLAIM_DISCRIMINATING_HOLDOUT
@@ -261,6 +266,26 @@ r2_claim_qualification:
       - NO_DISTINCT_FALSIFIABLE_BURDEN_IDENTIFIED
       - ARBITRARY_BURDEN_DOES_NOT_DISCRIMINATE_SEMANTIC_CLAIM
 
+semantic_promotion_gate:
+  target_status: SEMANTIC_CORRESPONDENCE_WITHIN_TESTED_SCOPE
+  all_required:
+    - r0_5_fail_closed_statuses_absent
+    - underlying_operational_relation_verified
+    - interpretation_mode_is_confirmatory_or_independently_confirmed
+    - claim_discriminating_evidence_present
+    - structured_alternative_stress_tested_or_family_closed_and_justified
+    - semantic_delta_status_is_SEMANTIC_DELTA_TESTED
+    - semantic_surplus_obligation_status_is_TESTED_AND_SURVIVED
+    - arbitrary_semantic_surplus_control_passed
+    - surviving_alternative_explanations_do_not_defeat_claim
+    - final_claim_ceiling_allows_semantic_correspondence
+  forbidden_shortcuts:
+    - semantic_surplus_merely_declared_not_tested
+    - fresh_iid_evidence_without_claim_discrimination
+    - null_rival_without_structured_alternative_stress
+    - generic_grounding_status_used_as_semantic_promotion
+    - evaluator_suite_defined_as_semantics_by_fiat
+
 threshold_policy:
   candidate_hidden_results_may_set_thresholds: false
   calibration_sources:
@@ -283,10 +308,12 @@ certificate:
     - FAIL
     - HARNESS_INVALID
     - OPERATIONAL_RELATION_VERIFIED
-    - GROUNDED_WITHIN_TESTED_SCOPE
+    - OPERATIONAL_GROUNDING_WITHIN_TESTED_SCOPE
     - SEMANTIC_CORRESPONDENCE_WITHIN_TESTED_SCOPE
     - PARTIALLY_GROUNDED
     - INDETERMINATE
+  deprecated_ambiguous_statuses:
+    - GROUNDED_WITHIN_TESTED_SCOPE
   forbidden_statuses:
     - UNIVERSALLY_GROUNDED
     - TRUE_MEANING_RECOVERED
@@ -298,11 +325,16 @@ certificate:
     - renderer_and_sensor_digests
     - instrumentation_digests
     - qualification_profile_digest
-    - training_configuration_digest
+    - training_configuration_digest_or_explicit_not_applicable
     - channel_configuration_digest
+    - interaction_surface_digest
+    - target_claim_spec_digest
+    - rival_hypothesis_family_digest
+    - admissible_strategy_family_digest
+    - hypothesis_freeze_receipt_digest
     - stable_control_suite_version
+    - stable_control_fixture_manifest_digest
     - hidden_holdout_generation_rule_digest
-    - claim_discriminating_followup_rule_digest_where_required
     - seed_or_seed_rule_commitment
     - hypothesis_family_provenance
     - witness_provenance
@@ -310,11 +342,18 @@ certificate:
     - preprocessing_preservation_status
     - boundary_model
     - structured_alternative_stress_status
-    - semantic_surplus_obligation_status_for_semantic_claims
     - metric_vector_with_confidence_intervals
     - critical_test_results
     - surviving_alternative_explanations
     - scope_limitations
+  semantic_claim_additional_bindings:
+    - semantic_interpretation_mode
+    - semantic_delta_status
+    - semantic_surplus_obligation_digest
+    - semantic_surplus_obligation_status
+    - claim_discriminating_followup_rule_digest
+    - claim_discriminating_evidence_digest
+    - semantic_promotion_gate_result
 
 claims_boundary:
   arbitrary_symbol_permutation_is_failure: false
@@ -322,8 +361,9 @@ claims_boundary:
   passing_r0_5_is_semantic_success: false
   passing_r1_is_semantic_success: false
   passing_r2_is_metaphysical_proof_of_meaning: false
-  passing_r2_is_scoped_operational_or_semantic_evidence_according_to_certificate: true
+  semantic_certificate_requires_explicit_promotion_gate: true
   null_rival_presence_establishes_family_completeness: false
   fresh_iid_holdout_is_automatically_claim_discriminating: false
   target_independent_instrumentation_is_automatically_neutral: false
   arbitrary_extra_test_burden_establishes_semantics: false
+  unqualified_negative_existential_about_equivalence_is_allowed: false

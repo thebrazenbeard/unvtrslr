@@ -3,13 +3,23 @@ status: SPECIFIED_NOT_IMPLEMENTED
 
 scope:
   r3: adversarial_pragmatics_and_interaction_evaluator
-  relation_to_r1_r2: additive_no_redefinition
+  relation_to_r0_5_r1_r2: additive_no_redefinition
 
 prerequisites:
+  r0_5_audit_required_for_final_r3_pass: true
+  r0_5_claim_ceiling_must_permit_final_pragmatic_claim: true
+  r0_5_preprocessing_preservation_required: true
+  r0_5_generative_provenance_must_be_verified_or_claim_limited: true
+  r0_5_hypothesis_family_provenance_required: true
   r2_required_for_final_r3_pass: true
-  diagnostic_r3_before_full_r2: allowed
-  r3_can_compensate_for_r2_failure: false
+  r2_semantic_claim_controls_required_for_stronger_pragmatic_labels: true
+  diagnostic_r3_before_full_r0_5_r2: allowed
+  r3_can_compensate_for_r0_5_or_r2_failure: false
   test_specific_semantic_prerequisites_required: true
+  post_hoc_pragmatic_interpretation_same_evidence_can_confirm: false
+  claim_discriminating_fresh_evidence_required_for_post_hoc_promotion: true
+  structured_rival_stress_required_for_strong_pragmatic_claim: true
+  semantic_or_pragmatic_surplus_obligation_required_for_stronger_label: true
   examples:
     P01: independently_grounded_denotation_or_referential_structure
     P03: grounded_spatial_or_referential_structure
@@ -28,6 +38,7 @@ common_candidate_contract:
     - distinguish_observed_response_from_inferred_intention
     - preserve_noncommunicative_null_hypothesis_when_signalhood_is_unresolved
     - support_pragmatic_conservation_ledger
+    - expose_operational_relation_separately_from_stronger_pragmatic_name
     - UNKNOWN_outcome
     - PARTIAL_OVERLAP_outcome
     - NO_FAITHFUL_EQUIVALENT_outcome
@@ -45,28 +56,33 @@ common_candidate_contract:
     - other_agent_internal_state
     - hidden_holdout_configuration
     - evaluator_only_mutual_state
+    - simulator_latent_watermarks_outside_declared_generative_path
+    - hidden_semantic_bridge_normalization
 
 trust_zones:
   P0:
     name: evaluator_hidden_interaction_truth
-    learner_access: forbidden
+    learner_access: forbidden_except_declared_generative_causation
   P1:
     name: learner_visible_observations
     evaluator_labels_stripped: true
+    r0_5_preprocessing_and_generative_provenance_audited: true
   P2:
     name: learner_interaction
     evaluator_truth: forbidden
   P3:
     name: blind_pragmatic_adjudication
     candidate_training_access: forbidden
+    target_and_rival_family_provenance_required: true
 
 harness_sequence:
+  - r0_5_integrity_and_identifiability_gate
   - deterministic_generator_and_replay
   - positive_pragmatic_oracle_controls
   - required_pragmatic_negative_controls
   - control_acceptance_matrix_check
   - candidate_independent_threshold_calibration
-  - freeze_r3_qualification_profile
+  - freeze_target_rivals_surplus_obligations_and_r3_qualification_profile
   - candidate_hidden_evaluation
 
 critical_tests:
@@ -103,6 +119,14 @@ negative_controls:
     - RN07_reward_predictor
     - RN08_forced_intent_labeler
     - RN09_pragmatics_conservation_liar
+  upstream_integrity_controls_required_where_applicable:
+    - CTRL_BRIDGE_ORACLE
+    - CTRL_RAW_SCENE_ORACLE
+    - CTRL_GLOBAL_STATE_WATERMARK
+    - CTRL_DESTRUCTIVE_QUOTIENT
+    - CTRL_POSTHOC_SEMANTIC_NAMING
+    - CTRL_IID_HOLDOUT_ILLUSION
+    - CTRL_STRUCTURED_RIVAL_OMISSION
   recommended_extensions:
     - RN10_acknowledgment_heartbeat
     - RN11_absence_hallucinator
@@ -225,14 +249,32 @@ conservation_outcomes:
   - APPROXIMATED
   - CONTEXT_REQUIRED
 
+claim_control_fields:
+  required_for_final_pragmatic_qualification:
+    - r0_5_audit_status
+    - empirical_identifiability_status
+    - claim_ceiling
+    - boundary_model
+    - generative_provenance_status
+    - preprocessing_preservation_status
+    - target_claim_and_rival_family
+    - hypothesis_family_provenance
+    - semantic_or_pragmatic_interpretation_mode
+    - claim_discriminating_holdout_or_intervention_identity
+    - structured_rival_adequacy_status
+    - semantic_or_pragmatic_surplus_obligation
+    - surviving_alternative_explanations
+
 applicability_policy:
   test_not_applicable_requires_explicit_justification: true
   physically_asymmetric_role_reversal_may_be_not_applicable: true
   not_applicable_tests_receive_pass_credit: false
   insufficient_prerequisite_evidence_result: INDETERMINATE
+  upstream_claim_ceiling_too_weak_for_pragmatic_label_result: INDETERMINATE_OR_WEAKER_CLAIM
 
 threshold_policy:
   candidate_hidden_results_may_set_thresholds: false
+  candidate_hidden_results_may_choose_confirmatory_target_or_rivals: false
   calibration_sources:
     - chance_or_null_controls
     - positive_pragmatic_oracles
@@ -259,6 +301,11 @@ harness_falsifiers:
   - forced_intent_labeler_is_not_penalized_on_unknown_or_noncommunicative_cases
   - pragmatic_conservation_can_drop_addressee_uncertainty_or_provenance_without_penalty
   - nonhuman_positive_oracle_fails_for_lacking_human_speech_act_structure
+  - hidden_bridge_or_simulator_instrumentation_supplies_target_distinction_without_detection
+  - destructive_preprocessing_is_credited_as_if_distinction_were_preserved
+  - post_hoc_pragmatic_label_is_confirmed_using_selection_evidence
+  - iid_holdout_is_treated_as_claim_discriminating_despite_preserved_confound
+  - generic_none_rival_is_treated_as_proof_of_structured_rival_adequacy
 
 certificate:
   schema_version: OPERATIONAL_PRAGMATIC_GROUNDING_CERTIFICATE_V1
@@ -268,14 +315,32 @@ certificate:
     - INDETERMINATE
     - PARTIALLY_PRAGMATICALLY_GROUNDED
     - PRAGMATICALLY_GROUNDED_WITHIN_TESTED_SCOPE
+  weaker_claim_outputs_allowed:
+    - OPERATIONAL_RELATION_VERIFIED
+    - OPERATIONAL_RELATION_VERIFIED_SEMANTIC_NAMING_UNRESOLVED
+    - SUPPORTED_AMONG_DECLARED_RIVALS_WITHIN_TESTED_SCOPE
+    - BEST_SUPPORTED_AMONG_DECLARED_RIVALS_ONLY
+    - SEMANTIC_INTERPRETATION_STILL_CONFOUNDED
   forbidden_statuses:
     - UNIVERSAL_PRAGMATICS
     - UNIVERSALLY_PRAGMATICALLY_GROUNDED
     - HUMAN_LIKE_INTENTION_PROVEN
     - THEORY_OF_MIND_PROVEN
+    - TRUE_MEANING_RECOVERED
   required_bindings:
     - candidate_substrate_version
+    - r0_5_audit_status_and_claim_ceiling
+    - empirical_identifiability_status
+    - boundary_model
+    - generative_provenance_status
+    - preprocessing_preservation_status
     - r2_prerequisite_status_and_scope
+    - semantic_or_pragmatic_target_claim_and_rival_family
+    - hypothesis_family_provenance
+    - semantic_or_pragmatic_interpretation_mode
+    - claim_discriminating_holdout_or_intervention_identity
+    - structured_rival_adequacy_status
+    - semantic_or_pragmatic_surplus_obligation
     - learner_code_digest
     - evaluator_code_digest
     - r3_contract_digest
@@ -299,7 +364,9 @@ claims_boundary:
   passing_r3_proves_consciousness: false
   passing_r3_proves_theory_of_mind: false
   human_speech_act_categories_are_universal_primitives: false
+  pragmatic_success_can_override_r0_5_integrity_failure: false
   pragmatic_success_can_override_semantic_grounding_failure: false
+  pragmatic_success_can_override_upstream_claim_ceiling: false
   task_success_is_shared_pragmatic_semantics: false
   passing_r3_is_scoped_operational_pragmatic_evidence: true
-  honest_unknown_or_partial_equivalence_can_be_correct: true
+  honest_unknown_partial_equivalence_or_weaker_claim_can_be_correct: true

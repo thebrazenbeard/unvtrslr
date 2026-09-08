@@ -179,11 +179,19 @@ The proposed method uses tested invariants, interventions, and independent seman
 
 This is adopted as a qualification pressure rather than claimed as a universal psychological law.
 
-## C023 — `NO_FAITHFUL_EQUIVALENT` should be rewarded
+## C023 — Scoped no-faithful-equivalent outcomes should be rewarded
 
 **Status:** `DESIGN_REQUIREMENT`
 
-Without this outcome, evaluation incentivizes forced translation and anthropocentric category collapse.
+Without a non-equivalence outcome, evaluation incentivizes forced translation and anthropocentric category collapse.
+
+For ordinary finite evaluation, the warranted form is scoped, such as:
+
+`NO_FAITHFUL_EQUIVALENT_FOUND_WITHIN_TESTED_SCOPE`
+
+The certificate should bind the source/target representation families, tested context family, evidence/intervention set, and relevant composition/search/compute budget where material.
+
+An unqualified `NO_FAITHFUL_EQUIVALENT` should be reserved for a separately justified impossibility result, not an ordinary unsuccessful search.
 
 ## C024 — English should not be the internal semantic substrate
 
@@ -279,7 +287,7 @@ Locatello et al. show that unsupervised disentangled representation learning is 
 
 No finite evaluator can distinguish hypotheses that make identical predictions over every tested observation and intervention but diverge only outside the tested family.
 
-**Project consequence:** use `GROUNDED_WITHIN_TESTED_SCOPE`, bind certificates to exact world/intervention families, and retain surviving alternative explanations.
+**Project consequence:** use scoped qualification, bind certificates to exact world/intervention families, and retain surviving alternative explanations.
 
 ## C037 — Cross-task and third-party transfer are key tests against private task code
 
@@ -313,73 +321,93 @@ An evaluator that only recognizes obvious random failure has not demonstrated sh
 
 **Project consequence:** R2 requires a suite of adversarial negative controls designed to perform well on naive task metrics.
 
-## R3 pragmatics and interaction additions
+## R0.5 / semantic-claim-control additions
 
-## C041 — Human communicated meaning can exceed conventional sentence meaning
-
-**Status:** `SUPPORTED_LIMITED_SCOPE`
-
-Gricean and relevance-theoretic pragmatics provide extensive human-language evidence that what a speaker communicates can depend on context and inference beyond conventional sentence-level content.
-
-**Limit:** this does not establish a universal intention-recognition architecture or human pragmatic categories for arbitrary agents.
-
-**Project consequence:** R3 may test indirect/function-level interpretation while requiring explicit inference provenance and calibrated alternatives.
-
-## C042 — Human conventions can be partner-specific and history-dependent
-
-**Status:** `SUPPORTED_PRIOR_WORK`
-
-Experimental work on conceptual pacts shows that human interlocutors develop partner-specific conceptualizations and lexical entrainment that persist beyond immediate informativeness.
-
-**Project consequence:** convention records should bind participants and interaction history; partner-specific success must not be silently promoted to a general mapping.
-
-## C043 — Repair behavior is evidence of interaction structure, not proof of understanding
-
-**Status:** `SUPPORTED_LIMITED_SCOPE / DESIGN_REQUIREMENT`
-
-Conversation-analysis and cross-linguistic repair research show organized human repair practices, but a reflex policy can imitate repetition or correction after failure without representing what was misunderstood.
-
-**Project consequence:** R3 tests targeted repair against `RN04_repair_reflex` and scores novel trouble-source discrimination rather than repair-like surface behavior alone.
-
-## C044 — Task success and even causal influence are insufficient for pragmatic equivalence
-
-**Status:** `SUPPORTED_PRIOR_WORK / DESIGN_REQUIREMENT`
-
-Emergent-communication research shows that high reward, message/action correlation, and in some cases causal use can coexist with task-bound protocols that do not preserve reusable semantic or pragmatic distinctions.
-
-**Project consequence:** pragmatic qualification requires function discrimination, changed-task transfer, partner transfer where applicable, conservation audits, and shortcut controls.
-
-## C045 — Functional similarity must not erase meaning-bearing form
-
-**Status:** `SUPPORTED_PRIOR_WORK / DESIGN_REQUIREMENT`
-
-Research on iconicity, systematicity, gesture, timing, and multimodality shows that form can itself carry information. The predecessor slogan “translate functions, not words” is therefore too strong if interpreted as function automatically outranking form.
-
-**Project consequence:** translation should preserve the tested invariants that matter in scope, including formal/iconic structure when demonstrated. `FUNCTIONALLY_EQUIVALENT` remains typed and scoped rather than synonymous with `same meaning`.
-
-## C046 — Operational common ground should remain separate from claims about another agent's internal state
-
-**Status:** `DESIGN_REQUIREMENT / SUPPORTED_LIMITED_SCOPE`
-
-Human common-ground and grounding theories motivate tracking evidence of jointly usable conventions, while convention theory does not require UNVTRSLR to prove infinitely nested symmetric beliefs.
-
-**Project consequence:** separate `interactionally_supported_common_ground`, `counterpart_epistemic_hypothesis`, and evaluator-only mutual-state truth.
-
-## C047 — Human pragmatic categories are useful adversarial families, not species-neutral primitives
-
-**Status:** `SUPPORTED_LIMITED_SCOPE / PROJECT_BOUNDARY`
-
-Human-language research supports rich distinctions such as deixis, repair, presupposition, implicature, addressee effects, and request/assertion-like functions. Cross-linguistic diversity cautions against promoting those manifestations into a universal ontology.
-
-**Project consequence:** R3 uses human categories as control families while requiring a nonhuman positive oracle that can pass without human sentence or speech-act structure.
-
-## C048 — Absence or withholding is meaningful only when an expectation relation is evidenced
+## C041 — Empirical identifiability is claim-relative
 
 **Status:** `DESIGN_REQUIREMENT / PROJECT_HYPOTHESIS`
 
-Human and animal signaling literature motivates treating omission or withholding as potentially communicative, but missing behavior is also explained by noise, latency, sensor failure, inactivity, or physical inability.
+Whether a distinction is recoverable depends on the declared interaction surface, admissible strategy family, budget, statistical resolution, and rival hypotheses.
 
-**Project consequence:** R3 `P06` requires counterfactual evidence distinguishing strategic withholding from matched random loss before absence receives semantic credit.
+If two rival mappings induce indistinguishable learner-accessible histories under every admissible strategy within the tested scope, the experiment cannot support unique identification between them within that scope.
+
+**Project consequence:** R0.5 must permit `UNIDENTIFIABLE_WITHIN_INTERACTION_SURFACE` rather than forcing a semantic choice.
+
+## C042 — Useful learner-visible information can be supplied by experiment infrastructure rather than learned by the participants
+
+**Status:** `DESIGN_REQUIREMENT`
+
+A privileged bridge, raw-scene writer, renderer, or instrumentation channel can create genuinely predictive learner-visible evidence while doing part of the cross-system semantic work itself.
+
+**Project consequence:** empirical distinguishability and learner/participant attribution are separate audit dimensions.
+
+## C043 — Preprocessing and generative instrumentation can both invalidate a grounding claim
+
+**Status:** `DESIGN_REQUIREMENT`
+
+Preprocessing can destroy a target-relevant distinction, while instrumentation can add privileged target-specific or target-independent latent-state information.
+
+**Project consequence:** R0.5 requires claim-relative preservation checks plus full generative/witness provenance. Unknown material provenance narrows the claim ceiling rather than being presumed neutral.
+
+## C044 — Hypothesis-family provenance is required for confirmatory semantic claims
+
+**Status:** `DESIGN_REQUIREMENT`
+
+A real learned operational partition can be given a human semantic label only after the evaluator inspects it. Excellent same-data fit does not independently confirm that post-hoc label.
+
+**Project consequence:** distinguish preregistered/confirmatory claims from exploratory post-hoc interpretations and record when the target/rival family was frozen.
+
+## C045 — Fresh IID evidence is not automatically claim-discriminating evidence
+
+**Status:** `DESIGN_REQUIREMENT / PROJECT_HYPOTHESIS`
+
+A new sample from the same confounded environment can preserve the same nuisance/semantic correlation indefinitely.
+
+**Project consequence:** stronger semantic confirmation should use interventions, domain shifts, or other evidence designed to separate the proposed interpretation from strong live alternatives where the claim depends on that distinction.
+
+## C046 — A null/open rival does not establish rival-family adequacy
+
+**Status:** `DESIGN_REQUIREMENT`
+
+`NONE_OF_DECLARED_RIVALS` prevents forced choice among named options, but an omitted structured explanation may still fit as well or better than the selected semantic label.
+
+**Project consequence:** record rejection-escape presence separately from structured-alternative stress and family adequacy.
+
+## C047 — Operational relation verification and semantic naming are non-monotonic, separable claims
+
+**Status:** `DESIGN_REQUIREMENT`
+
+A reusable, transferable, causally useful operational relation may survive while a proposed semantic interpretation remains unresolved, confounded, or unsupported.
+
+**Project consequence:** certificates must preserve the lower operational success when a stronger semantic claim fails, rather than representing qualification as a single automatic ladder.
+
+## C048 — A stronger semantic claim must incur an independently falsifiable burden
+
+**Status:** `DESIGN_REQUIREMENT / PROJECT_HYPOTHESIS`
+
+Calling a relation `semantic` should add testable content beyond saying that it is a reusable predictive or coordination relation.
+
+A candidate semantic claim should identify a condition under which the lower operational relation may remain true while the stronger semantic claim becomes false.
+
+**Boundary:** arbitrary extra difficulty does not count. The added test must be motivated by content asserted by the stronger claim, not merely by evaluator preference.
+
+**Falsifier:** if no independently motivated observable consequence distinguishes the stronger semantic claim from the lower operational claim, the semantic label should not be promoted within that scope.
+
+## C049 — Exposure/control boundaries are experimental provenance, not a universal ontology of agents
+
+**Status:** `DESIGN_REQUIREMENT`
+
+The experiment may need operational boundaries around loci that receive state or influence the coupled system, but those loci need not correspond to exactly two natural agents.
+
+**Project consequence:** record `BOUNDARY_MODEL` and bind any claim that depends materially on a particular individuation.
+
+## C050 — Hidden machinery honesty cannot always be inferred from learner traces alone
+
+**Status:** `PROJECT_BOUNDARY / DESIGN_REQUIREMENT`
+
+If inaccessible simulator or instrumentation machinery secretly exports privileged latent state into learner evidence, downstream behavioral traces may be insufficient to prove that subsidy absent.
+
+**Project consequence:** bind generator/renderer/instrumentation artifacts where possible and fail closed with a narrower claim when material generative provenance cannot be established.
 
 ## Open research gaps to investigate next
 
@@ -395,12 +423,12 @@ Human and animal signaling literature motivates treating omission or withholding
 10. Governance literature for METI and autonomous-contact systems.
 11. Formal conditions under which cross-task transfer should be expected from a grounded convention.
 12. Methods for constructing adversarial world generators that do not reveal evaluator ontology.
-13. Lower bounds on the intervention set needed to distinguish competing semantic hypotheses.
+13. Lower bounds on the interaction/strategy set needed to distinguish competing semantic hypotheses.
 14. Complexity measures that fairly compare symbolic, denotational, and predictive substrates.
-15. Species-neutral operationalizations of communicative function that do not presuppose human speech-act inventories.
-16. Distinguishing false common ground from genuinely shared convention when internal representations are unobservable.
-17. Formal tests for pragmatic conservation under asymmetric ontology and modality.
-18. Conditions under which absence/withholding can be identified as a causal signal without over-attribution.
+15. Formal criteria for when a proposed semantic-surplus obligation adds claim-specific content rather than arbitrary extra difficulty.
+16. Methods for verifying instrumentation/generative provenance without circularly trusting the experiment author.
+17. Structured-rival generation methods that reduce evaluator ontology lock-in without making the hypothesis family unfalsifiably open-ended.
+18. Boundary-model tests for distributed, overlapping, swarm, and non-agent-like systems.
 
 ## Promotion rule
 
@@ -413,3 +441,12 @@ No `PROJECT_HYPOTHESIS` should be relabeled as supported UNVTRSLR capability wit
 - contamination/leakage audit;
 - uncertainty and failure reporting;
 - independent reproduction where practical.
+
+For stronger semantic interpretation claims, additionally require where material:
+
+- hypothesis-family provenance;
+- claim-discriminating evidence rather than freshness alone;
+- structured-alternative stress or an explicitly justified closed family;
+- generative/witness provenance sufficient for the claim;
+- an evidence-supported claim ceiling;
+- a claim-specific falsifiable semantic delta rather than arbitrary extra difficulty.

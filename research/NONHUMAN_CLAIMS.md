@@ -1,8 +1,8 @@
 # Nonhuman Communication Claims Supplement
 
-Status: `PASS_3_CLAIMS_SUPPLEMENT / NOT_YET_FOLDED_INTO_MAIN_LEDGER`
+Status: `PASS_3_CLAIMS_SUPPLEMENT / AUTHORITATIVE_FOR_PASS_3`
 
-This supplement extends `research/CLAIMS_AND_EVIDENCE.md` for the nonhuman communication pass while preserving Pass 3 as an independently reviewable checkpoint.
+This supplement extends `research/CLAIMS_AND_EVIDENCE.md` for the nonhuman communication pass while preserving Pass 3 as an independently reviewable evidence layer. It is intentionally kept as a supplement rather than silently renumbering or rewriting the earlier human/R1-R2 ledger.
 
 ## NH-C01 — Playback/intervention can support reference-like nonhuman communication claims beyond context correlation
 

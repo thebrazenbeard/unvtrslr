@@ -353,3 +353,119 @@ The system must be able to conclude:
 - current ontology cannot express the discovered distinction.
 
 A universal translator that cannot admit failure is not universal; it is a hallucination engine.
+
+---
+
+## Human verbal-language evidence refinements — Pass 1
+
+The following refinements constrain how the phases above should be interpreted. They are derived from the human verbal-language evidence review in `research/HUMAN_VERBAL_LANGUAGE.md`. Human evidence motivates these responsibilities but does not prove species-independent universality.
+
+### R0.5 — interaction identifiability before semantic promotion
+
+`shared observable environment` is not automatically enough common ground.
+
+Before promoting any semantic mapping, ask whether the candidate distinction is empirically distinguishable through the parties' actual interaction surface.
+
+Working lower-bound statement:
+
+> If two candidate semantic mappings induce the same distribution over every learner-observable interaction history under every mutually available intervention, a bootstrap restricted to that surface cannot identify which mapping is the true one.
+
+Operational rule:
+
+`NO DISTINGUISHING OBSERVATION/INTERVENTION -> NO IDENTIFIABLE SEMANTIC DISTINCTION`
+
+Candidate pre-semantic outcomes include:
+
+- `IDENTIFIABLE_IN_SCOPE`;
+- `UNDERDETERMINED_IN_SCOPE`;
+- `UNIDENTIFIABLE_WITHIN_INTERACTION_SURFACE`;
+- `INSUFFICIENT_INTERACTION_BUDGET`;
+- `EVALUATOR_SUBSIDY_DETECTED`.
+
+This is a project-level identifiability condition, not a claim that interventions or agency are themselves universal primitives.
+
+### Self-description is a late capability, not a zero-semantics primitive
+
+A literal self-describing protocol is circular if the receiver has no grounded way to interpret concepts such as repetition, identity, equivalence, sequence, reference, or assertion.
+
+The stronger project hypothesis is:
+
+`self-demonstrating -> convention-forming -> recursively self-describing`
+
+- **self-demonstrating:** make interaction-relevant regularities observable through repetition, contrast, contingency, timing, imitation, or action consequence;
+- **convention-forming:** stabilize repairable mappings that survive transfer and intervention tests;
+- **recursively self-describing:** only after enough meta-communication is grounded may the system communicate about its own forms, uncertainty, interpretations, or repair rules.
+
+Human evidence motivates this staging but does not establish it as a universal developmental sequence.
+
+### Joint attention and ostension are optional routes
+
+Human word learning can occur without conventionally defined joint attention, and joint attention is not sufficient for vocabulary learning. Therefore:
+
+- gaze, pointing, shared visual fixation, and object-centered ostension may be exploited when available;
+- none may be required by the generic bootstrap interface;
+- an experiment that supplies shared gaze targets or object IDs must declare that common-ground subsidy.
+
+The weaker requirement is evidence capable of discriminating competing mappings over repeated interaction.
+
+### Repair should be learned functionally, not pre-labeled semantically
+
+Cross-linguistic human conversation provides strong evidence that repair is a robust interactional resource. UNVTRSLR should therefore test repair early, but the learner must not receive semantic labels such as `REPEAT`, `ACKNOWLEDGE`, `CLARIFY`, or `CORRECT`.
+
+A repair-like hypothesis should earn support from observable structure such as:
+
+1. a prior exchange appears unsuccessful or uncertain;
+2. a recurrent response pattern follows;
+3. one party modifies, isolates, or repeats part of the interaction;
+4. subsequent coordination improves or ambiguity falls.
+
+Repair-rich, repair-disabled, and corrupted-repair controls should be compared.
+
+### Turn structure is evidence, not architecture canon
+
+Human conversation exhibits strong turn-taking regularities, but an unknown communicator may be continuous, overlapping, asynchronous, distributed, or delayed.
+
+Therefore `turn-like alternation` remains one candidate signalhood feature. Message boundaries and discrete turns must still be discoverable rather than assumed in the strongest condition.
+
+### Iconicity is an accelerator condition
+
+Human vocal iconicity can make novel form/meaning mappings easier to infer. Qualification should separate:
+
+- iconic/motivated mappings;
+- arbitrary mappings;
+- misleading iconic cues.
+
+Success only under human-motivated iconicity is weaker evidence than success with arbitrary convention formation.
+
+### Discovery, invention, and adaptation require distinct provenance
+
+A translation bridge must not collapse these evidence classes:
+
+- `DISCOVERED_CORRESPONDENCE` — evidence indicates the counterpart's pre-existing behavior already tracked the candidate regularity;
+- `NEGOTIATED_CONVENTION` — the mapping was created during bootstrap;
+- `MIXED_OR_ADAPTED_CONVENTION` — an existing behavior was repurposed, narrowed, or extended during interaction;
+- `INFERRED_EQUIVALENCE` — the mediator hypothesizes overlap between independently existing structures;
+- `EVALUATOR_DEFINED_RELATION` — a test-oracle relation that must not be reported as counterpart semantics merely because the learner predicts it.
+
+A system can be good at inventing useful conventions while being poor at decoding pre-existing communication. These are different achievements.
+
+### Human semantic diversity raises the claim ceiling
+
+Human languages divide semantic domains differently and may obligatorily encode distinctions that other languages express optionally or differently, including information-source/evidential distinctions.
+
+Therefore:
+
+- one-to-one lexical mapping is never the default assumption;
+- provenance can itself be semantic content rather than merely engineering metadata;
+- `NO_FAITHFUL_EQUIVALENT` must be scoped to the tested target representation/search family;
+- human grammatical categories remain controls, not universal substrate primitives.
+
+### Revised stopping/failure vocabulary
+
+In addition to the existing bootstrap failures, record when applicable:
+
+- `UNDERDETERMINED_IN_SCOPE` — multiple incompatible mappings remain observationally/interventionally equivalent under the available surface;
+- `NEGOTIATED_BUT_NOT_DECODED` — a useful convention was created, but evidence does not establish recovery of pre-existing semantics;
+- `ICONICITY_DEPENDENT` — a mapping succeeds only under motivated human-like form/meaning resemblance;
+- `REPAIR_DEPENDENT` — qualification succeeds only when an explicit repair channel is available;
+- `HUMAN_PRIOR_DEPENDENT` — success disappears under controls that remove pretrained/shared human semantic priors.

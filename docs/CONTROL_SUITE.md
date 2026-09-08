@@ -330,3 +330,175 @@ Every control run should record:
 - alternative shortcut explanations.
 
 Without that disclosure, cross-experiment “universality” comparisons are meaningless.
+
+---
+
+## Human verbal-language Pass 1 control overlays
+
+These overlays apply to human spoken/verbal controls and to synthetic controls motivated by them. They do not replace the later signed/nonverbal or nonhuman passes.
+
+### HVC-1 — typological/semantic distance matrix
+
+Human-language positive controls should not be dominated by closely related high-resource languages.
+
+Select pairs or small sets that vary materially in:
+
+- morphology and word order;
+- obligatoriness of tense/aspect/modal marking;
+- evidential/source-of-information marking;
+- spatial frame systems;
+- pronoun/participant distinctions;
+- lexical category boundaries;
+- polysemy and lexicalization patterns;
+- resource level and pretraining exposure.
+
+Report what distinctions are obligatorily encoded, optionally encoded, lexicalized differently, or absent as one-to-one lexical equivalents.
+
+**Failure caught:** English-centric translation success presented as general semantic mediation.
+
+### HVC-2 — discovery versus convention-invention split
+
+Run two materially different human conditions:
+
+1. **pre-existing-language recovery:** agents encounter a convention that existed before the experiment and must infer its use without a dictionary;
+2. **novel-convention formation:** participants are allowed to invent a new code during the experiment.
+
+The resulting bridge entries must preserve `DISCOVERED_CORRESPONDENCE` versus `NEGOTIATED_CONVENTION` provenance.
+
+**Failure caught:** a system that invents an effective task code being reported as having decoded a language.
+
+### HVC-3 — iconicity ladder
+
+For matched semantic challenges compare:
+
+- high human-perceived iconicity;
+- low/moderate iconicity;
+- intentionally arbitrary mappings;
+- misleading iconic cues that correlate with a nuisance variable rather than the target distinction.
+
+**Failure caught:** a system that relies on human-motivated resemblance while being credited with arbitrary zero-shared-symbol grounding.
+
+### HVC-4 — repair availability matrix
+
+Compare:
+
+- natural repair available;
+- repair channel available but unlabeled;
+- repair disabled;
+- repair delayed;
+- repair corrupted/noisy;
+- evaluator-tagged `REPAIR` events as a deliberately invalid leakage condition.
+
+Measure not only task success but interactions-to-stable-mapping, calibration, error recovery, and whether conventions remain transferable.
+
+**Failure caught:** repair semantics smuggled through the interface instead of inferred from interaction.
+
+### HVC-5 — joint-attention subsidy controls
+
+Human experiments must declare whether they provide:
+
+- shared gaze target;
+- pointing;
+- highlighted referent;
+- shared scene segmentation;
+- experimenter-directed salience;
+- synchronized object IDs;
+- common display coordinates.
+
+Run matched conditions where at least some of these are removed or made asymmetric.
+
+**Failure caught:** the experimenter performing the referential grounding while the learner receives credit.
+
+### HVC-6 — task/pragmatics scaffold audit
+
+Audit instructions, UI, feedback, timing, and task rules for semantic information.
+
+Deliberately construct a control where a participant can infer the intended meaning primarily from:
+
+- task objective;
+- allowed action set;
+- reward structure;
+- menu position;
+- turn timing;
+- tutorial examples;
+- experimenter behavior.
+
+The semantic evaluator should detect that the scaffold, not the counterpart signal, carries the decisive information.
+
+### HVC-7 — pretrained human-prior matrix
+
+For model-based agents distinguish:
+
+- scratch/scratch;
+- pretrained/scratch;
+- scratch/pretrained;
+- pretrained/pretrained;
+- materially different pretrained model families;
+- synthetic semantic categories absent from public corpora.
+
+Where possible record training-provenance overlap with the human languages or cultural facts used in the control.
+
+**Failure caught:** recovery from memorized linguistic/world priors being reported as bootstrap from the current shared environment.
+
+### HVC-8 — semantic partition mismatch
+
+Use human-language-inspired worlds where source and target category boundaries differ.
+
+Examples should include:
+
+- one source term spanning several target terms;
+- several source terms collapsing into one target category;
+- a grammatically obligatory information-source distinction on one side but not the other;
+- context-dependent lexicalization where a direct dictionary is misleading.
+
+Success requires preservation of partial overlap, paraphrase, uncertainty, or scoped non-equivalence rather than forced one-to-one mapping.
+
+### HVC-9 — third-party acquisition
+
+After a dyad stabilizes a convention, introduce an independently initialized third participant that did not share the dyad's training history.
+
+The third participant may learn from the permitted environment and interaction but receives no hidden codebook.
+
+**Failure caught:** co-trained private coordination that cannot be reconstructed from grounded interaction.
+
+Third-party acquisition is strong anti-shortcut evidence, not by itself proof of uniquely correct semantics.
+
+### HVC-10 — identifiability null
+
+Construct at least one case where the evaluator knows two latent distinctions but the agents' allowed observations/interventions make them exactly indistinguishable.
+
+The expected system result is `UNDERDETERMINED_IN_SCOPE` or `UNIDENTIFIABLE_WITHIN_INTERACTION_SURFACE`, not a forced semantic answer.
+
+**Failure caught:** evaluator truth being laundered into a claim that the learner discovered an empirically inaccessible distinction.
+
+### HVC-11 — turn-structure ablation
+
+Compare ordinary turn-like interaction against continuous, overlapping, asynchronous, or delayed signaling variants.
+
+**Failure caught:** treating human conversational turn-taking as an undeclared universal framing layer.
+
+### HVC-12 — self-description staging
+
+Replace Control 20's binary notion of self-description with a staged comparison:
+
+1. `SELF_DEMONSTRATING_ONLY` — repeated structure/contrast without meta-language;
+2. `CONVENTION_FORMING` — negotiated mappings and repair can emerge;
+3. `RECURSIVELY_SELF_DESCRIBING` — the system attempts to communicate about its own forms/uncertainty after prior grounding;
+4. `PREDECLARED_META_LANGUAGE` — invalid/easier comparator in which meta-semantic functions are supplied.
+
+**Failure caught:** circular claims that a zero-semantics protocol explained itself using concepts that were already presupposed.
+
+## Human verbal control reporting additions
+
+In addition to the general required reporting, record:
+
+- whether the target behavior was pre-existing or negotiated during the experiment;
+- joint-attention/ostension support available;
+- repair affordances and whether they were labeled;
+- iconicity condition;
+- pretrained language/world priors;
+- experiment/task instructions visible to each side;
+- category/ontology partitions supplied by the interface;
+- whether the tested distinction was identifiable from learner-visible evidence at all;
+- whether a third party could reconstruct the convention;
+- whether success depended on specifically human perceptual/pragmatic common ground.

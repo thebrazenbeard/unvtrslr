@@ -2,7 +2,7 @@
 
 ## Status
 
-`RESEARCH_BOOTSTRAP / NOT_IMPLEMENTATION_READY`
+`R1_R2_DESIGN_BASELINED / IMPLEMENTATION_NOT_STARTED / NOT_IMPLEMENTATION_READY`
 
 The roadmap is intentionally gated. Later phases do not inherit qualification merely because earlier phases succeeded.
 
@@ -26,65 +26,97 @@ Establish the conceptual and evidentiary baseline.
 
 `R0_RESEARCH_BASELINED`
 
-Pass when a reviewer can distinguish:
+Current status: `DESIGN_BASELINED`.
 
-- established prior work;
-- current project hypothesis;
-- speculation;
-- untested assumption.
+Pass meaning: a reviewer can distinguish established prior work, current project hypothesis, speculation, and untested assumption.
 
 ## R1 — Minimal semantic substrate competition
 
 ### Objective
 
-Define and compare the smallest formal representations capable of supporting the first experiments.
+Define and compare the smallest formal representations capable of supporting the first experiments without silently privileging one human-readable ontology.
 
-### Candidate rivals
+### Frozen R1 design rivals
 
-1. typed probabilistic graph;
-2. relation-tuple substrate;
-3. latent-cluster + provenance + intervention log;
-4. event-sourced hypothesis store;
-5. hybrid symbolic/probabilistic representation.
+1. **TPH — Typed Probabilistic Hypergraph**: explicit structured relational hypotheses.
+2. **DCA — Denotational Constraint Algebra**: executable constraints/operators over compatible situations and trajectories.
+3. **PIS — Predictive-Intervention State**: action-conditioned predictions and signal-induced predictive changes.
 
-### Required tests
+See [`R1_SUBSTRATE_COMPETITION.md`](R1_SUBSTRATE_COMPETITION.md).
+
+### Required comparison properties
 
 - same control tasks;
 - same evaluator;
 - no hidden English ontology;
-- semantic conservation support;
 - uncertainty/provenance support;
-- complexity accounting.
+- semantic-conservation support;
+- intervention/prediction support;
+- cross-task and partner transfer;
+- complexity accounting including adapter complexity;
+- multiple seeds and independently generated worlds.
 
-### Gate
+### Gate sequence
+
+`R1_COMPETITION_SPECIFIED` — design complete, common contract and rivals frozen.
+
+`R1_SUBSTRATE_EMPIRICALLY_QUALIFIED` — future status requiring R2-qualified runs.
+
+`R1_SUBSTRATE_SELECTED` — optional later status; a single winner is not required. Pareto-nondominated rivals may continue.
+
+Current status: `R1_COMPETITION_SPECIFIED / NOT_IMPLEMENTED`.
 
 No substrate becomes architecture canon unless it earns complexity over a simpler rival.
 
-## R2 — Trustworthy experiment harness
+## R2 — Trustworthy adversarial experiment harness
 
 ### Objective
 
-Build the evaluator before claiming semantic learning.
+Build the evaluator before claiming semantic learning and make it capable of rejecting high-performing shortcut systems.
+
+### Design artifacts
+
+- [`R2_ADVERSARIAL_EVALUATOR.md`](R2_ADVERSARIAL_EVALUATOR.md);
+- [`R2_NEGATIVE_CONTROLS.md`](R2_NEGATIVE_CONTROLS.md);
+- [`../specs/R1R2_EVALUATION_CONTRACT_V1.yaml`](../specs/R1R2_EVALUATION_CONTRACT_V1.yaml);
+- [`../research/R1R2_RESEARCH_NOTES.md`](../research/R1R2_RESEARCH_NOTES.md).
 
 ### Required capabilities
 
 - deterministic world generation/replay;
+- evaluator-only hidden truth zone;
+- independently randomized sensor renderers;
 - learner/evaluator separation;
 - configuration and seed binding;
 - independent metric recomputation;
 - sensory asymmetry;
-- pluggable channels;
+- pluggable and unknown channels;
 - no-communication controls;
-- label-leak controls;
+- label/latent leak controls;
 - private-code controls;
+- causal message interventions;
+- world-factor interventions;
+- role reversal;
+- cross-task transfer;
+- partner swap/third-party acquisition;
+- ontology-mismatch/non-equivalence tests;
 - interaction logs;
-- conservation ledger evaluation.
+- conservation/provenance evaluation;
+- automated shortcut search.
 
-### Gate
+### Core methodological rule
+
+Task success is not a semantic certificate. An arbitrary signal convention is not a failure merely because its symbols are opaque. The evaluator targets hidden common ground and task-bound shortcuts: episode IDs, shared latent state, action-plan codes, memorization, reward side channels, co-training artifacts, and other explanations that fail grounded transfer.
+
+### Harness gate
 
 `HARNESS_TRUSTWORTHY`
 
-The harness must fail intentionally broken semantic systems.
+The harness must reject all preregistered negative controls on the dimensions they violate and pass positive oracles before any R1 candidate hidden evaluation.
+
+Thresholds are calibrated using only chance/null controls, positive oracles, negative controls, and harness-only pilot worlds, then frozen before candidate hidden results are inspected.
+
+Current status: `R2_EVALUATOR_SPECIFIED / HARNESS_NOT_BUILT`.
 
 ## R3 — Human-language and synthetic-language controls
 
@@ -102,7 +134,7 @@ Prove that the protocol can recover known semantic relationships without direct 
 
 ### Gate
 
-The system must recover known mappings, preserve uncertainty, and correctly identify at least some non-equivalences.
+The system must recover known mappings, preserve uncertainty, and correctly identify at least some non-equivalences under the frozen R2 evaluator.
 
 ## R4 — Zero-shared-vocabulary grounded communication
 
@@ -122,11 +154,13 @@ Agents invent communication from scratch in a shared world.
 
 - private-code agent;
 - memorizer;
-- shared-latent shortcut.
+- shared-latent shortcut;
+- action-plan code;
+- episode-ID code.
 
 ### Gate
 
-Task success must survive semantic probes and cross-task transfer.
+Task success must survive R2 semantic probes, causal interventions, and cross-task/partner transfer.
 
 ## R5 — Unknown and nonlinguistic communication channels
 
@@ -309,27 +343,29 @@ This status does not authorize transmission or deployment.
 
 ## Parallel workstreams
 
-Some research can proceed in parallel once R0 exists:
+Some research can proceed in parallel:
 
 - literature review;
-- representation alternatives;
+- synthetic-world generator design;
 - synthetic-language generator design;
 - nonlinguistic channel taxonomy;
 - semantic conservation metrics;
 - physical-layer/bootstrap research;
 - safety/governance research.
 
-But experimental claims remain ordered by the qualification gates above.
+Experimental claims remain ordered by qualification gates.
 
-## Near-term next steps
+## Near-term next steps after R1/R2 design
 
-1. Convert the first 100 challenge families into machine-readable evaluator specifications.
-2. Define the smallest three rival semantic substrates.
-3. Design the negative-control suite before the learner.
-4. Select a minimal world simulator supporting sensor asymmetry and interventions.
-5. Define exact signalhood-discovery metrics.
-6. Build one synthetic language with deliberately non-English semantics.
-7. Build one continuous nonlinguistic channel.
-8. Preregister R2/R3 pass/fail criteria before model training.
-9. Expand literature review around self-describing protocols, semiotics, active learning, and cross-modal grounding.
-10. Preserve every promoted claim in the evidence ledger with exact experimental provenance.
+1. Implement the R2 deterministic world/evaluator skeleton before implementing a sophisticated learner.
+2. Implement P00-P03 positive controls and N00-N24 negative controls.
+3. Freeze the control acceptance matrix and verify `HARNESS_TRUSTWORTHY` on intentionally broken systems.
+4. Convert a bounded subset of the first 100 challenge families into machine-readable scenario specifications.
+5. Implement the common substrate adapter contract.
+6. Implement the smallest credible TPH, DCA, and PIS candidates under matched budgets.
+7. Calibrate and freeze the first candidate-independent qualification profile.
+8. Run R1 candidates only after the hidden holdout generation rule is frozen.
+9. Build one synthetic language with deliberately non-English semantics for R3.
+10. Build one continuous nonlinguistic channel for R5-compatible early stress testing.
+11. Preserve every run with code/config/world/evaluator digests and immutable metric traces.
+12. Treat discovery of any new shortcut as an evaluator-version event requiring a new negative control and requalification.

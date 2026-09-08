@@ -227,6 +227,92 @@ Existing work demonstrates partial responsibilities under constrained assumption
 
 A staged failure can identify which assumptions—shared perception, common context, cooperation, compositionality, interaction, or humanlike concepts—are actually necessary for communication.
 
+## R1/R2 additions
+
+## C031 — A semantic substrate need not be an explicit symbolic ontology
+
+**Status:** `SUPPORTED_LIMITED_SCOPE / PROJECT_HYPOTHESIS`
+
+Predictive-state-representation research shows that dynamical state can be represented using action-conditioned predictions of future observations rather than hidden-state labels.
+
+**Project consequence:** PIS is a serious non-symbolic R1 rival.
+
+**Limit:** prior PSR work does not establish semantic communication or translation.
+
+## C032 — Message/action correlation does not establish communication
+
+**Status:** `SUPPORTED_PRIOR_WORK`
+
+Lowe et al. demonstrate settings where messages contain information about subsequent actions but do not causally affect the environment or other agent.
+
+**Project consequence:** direct message intervention and ablation are critical R2 tests.
+
+## C033 — Causal listening is necessary but not sufficient for grounded semantics
+
+**Status:** `DESIGN_REQUIREMENT / PROJECT_HYPOTHESIS`
+
+Counterfactual social-influence research supports causal influence as a stronger communication signal than correlation alone.
+
+However, an action-plan code may causally control a receiver while remaining task-bound.
+
+**Project consequence:** causal listening must be combined with world-factor interventions, cross-task transfer, role reversal, and partner transfer.
+
+## C034 — Arbitrary notation is not evidence against grounding
+
+**Status:** `DESIGN_REQUIREMENT`
+
+A convention may use arbitrary signs while remaining externally grounded.
+
+**Project consequence:** R2 ignores consequence-preserving symbol permutations. It targets hidden common ground and task-private shortcuts rather than human unreadability.
+
+## C035 — Unique unsupervised semantic ontology recovery cannot be assumed
+
+**Status:** `SUPPORTED_LIMITED_SCOPE / PROJECT_BOUNDARY`
+
+Locatello et al. show that unsupervised disentangled representation learning is not identifiable without inductive biases.
+
+**Project consequence:** UNVTRSLR must record substrate inductive biases and avoid claiming a unique true internal ontology from observation alone.
+
+## C036 — Grounding qualification must be explicitly scope-bounded
+
+**Status:** `DESIGN_REQUIREMENT`
+
+No finite evaluator can distinguish hypotheses that make identical predictions over every tested observation and intervention but diverge only outside the tested family.
+
+**Project consequence:** use `GROUNDED_WITHIN_TESTED_SCOPE`, bind certificates to exact world/intervention families, and retain surviving alternative explanations.
+
+## C037 — Cross-task and third-party transfer are key tests against private task code
+
+**Status:** `PROJECT_HYPOTHESIS / DESIGN_REQUIREMENT`
+
+If a signal tracks a reusable world invariant, it should often remain useful when the optimal downstream action changes and should be re-groundable by an independently initialized partner.
+
+**Falsifier:** if genuinely grounded conventions systematically fail these tests while known private task codes pass them under a trustworthy harness.
+
+## C038 — A richer semantic substrate should not win by interpretability alone
+
+**Status:** `DESIGN_REQUIREMENT`
+
+Human-readable graphs can create false confidence.
+
+**Project consequence:** R1 uses empirical semantic qualification plus explicit complexity accounting. A richer substrate must earn complexity through transfer, calibration, non-equivalence, conservation, or efficiency.
+
+## C039 — No single scalar should certify grounded meaning
+
+**Status:** `DESIGN_REQUIREMENT`
+
+Task reward, mutual information, compositionality, causal influence, reconstruction accuracy, and language similarity each capture only part of the target.
+
+**Project consequence:** R2 emits a conjunctive operational-grounding vector with critical failure gates.
+
+## C040 — A semantic evaluator must be able to reject strong intentionally broken systems
+
+**Status:** `DESIGN_REQUIREMENT`
+
+An evaluator that only recognizes obvious random failure has not demonstrated shortcut resistance.
+
+**Project consequence:** R2 requires a suite of adversarial negative controls designed to perform well on naive task metrics.
+
 ## Open research gaps to investigate next
 
 1. Formal literature on signalhood/intention detection without labeled communication channels.
@@ -239,6 +325,10 @@ A staged failure can identify which assumptions—shared perception, common cont
 8. Information-theoretic measures that preserve semantic distinctions rather than only mutual information.
 9. Independent receiver architectures for contamination-resistant bootstrap tests.
 10. Governance literature for METI and autonomous-contact systems.
+11. Formal conditions under which cross-task transfer should be expected from a grounded convention.
+12. Methods for constructing adversarial world generators that do not reveal evaluator ontology.
+13. Lower bounds on the intervention set needed to distinguish competing semantic hypotheses.
+14. Complexity measures that fairly compare symbolic, denotational, and predictive substrates.
 
 ## Promotion rule
 

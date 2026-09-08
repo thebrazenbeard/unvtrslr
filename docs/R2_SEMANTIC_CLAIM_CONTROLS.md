@@ -229,6 +229,77 @@ Expected result:
 
 `STRUCTURED_ALTERNATIVE_STRESS_NOT_ESTABLISHED` or `RIVAL_FAMILY_MISSPECIFICATION_DETECTED`.
 
+### `CTRL_SEMANTIC_NULL_CONTENT`
+
+Construct a case where a robust operational correspondence survives every currently required provenance, transfer, counterfactual, partner, sensor, and structured-rival control.
+
+Define two claim objects over the same evidence:
+
+- `OPERATIONAL_CORRESPONDENCE`
+- `SEMANTIC_CORRESPONDENCE`
+
+The semantic claim must identify at least one predeclared condition under which the operational claim may remain true while the semantic claim becomes false.
+
+If no such condition exists, the stronger label is empirically vacuous within scope.
+
+Expected result:
+
+`SEMANTIC_LABEL_ADDS_NO_FALSIFIABLE_CONTENT` and retain the lower operational claim ceiling.
+
+### `CTRL_ARBITRARY_SEMANTIC_SURPLUS`
+
+A sophisticated nonsemantic operational code is built to pass an evaluator-invented extra burden such as recombination, role reversal, transfer, conservation, or third-party acquisition without establishing any independently motivated semantic distinction.
+
+This control exists because adding difficulty is not the same as adding semantic content.
+
+The evaluator must show why the proposed `SEMANTIC_SURPLUS_OBLIGATION` discriminates the stronger semantic claim from a lower operational relation rather than merely rewarding a more capable code.
+
+Expected result when the same underlying operational mechanism satisfies the surplus for the same reason:
+
+`ARBITRARY_BURDEN_DOES_NOT_DISCRIMINATE_SEMANTIC_CLAIM`.
+
+## 11. Semantic-null-content gate
+
+For every promotion from an operational relation to a semantic relation, ask:
+
+> What additional observable prediction, intervention outcome, conservation obligation, rendering constraint, transfer requirement, or qualification failure becomes possible specifically because this is a semantic correspondence rather than merely an operational correspondence?
+
+If the answer is `none`, the promotion fails even if all lower-level grounding tests pass.
+
+Suggested statuses:
+
+- `OPERATIONAL_CORRESPONDENCE_ESTABLISHED`
+- `SEMANTIC_DELTA_SPECIFIED`
+- `SEMANTIC_DELTA_TESTED`
+- `SEMANTIC_DELTA_NOT_ESTABLISHED`
+- `SEMANTIC_INTERPRETATION_UNDERDETERMINED_IN_SCOPE`
+- `SEMANTIC_LABEL_ADDS_NO_FALSIFIABLE_CONTENT`
+
+Do not define `semantic` as whatever passes the current R2 suite. That is circular unless the suite contains independently justified claim-specific obligations.
+
+## 12. Anti-arbitrary-surplus rule
+
+A `SEMANTIC_SURPLUS_OBLIGATION` must do more than increase task difficulty.
+
+A valid surplus obligation must be:
+
+- predeclared for the exact semantic claim;
+- independently motivated by content asserted by that stronger claim;
+- capable of failing while the lower operational correspondence remains true;
+- tested against at least one strong nonsemantic operational rival where feasible.
+
+If an arbitrary nonsemantic code can satisfy the proposed surplus for the same underlying reason, the surplus does not earn semantic promotion.
+
+Use:
+
+- `DECLARED_AND_TESTABLE`
+- `TESTED_AND_SURVIVED`
+- `FAILED`
+- `NO_DISTINCT_FALSIFIABLE_BURDEN_IDENTIFIED`
+- `ARBITRARY_BURDEN_DOES_NOT_DISCRIMINATE_SEMANTIC_CLAIM`
+
+No single surplus family is a universal definition of semantics.
+
 ## R2 claim-control gate
 
 No strong semantic certificate should be emitted unless:
@@ -239,7 +310,8 @@ No strong semantic certificate should be emitted unless:
 4. confirmation evidence is claim-discriminating, not merely fresh;
 5. strongest live structured alternatives are materially stressed;
 6. the stronger semantic label carries an explicit falsifiable surplus obligation;
-7. the final wording does not exceed the evidence-supported claim ceiling.
+7. that surplus obligation is not merely arbitrary extra difficulty that a nonsemantic operational code can pass for the same reason;
+8. the final wording does not exceed the evidence-supported claim ceiling.
 
 Current status:
 

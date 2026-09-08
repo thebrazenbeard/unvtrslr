@@ -146,49 +146,62 @@ and separately:
 
 No excluded challenge increases the pass numerator.
 
-## 5. Semantic-status ladder
+## 5. Orthogonal qualification state
 
-To keep semantic language from outrunning evidence, use explicit claim levels.
+Operational evidence and semantic qualification are not successive rungs of one ladder. A run records independent axes.
 
-### S0 — `OBSERVABLE_REGULARITY`
+### Operational relation state
 
-Repeatable structure exists in learner-accessible evidence.
+Candidate values:
 
-### S1 — `VERIFIED_OPERATIONAL_RELATION`
+- `NO_OPERATIONAL_RELATION_ESTABLISHED`;
+- `OBSERVABLE_REGULARITY`;
+- `VERIFIED_OPERATIONAL_RELATION`;
+- `CROSS_SYSTEM_OPERATIONAL_CORRESPONDENCE`;
+- `OPERATIONAL_STATE_UNRESOLVED`.
 
-A reusable relation survives declared controls, transfer, or intervention-like tests within scope.
+These describe what reusable relation is supported by learner-accessible evidence. They do not award a semantic interpretation.
 
-### S2 — `CROSS_SYSTEM_CORRESPONDENCE`
+### Semantic interpretation / qualification state
 
-The relation links distinguishable structures across two or more access/influence scopes or representations and survives bridge-attribution/provenance controls.
+Candidate values:
 
-This level does not yet require a human semantic label.
+- `NO_SEMANTIC_INTERPRETATION_ASSERTED`;
+- `SEMANTIC_INTERPRETATION_EXPLORATORY`;
+- `SEMANTIC_INTERPRETATION_FROZEN_FOR_TEST`;
+- `SEMANTIC_CORRESPONDENCE_SUPPORTED_IN_SCOPE`;
+- `SEMANTIC_INTERPRETATION_REJECTED`;
+- `SEMANTIC_QUALIFICATION_UNRESOLVED`.
 
-### S3 — `SEMANTIC_CORRESPONDENCE_CANDIDATE`
+A semantic state must cite the exact proposed interpretation, strongest live structured operational rival(s), and claim-discriminating evidence. `SEMANTIC_CORRESPONDENCE_SUPPORTED_IN_SCOPE` is not a universal or metaphysical `TRUE_MEANING` state.
 
-A proposed semantic interpretation is frozen and entails at least one claim-discriminating obligation beyond the strongest live nonsemantic operational rival.
+### Applicability / coverage state
 
-### S4 — `SEMANTIC_CORRESPONDENCE_SUPPORTED_IN_SCOPE`
+Keep the applicability states from §4 separate from both operational and semantic status.
 
-The candidate interpretation survives independent claim-discriminating evidence, structured-rival pressure, instrumentation/shortcut controls, and the stated semantic-surplus obligation.
+### Claim ceiling
 
-### S5 — no universal level
+Every result also records the strongest wording the evidence permits. The claim ceiling may remain operational even when a human renderer proposes a semantic gloss.
 
-The architecture must not silently promote S4 to `TRUE_MEANING` or universal semantics. S4 remains scoped to tested systems, environments, interventions, rival families, and budgets.
+### Non-monotonicity rule
+
+No transition in operational state automatically advances semantic qualification. A very strong operational correspondence can coexist with `NO_SEMANTIC_INTERPRETATION_ASSERTED` or `SEMANTIC_QUALIFICATION_UNRESOLVED`. Conversely, a proposed semantic interpretation can be rejected while the lower operational relation remains valid.
+
+This is the intended separation.
 
 ## 6. Semantic surplus as an empirical burden, not a definition by fiat
 
-The word `semantic` should add a test burden.
+The word `semantic` should add a test burden rather than a pre-labeled comparator.
 
-Let `R` be the strongest verified nonsemantic relation and `S` the proposed semantic interpretation.
+Let `R` be the strongest live **structured operational comparator not yet shown to satisfy the stronger semantic claim**, and `S` the proposed semantic interpretation.
 
 `S` is not promoted merely because humans find it intuitive, compressive, or predictive.
 
 It must add at least one preregistered obligation that `R` does not already entail, such as a novel-context transfer, substitution, counterfactual, conservation, role-reversal where appropriate, intervention, or non-equivalence prediction.
 
-If no such obligation can be identified, retain:
+The added obligation must itself be justified by the exact semantic claim rather than chosen merely because it is harder. **Extra arbitrary difficulty is not semantic content.** A harder test that does not discriminate the semantic interpretation from the lower operational comparator cannot promote the semantic claim.
 
-`VERIFIED_OPERATIONAL_RELATION / HUMAN_RENDERING_ONLY`.
+If no claim-grounded discriminating obligation can be identified, retain the operational result and record the semantic interpretation as unresolved or human-rendering-only.
 
 This rule does not claim to solve philosophy of meaning. It makes the project's use of semantic terminology falsifiable inside an experimental program.
 
@@ -246,9 +259,10 @@ Each challenge should eventually bind:
 - a representation-neutral operational capability;
 - applicability prerequisites;
 - cross-system variants;
+- operational relation state;
+- semantic-qualification state where a semantic claim is actually tested;
 - claim ceiling;
-- false-success controls;
-- semantic-status level reached.
+- false-success controls.
 
 ## 11. Current falsifiable core
 
@@ -256,6 +270,6 @@ The strongest current bootstrap claim should be expressed conservatively:
 
 > Under declared conditions where learner-accessible exposure contains recoverable distinguishing structure, preprocessing preserves claim-relevant distinctions, privileged instrumentation does not supply the cross-system bridge, and rival hypotheses can be discriminated within scope, initially unaligned systems may be able to construct reusable cross-system operational correspondences without a pre-shared symbolic language.
 
-Whether a correspondence deserves the stronger label `semantic` is a separate qualification question, not something the bootstrap receives by definition.
+Whether a correspondence deserves the stronger label `semantic` is a separate qualification question, not something the bootstrap receives by definition or by monotonic promotion.
 
-This separation is intentional. If the project cannot state an empirical obligation added by the semantic interpretation beyond the operational relation, the correct scientific result is still valuable but should remain below the semantic claim ceiling.
+If the project cannot state an empirically discriminating obligation added by the semantic interpretation beyond the best supported lower operational comparator, the correct scientific result is still valuable but remains below the semantic claim ceiling.

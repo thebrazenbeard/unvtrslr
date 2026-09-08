@@ -278,3 +278,115 @@ A useful evaluator may group challenges into provisional clusters:
 These clusters are evaluator conveniences, not claims that cognition or language develops in that sequence.
 
 The later human nonverbal/signed and nonhuman passes should attack this dependency structure again rather than inherit it as canon.
+
+---
+
+## Dependency refinements — human signed/nonverbal Pass 2
+
+Pass 2 does not replace the 100 challenges. It changes what may count as a valid path through them.
+
+### Rule 8 — composition is not synonymous with sequence
+
+Challenges 91-94 must allow simultaneous or overlapping composition. A system should not fail merely because it combines distinctions through:
+
+- two hands at once;
+- manual plus facial/head movement;
+- a persistent spatial locus plus a simultaneous motion;
+- timing/synchrony rather than concatenation.
+
+A test harness that serializes all evidence into evaluator-created gloss tokens has changed the challenge.
+
+### Rule 9 — shared spatial frame is itself a candidate dependency
+
+Challenges 31-40, 82-84, and some referential tasks must declare whether the agents share:
+
+- origin and orientation;
+- viewpoint;
+- scale;
+- persistent landmark identity;
+- object segmentation;
+- correspondence between physical and discourse space.
+
+If those are supplied, record them as common-ground subsidies. Alternative qualification paths should allow agents to negotiate a frame or succeed using another relational scheme.
+
+### Rule 10 — deixis and participant reference need functional disambiguation
+
+Challenges 6, 71, 82-84, and related tasks must not treat a point/gaze direction as a pre-labeled referential act.
+
+A valid control should make the same physical form plausibly serve:
+
+- selection;
+- location;
+- participant marking;
+- direction;
+- command;
+- attention management;
+- or noncommunicative behavior.
+
+Credit requires recovering the demonstrated functional pattern in context.
+
+### Rule 11 — meta-communication may be layered onto content
+
+Challenges 71-80 need not occupy separate turns or separate tokens. Repair, uncertainty, question-like force, discourse management, or emphasis may be distributed across a simultaneous nonmanual channel while another channel carries referential content.
+
+The dependency graph therefore permits `meta-communication + content` as one interaction complex.
+
+### Rule 12 — dyadic competence and community language are different qualification targets
+
+A successful pair may solve challenges 1-100 without developing the systematicity of a mature community language. Conversely, structures observed after community/cohort transmission cannot be credited retroactively to an isolated pair.
+
+Each result should record one of:
+
+- `ISOLATED_OR_DYADIC`;
+- `MULTI_USER_COMMUNITY`;
+- `TRANSMITTED_ACROSS_COHORTS`.
+
+This matters especially for challenges 8-9, 76-80, and 91-95, where conventionalization/systematization can grow over social transmission.
+
+### Rule 13 — object-centered paths must have rivals
+
+Families A, C, D, F, and I often read naturally in object/agent terms. At least some qualification worlds should provide alternative segmentation in which:
+
+- trajectories or fields are more stable than objects;
+- participant boundaries are ambiguous;
+- relations are primary and object identity is secondary;
+- persistent spatial loci do not map one-to-one to physical objects.
+
+The challenge is to establish a reusable distinction, not to force the evaluator's object ontology.
+
+### Rule 14 — attention-getting does not mean gaze/pointing
+
+Challenge 71 must accept any empirically established interaction-management convention that reliably changes counterpart uptake/availability in scope. Gaze, pointing, touch, sound, motion, environmental change, or another channel may serve in human controls, but none is the semantic definition.
+
+### Rule 15 — iconicity changes difficulty, not correctness
+
+For challenges involving shape, motion, space, action, or affect, record whether the signal is:
+
+- strongly iconic/motivated;
+- weakly iconic;
+- arbitrary;
+- misleadingly iconic.
+
+A mapping does not receive more semantic credit because its form resembles the evaluator's target. Iconicity is a difficulty/modality condition.
+
+### Rule 16 — functional category uncertainty can remain after state discrimination succeeds
+
+A form may reliably covary with a world state while its communicative function remains ambiguous. For example, a facial movement may be grammatical, affective, interactional, or incidental.
+
+Therefore R0.5-style `state distinguishability` must not automatically satisfy challenges that require a communicative-function distinction.
+
+### Pass 2 false-success additions
+
+Add these to the evaluator's shortcut search:
+
+1. English gloss or sign annotation supplied before learning;
+2. pose/vision preprocessing that normalizes semantic spatial loci using evaluator truth;
+3. sequentialization that deletes meaning-bearing simultaneity while retaining labels in metadata;
+4. pretrained sign-language recognition mapping directly to known glosses;
+5. pointing/gaze treated as a referent label by the harness;
+6. universal-emotion classifier supplying facial semantics;
+7. community-produced regularity credited to the initial dyad;
+8. pantomime/iconicity success reported as arbitrary convention grounding;
+9. visual preprocessing serving as Thirteen's semantic relay / bridge oracle.
+
+The nonhuman Pass 3 must attack these human manual assumptions again rather than inheriting them as cross-species canon.

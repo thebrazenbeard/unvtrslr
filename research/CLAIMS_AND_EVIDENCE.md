@@ -313,6 +313,132 @@ An evaluator that only recognizes obvious random failure has not demonstrated sh
 
 **Project consequence:** R2 requires a suite of adversarial negative controls designed to perform well on naive task metrics.
 
+## Human verbal-language Pass 1 additions
+
+## C041 — Humans can reduce referential ambiguity across repeated ambiguous contexts
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Smith & Yu (2008) show infant cross-situational accumulation of word-referent evidence across ambiguous trials.
+
+**Project consequence:** maintain competing mapping hypotheses across encounters; do not require one-shot ostension.
+
+**Claim ceiling:** this does not establish arbitrary-agent grounding, unknown signalhood, or sufficiency of passive co-occurrence.
+
+## C042 — Conventionally defined joint attention is not necessary or sufficient for human word learning
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Akhtar & Gernsbacher (2007) review evidence for word learning without conventional joint-attention markers and joint attention without commensurate vocabulary learning.
+
+**Project consequence:** gaze, pointing, and shared visual fixation cannot be mandatory bootstrap primitives.
+
+**Open:** what weaker cross-party evidence relation is actually necessary.
+
+## C043 — Human turn-taking is strongly structured across languages but must not become universal framing canon
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Stivers et al. (2009) find broad commonalities in minimizing gaps/overlap across ten languages with cultural timing variation.
+
+**Project consequence:** turn-like alternation is legitimate signalhood evidence, not a required discrete-message architecture.
+
+## C044 — Repair is a robust human conversational mechanism for resolving communication problems
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Dingemanse et al. (2015) find broad cross-linguistic commonalities in other-initiated repair.
+
+**Project consequence:** test repair early and compare repair-rich/disabled/corrupted conditions.
+
+**Constraint:** repair functions must be inferred from interaction; evaluator labels such as `REPAIR` or `CORRECTION` are leakage.
+
+## C045 — Humans can rapidly invent communication conventions in unfamiliar restricted channels
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Galantucci (2005) demonstrates rapid emergence of novel graphic communication systems under task restrictions.
+
+**Project consequence:** negotiated convention is empirically plausible for humans.
+
+**Claim ceiling:** convention invention is not evidence of decoding pre-existing counterpart semantics.
+
+## C046 — Human vocal iconicity can bootstrap some novel mappings
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Perlman & Lupyan (2018) and Ćwiek et al. (2021) show above-chance human comprehension of novel iconic vocalizations, including cross-cultural tests.
+
+**Project consequence:** iconicity is an accelerator/control condition.
+
+**Claim ceiling:** no species-neutral or arbitrary-channel universality follows.
+
+## C047 — Cultural transmission can increase regularity/structure after a signaling system exists
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Kirby, Cornish & Smith (2008) show artificial human languages become more learnable/structured across transmission chains.
+
+**Project consequence:** separate initial grounding, convention stabilization, and later systematization/compositional emergence.
+
+**Claim ceiling:** the experiment prespecifies meanings and channels; it is not zero-shared-semantics evidence.
+
+## C048 — Human languages partition semantic domains differently
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Semantic typology documents substantial cross-linguistic variation in category boundaries across domains such as color, kinship, number, folk biology, and space.
+
+**Project consequence:** one-to-one lexical mapping cannot be assumed even for human controls; partial overlap and one-to-many/many-to-one mappings must be first-class.
+
+## C049 — Information-source/provenance distinctions can themselves be linguistic meaning
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Typological work on evidentiality shows that some languages grammaticalize source-of-information distinctions that others express differently or optionally.
+
+**Project consequence:** provenance is not only audit metadata. A faithful mediator may need to conserve observed/reported/inferred distinctions as semantic content.
+
+## C050 — Strong human structural universals should not be assumed without explicit burden
+
+**Status:** `SUPPORTED_LIMITED_SCOPE / CONTESTED_THEORETICAL_INTERPRETATION`
+
+Evans & Levinson (2009) synthesize typological evidence to argue for deep structural diversity and against simplistic strong universals. The theoretical debate is not closed.
+
+**Project consequence:** noun/verb, subject, word order, tense, recursion, or other familiar categories may be human-language controls or candidate structures but not generic bootstrap primitives by default.
+
+## C051 — Literal self-description from zero shared semantics is circular unless prerequisite distinctions are independently grounded
+
+**Status:** `PROJECT_HYPOTHESIS / LOGICAL_CHALLENGE`
+
+A protocol cannot rely on an instruction like `this signal means repeat` if `this`, `signal`, `means`, and `repeat` are themselves ungrounded.
+
+**Project consequence:** test the staged hypothesis `self-demonstrating -> convention-forming -> recursively self-describing` instead of treating self-description as the initial primitive.
+
+## C052 — Discovery and invention are separate semantic achievements
+
+**Status:** `DESIGN_REQUIREMENT`
+
+A system may create a useful convention without recovering a counterpart's pre-existing semantic practice.
+
+**Project consequence:** bridge provenance must distinguish `DISCOVERED_CORRESPONDENCE`, `NEGOTIATED_CONVENTION`, `MIXED_OR_ADAPTED_CONVENTION`, `INFERRED_EQUIVALENCE`, and `EVALUATOR_DEFINED_RELATION`.
+
+## C053 — A shared physical world does not guarantee an identifiable shared semantic distinction
+
+**Status:** `PROJECT_BOUNDARY / INFERENCE`
+
+If two candidate mappings induce the same learner-observable interaction distribution under every mutually available intervention, no bootstrap restricted to that surface can identify which mapping is true.
+
+**Project consequence:** add R0.5 interaction-identifiability/common-ground auditing and permit `UNDERDETERMINED_IN_SCOPE` before semantic qualification.
+
+## C054 — Human-language evidence is a graded control family, not proof of the full target
+
+**Status:** `DESIGN_REQUIREMENT / PROJECT_BOUNDARY`
+
+Human communication experiments begin with large shared biological, perceptual, developmental, social, and cultural priors.
+
+**Project consequence:** every human-derived mechanism must be retested as those shared priors are removed in later signed/nonverbal, nonhuman, asymmetric, synthetic-alien, and from-scratch conditions.
+
 ## Open research gaps to investigate next
 
 1. Formal literature on signalhood/intention detection without labeled communication channels.
@@ -329,6 +455,12 @@ An evaluator that only recognizes obvious random failure has not demonstrated sh
 12. Methods for constructing adversarial world generators that do not reveal evaluator ontology.
 13. Lower bounds on the intervention set needed to distinguish competing semantic hypotheses.
 14. Complexity measures that fairly compare symbolic, denotational, and predictive substrates.
+15. Whether repair-like function can be discovered without assuming discrete turns or agent boundaries.
+16. Human signed-language and homesign evidence for which structures survive removal of speech.
+17. How nonhuman systems challenge the human-derived distinction between reference, function, and intention.
+18. Formal identifiability results for semantic mappings under asymmetric observation/intervention surfaces.
+19. Methods for separating pretrained human semantic priors from in-session grounding evidence.
+20. Whether third-party acquisition is necessary, merely useful, or sometimes inappropriate for genuinely grounded conventions.
 
 ## Promotion rule
 

@@ -172,3 +172,221 @@ Each challenge can be independently hardened along these axes:
 - single task -> cross-task transfer.
 
 This allows the first 100 challenges to generate a much larger test space without pretending that 100 evaluator labels are the fundamental alphabet of intelligence.
+
+---
+
+## Dependency-aware interpretation — human verbal-language Pass 1
+
+Human-language evidence does not justify treating the numeric order above as a universal developmental curriculum. The challenge inventory should instead be interpreted as a **dependency graph with alternative routes**.
+
+### Rule 1 — identifiability precedes prerequisite claims
+
+For every challenge, first ask whether the target distinction is actually identifiable through the available interaction surface.
+
+If two candidate mappings cannot be distinguished by any learner-observable history or mutually available intervention, the correct outcome is not `FAILED_TO_LEARN`; it is `UNDERDETERMINED_IN_SCOPE` or `UNIDENTIFIABLE_WITHIN_INTERACTION_SURFACE`.
+
+### Rule 2 — prerequisites are hypotheses, not evaluator gifts
+
+A challenge may depend on capabilities such as recurrence detection, contrast, stable segmentation, temporal ordering, participant distinction, or repair. Those dependencies must be declared and tested rather than silently supplied.
+
+A prerequisite record should include:
+
+- `challenge_id`;
+- `candidate_prerequisites[]`;
+- `alternative_paths[]`;
+- `hidden_assumptions[]`;
+- `can_skip`;
+- `qualification_evidence[]`;
+- `false_success_modes[]`;
+- `human_evidence_basis[]` where applicable.
+
+### Rule 3 — multiple bootstrap routes must remain legal
+
+Human evidence supports several useful routes but no single mandatory sequence:
+
+- repeated cross-situational evidence can reduce referential ambiguity without perfect one-shot joint attention;
+- repair can expose misunderstanding before a rich lexicon exists;
+- iconicity can accelerate some form/meaning mappings;
+- negotiated conventions can arise through restricted unfamiliar channels;
+- later cultural transmission can increase regularity/compositionality after a system already exists.
+
+Therefore the harness must permit, for example:
+
+- repair before stable noun-like reference;
+- action conventions before object categories;
+- quantity/recurrence distinctions before participant identity;
+- spatial relations without left/right if another coordinate system is negotiated;
+- composition through non-concatenative or continuous signaling;
+- no explicit `self/other` distinction if the successful representation uses a different participant structure.
+
+### Rule 4 — Family H is not merely a late family
+
+Items 71-80 are numbered late for organization, not because meta-communication must wait until challenges 1-70 are complete.
+
+Human conversational repair suggests that limited communication-about-communication can be useful very early. An experiment may therefore attempt 72-75 or 78 before many referential challenges, provided those functions emerge from observable behavior rather than evaluator-supplied semantic labels.
+
+### Rule 5 — hidden assumptions by family
+
+The following are common hidden subsidies to declare explicitly:
+
+- **A (identity):** stable object/event segmentation, persistence model, temporal grain;
+- **B (quantity):** countable-unit segmentation, recurrence detection, aggregation window;
+- **C (category):** feature comparability, positive-example selection, evaluator category boundaries;
+- **D (space):** coordinate frame, viewpoint relation, dimensionality, shared geometry;
+- **E (time):** comparable timescale, event boundaries, ordering observability;
+- **F (action):** identifiable agent/action boundary, controllability, action-effect latency;
+- **G (causality):** intervention availability, causal sufficiency, stable mechanism window;
+- **H (meta-communication):** interaction failure must itself become observable without evaluator labels;
+- **I (agency/knowledge):** agent decomposition, information-access model, goal/belief concepts;
+- **J (composition/non-equivalence):** stable lower-level distinctions, target search space, composition budget.
+
+### Rule 6 — human-language false-success modes
+
+Human verbal-language experiments must include or audit against these shortcuts:
+
+1. shared gaze or experimenter-directed attention acting as the real label;
+2. shared object IDs/segmentation supplied through the task interface;
+3. pretrained linguistic/world knowledge reconstructing the intended category without grounding it in the counterpart interaction;
+4. task instructions supplying the pragmatic frame the system is later credited with discovering;
+5. negotiated task code reported as recovery of a pre-existing counterpart language;
+6. iconic form/meaning resemblance acting as an undeclared answer key;
+7. repair events explicitly tagged by the evaluator;
+8. co-trained private codes that fail third-party acquisition;
+9. one-to-one evaluator category recovery in a domain where human languages actually partition meanings differently.
+
+### Rule 7 — `NO_FAITHFUL_EQUIVALENT` is scope-bounded
+
+Challenge 100 should be interpreted operationally as:
+
+`NO_FAITHFUL_EQUIVALENT_FOUND_WITHIN_TESTED_SCOPE`
+
+unless a formal impossibility result justifies a stronger statement.
+
+The result must bind the searched target representation family, permitted composition depth/complexity, tested contexts/interventions, and material computational/search budget.
+
+### Candidate dependency clusters, not fixed order
+
+A useful evaluator may group challenges into provisional clusters:
+
+- **interaction stability:** 1-2, 8-10, 71-79;
+- **referential/category stability:** 3-7, 21-30;
+- **magnitude/structure:** 11-20, 31-50;
+- **action/prediction:** 51-70;
+- **participant/social perspective:** 81-90;
+- **composition/translation limits:** 91-100.
+
+These clusters are evaluator conveniences, not claims that cognition or language develops in that sequence.
+
+The later human nonverbal/signed and nonhuman passes should attack this dependency structure again rather than inherit it as canon.
+
+---
+
+## Dependency refinements — human signed/nonverbal Pass 2
+
+Pass 2 does not replace the 100 challenges. It changes what may count as a valid path through them.
+
+### Rule 8 — composition is not synonymous with sequence
+
+Challenges 91-94 must allow simultaneous or overlapping composition. A system should not fail merely because it combines distinctions through:
+
+- two hands at once;
+- manual plus facial/head movement;
+- a persistent spatial locus plus a simultaneous motion;
+- timing/synchrony rather than concatenation.
+
+A test harness that serializes all evidence into evaluator-created gloss tokens has changed the challenge.
+
+### Rule 9 — shared spatial frame is itself a candidate dependency
+
+Challenges 31-40, 82-84, and some referential tasks must declare whether the agents share:
+
+- origin and orientation;
+- viewpoint;
+- scale;
+- persistent landmark identity;
+- object segmentation;
+- correspondence between physical and discourse space.
+
+If those are supplied, record them as common-ground subsidies. Alternative qualification paths should allow agents to negotiate a frame or succeed using another relational scheme.
+
+### Rule 10 — deixis and participant reference need functional disambiguation
+
+Challenges 6, 71, 82-84, and related tasks must not treat a point/gaze direction as a pre-labeled referential act.
+
+A valid control should make the same physical form plausibly serve:
+
+- selection;
+- location;
+- participant marking;
+- direction;
+- command;
+- attention management;
+- or noncommunicative behavior.
+
+Credit requires recovering the demonstrated functional pattern in context.
+
+### Rule 11 — meta-communication may be layered onto content
+
+Challenges 71-80 need not occupy separate turns or separate tokens. Repair, uncertainty, question-like force, discourse management, or emphasis may be distributed across a simultaneous nonmanual channel while another channel carries referential content.
+
+The dependency graph therefore permits `meta-communication + content` as one interaction complex.
+
+### Rule 12 — dyadic competence and community language are different qualification targets
+
+A successful pair may solve challenges 1-100 without developing the systematicity of a mature community language. Conversely, structures observed after community/cohort transmission cannot be credited retroactively to an isolated pair.
+
+Each result should record one of:
+
+- `ISOLATED_OR_DYADIC`;
+- `MULTI_USER_COMMUNITY`;
+- `TRANSMITTED_ACROSS_COHORTS`.
+
+This matters especially for challenges 8-9, 76-80, and 91-95, where conventionalization/systematization can grow over social transmission.
+
+### Rule 13 — object-centered paths must have rivals
+
+Families A, C, D, F, and I often read naturally in object/agent terms. At least some qualification worlds should provide alternative segmentation in which:
+
+- trajectories or fields are more stable than objects;
+- participant boundaries are ambiguous;
+- relations are primary and object identity is secondary;
+- persistent spatial loci do not map one-to-one to physical objects.
+
+The challenge is to establish a reusable distinction, not to force the evaluator's object ontology.
+
+### Rule 14 — attention-getting does not mean gaze/pointing
+
+Challenge 71 must accept any empirically established interaction-management convention that reliably changes counterpart uptake/availability in scope. Gaze, pointing, touch, sound, motion, environmental change, or another channel may serve in human controls, but none is the semantic definition.
+
+### Rule 15 — iconicity changes difficulty, not correctness
+
+For challenges involving shape, motion, space, action, or affect, record whether the signal is:
+
+- strongly iconic/motivated;
+- weakly iconic;
+- arbitrary;
+- misleadingly iconic.
+
+A mapping does not receive more semantic credit because its form resembles the evaluator's target. Iconicity is a difficulty/modality condition.
+
+### Rule 16 — functional category uncertainty can remain after state discrimination succeeds
+
+A form may reliably covary with a world state while its communicative function remains ambiguous. For example, a facial movement may be grammatical, affective, interactional, or incidental.
+
+Therefore R0.5-style `state distinguishability` must not automatically satisfy challenges that require a communicative-function distinction.
+
+### Pass 2 false-success additions
+
+Add these to the evaluator's shortcut search:
+
+1. English gloss or sign annotation supplied before learning;
+2. pose/vision preprocessing that normalizes semantic spatial loci using evaluator truth;
+3. sequentialization that deletes meaning-bearing simultaneity while retaining labels in metadata;
+4. pretrained sign-language recognition mapping directly to known glosses;
+5. pointing/gaze treated as a referent label by the harness;
+6. universal-emotion classifier supplying facial semantics;
+7. community-produced regularity credited to the initial dyad;
+8. pantomime/iconicity success reported as arbitrary convention grounding;
+9. visual preprocessing serving as Thirteen's semantic relay / bridge oracle.
+
+The nonhuman Pass 3 must attack these human manual assumptions again rather than inheriting them as cross-species canon.

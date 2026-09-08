@@ -12,13 +12,13 @@ Evidence basis:
 
 These overlays extend `docs/CONTROL_SUITE.md`. They do not assert that any reviewed animal system is equivalent to human language.
 
-## NHCTRL-1 — structure without semantics
+## NHCTRL-1 — structure without a qualified semantic claim
 
 Construct an acoustic or multimodal system with rich clustering, sequence regularity, individual/style variation, and high predictive accuracy but with no evaluator-demonstrated signal-to-world semantic relation.
 
 Expected result:
 - `STRUCTURE_DISCOVERED = YES`
-- `SEMANTICS_GROUNDED = NO`
+- `SEMANTIC_CLAIM_SUPPORTED = NO`
 
 Failure caught: treating tokenization, prediction, embeddings, compression, synthesis, or a recovered "alphabet" as translation.
 
@@ -110,16 +110,16 @@ Keep low-level visual structure similar enough that form alone is insufficient.
 
 Failure caught: permanently labeling a pattern as communicative independent of audience, history, context, and receiver response.
 
-## NHCTRL-9 — operational intentionality ladder
+## NHCTRL-9 — operational intentionality probes
 
-For a gesture-like system independently manipulate:
+For a gesture-like system independently manipulate, when those manipulations are applicable:
 - recipient presence;
 - recipient orientation/attention;
 - response success;
 - opportunity to persist;
 - opportunity to elaborate or switch modality.
 
-Intentionality evidence may raise a signalhood/function score when behavior changes appropriately, but its absence must not invalidate communication systems whose operation does not require flexible intentional production.
+Intentionality evidence may raise a signalhood/function score when behavior changes appropriately, but its absence must not invalidate communication systems whose operation does not require flexible intentional production. `NOT_APPLICABLE` is not positive evidence and must reduce the coverage of any claim that would otherwise depend on the omitted probe.
 
 Failure caught: either assuming intention from structured behavior or making human-like intention a universal prerequisite.
 
@@ -127,12 +127,12 @@ Failure caught: either assuming intention from structured behavior or making hum
 
 Matched populations should differ in transmission history while sharing basic sensorimotor capacity.
 
-Test whether:
+Test whether, where applicable:
 - signal forms differ by population;
 - naive individuals acquire local forms socially;
 - mediator separates species/biological constraint from population convention and individual idiosyncrasy.
 
-Failure caught: treating culturally inherited variants as universal species semantics.
+Failure caught: treating culturally inherited variants as universal species semantics. Systems without a meaningful social-learning axis are not failed by this control; the axis is simply inapplicable and cannot be credited.
 
 ## NHCTRL-11 — multimodal redundancy and conflict
 
@@ -174,13 +174,38 @@ Expected reporting should distinguish:
 - receiver perceptual quantity;
 - empirically supported bridge among them.
 
-## Required evidence ladder
+## Claim-specific evidence vector
 
-Every nonhuman-inspired control should state which rung it tests:
+There is no universal semantic evidence ladder for these controls. Every exact claim instead declares the evidence axes it actually entails and the prerequisite edges among those axes.
 
-`STRUCTURE -> RECEIVER_DISCRIMINATION -> COMMUNICATIVE_FUNCTION -> CONTEXT_ASSOCIATION -> REFERENCE_LIKE_EVIDENCE -> COMBINATION -> SOCIAL_LEARNING/CULTURE -> INTENTIONALITY_EVIDENCE -> SEMANTIC_CLAIM_CEILING`
+Candidate axes include:
 
-A lower rung must never be silently promoted to a higher rung.
+- `STRUCTURE`;
+- `RECEIVER_OR_COUPLED_PROCESS_DISCRIMINATION`;
+- `COMMUNICATIVE_OR_COORDINATIVE_FUNCTION`;
+- `CONTEXT_ASSOCIATION`;
+- `EXTERNALLY_TESTABLE_OR_REFERENCE_LIKE_RELATION`;
+- `FORM_OR_FUNCTION_COMBINATION`;
+- `SYSTEMATIC_REUSE`;
+- `TRANSFER_OR_REGROUNDING`;
+- `SOCIAL_LEARNING_OR_CULTURE`;
+- `INTENTIONALITY_EVIDENCE`;
+- `UNCERTAINTY_AND_PROVENANCE`;
+- `SEMANTIC_QUALIFICATION`.
+
+For each axis record:
+
+- `applicability = APPLICABLE | STRUCTURALLY_INAPPLICABLE_IN_SCOPE | UNRESOLVED`;
+- `evidence_state = NOT_TESTED | NEGATIVE | MIXED | POSITIVE | UNKNOWN`;
+- `claim_dependency = REQUIRED_FOR_THIS_CLAIM | SUPPORTING_ONLY | IRRELEVANT_TO_THIS_CLAIM`;
+- `evidence_refs[]`;
+- `claim_ceiling_effect`.
+
+Only prerequisite edges entailed by the exact claim are mandatory. For example, a claim of learned cultural transmission requires evidence for a social-learning axis; a bounded receiver-discrimination claim does not. An inapplicable axis never counts as a pass, but an irrelevant axis cannot become a universal blocker. Missing material evidence lowers or withholds the exact claim rather than forcing every communication system through a human-derived sequence.
+
+The universal anti-promotion rule is narrower:
+
+> Evidence for one axis must not be silently relabeled as evidence for another axis or for a stronger semantic claim.
 
 ## Required provenance fields
 
@@ -193,6 +218,9 @@ Record:
 - whether the channel overlaps ordinary sensing;
 - whether behavior pre-existed or was negotiated;
 - receiver evidence type: observation, playback, intervention, navigation, social response, other;
-- social-learning history;
+- social-learning history where applicable;
 - evaluator-only labels and world variables;
-- strongest claim the run is allowed to make.
+- evidence-vector applicability/status for the exact claim;
+- strongest operational claim supported;
+- semantic-qualification state, if separately tested;
+- overall claim ceiling.

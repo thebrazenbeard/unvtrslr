@@ -203,11 +203,11 @@ This ledger records what a source can and cannot support for UNVTRSLR. Human-lan
 
 ---
 
-## R13 — Kendon 1997 / Goldin-Meadow 2014: gesture and multimodality
+## R13 — Kendon 1997 / Goldin-Meadow & Alibali 2013: gesture and multimodality
 
 **Citation A:** Kendon, A. (1997). “Gesture.” *Annual Review of Anthropology*, 26, 109–128. DOI: `10.1146/annurev.anthro.26.1.109`.
 
-**Citation B:** Goldin-Meadow, S. (2014). “How Gesture Works to Change Our Minds.” / gesture review family in *Annual Review of Psychology*; relevant review page: “Gesture’s Role in Speaking, Learning, and Creating Language.”
+**Citation B:** Goldin-Meadow, S., & Alibali, M. W. (2013). “Gesture's Role in Speaking, Learning, and Creating Language.” *Annual Review of Psychology*, 64, 257–283. DOI: `10.1146/annurev-psych-113011-143802`.
 
 **Source type:** scholarly review literature.
 
@@ -287,9 +287,9 @@ This ledger records what a source can and cannot support for UNVTRSLR. Human-lan
 
 ---
 
-## R18 — Hauser 1991 / signaling reliability literature: withholding and deception
+## R18 — Hauser & Nelson 1991 / signaling reliability literature: withholding and deception
 
-**Citation:** Hauser, M. D. (1991). “‘Intentional’ Signaling in Animal Communication.” *Trends in Ecology & Evolution*, 6(6), 186–189. DOI: `10.1016/0169-5347(91)90211-F`.
+**Citation:** Hauser, M. D., & Nelson, D. A. (1991). “‘Intentional’ Signaling in Animal Communication.” *Trends in Ecology & Evolution*, 6(6), 186–189. DOI: `10.1016/0169-5347(91)90211-F`.
 
 **Source type:** peer-reviewed review.
 

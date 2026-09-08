@@ -2,7 +2,7 @@
 
 ## Status
 
-`R1_R2_DESIGN_BASELINED / IMPLEMENTATION_NOT_STARTED / NOT_IMPLEMENTATION_READY`
+`R1_R2_DESIGN_BASELINED / R3_PRAGMATICS_DESIGN_SPECIFIED / IMPLEMENTATION_NOT_STARTED / NOT_IMPLEMENTATION_READY`
 
 The roadmap is intentionally gated. Later phases do not inherit qualification merely because earlier phases succeeded.
 
@@ -118,13 +118,20 @@ Thresholds are calibrated using only chance/null controls, positive oracles, neg
 
 Current status: `R2_EVALUATOR_SPECIFIED / HARNESS_NOT_BUILT`.
 
-## R3 — Human-language and synthetic-language controls
+## R3 — Human/synthetic semantic and pragmatic controls
 
 ### Objective
 
-Prove that the protocol can recover known semantic relationships without direct dictionaries.
+Prove that the protocol can recover known semantic relationships without direct dictionaries **and** can preserve interactional distinctions when denotation alone is insufficient.
 
-### Work
+R3 therefore has two complementary responsibilities:
+
+1. the original human-language/synthetic-language control phase;
+2. the adversarial pragmatics/interaction profile specified by [`R3_PRAGMATICS_EVALUATOR.md`](R3_PRAGMATICS_EVALUATOR.md).
+
+This resolves the naming collision without renumbering later roadmap phases: the pragmatic evaluator is an R3 qualification profile inside the already-defined R3 control phase, not a replacement for the phase.
+
+### Semantic-control work
 
 - multiple unrelated natural-language controls;
 - at least one signed/spatial control;
@@ -132,9 +139,43 @@ Prove that the protocol can recover known semantic relationships without direct 
 - synthetic context-dependent language;
 - synthetic non-equivalent categories.
 
+### Pragmatics/interaction work
+
+- same denotation with different communicative functions;
+- same form under causally different versus nuisance contexts;
+- deictic/perspective role shifts;
+- indirect-function and background-dependency tests;
+- addressee versus overhearer distinctions;
+- audience-dependent behavior;
+- targeted repair versus reflex repair;
+- convention establishment, drift, repair, and false common ground;
+- strategic ambiguity and deceptive use of an intact convention;
+- partner transfer and role reversal where applicable;
+- multimodal channel conflict;
+- function preservation across different forms and ontologies;
+- explicit pragmatic conservation accounting.
+
+### R3 design artifacts
+
+- [`PRAGMATICS_AND_COMMUNICATIVE_FUNCTION.md`](PRAGMATICS_AND_COMMUNICATIVE_FUNCTION.md);
+- [`COMMON_GROUND_AND_CONVENTION.md`](COMMON_GROUND_AND_CONVENTION.md);
+- [`SEMANTIC_ROUTING_AND_SEGMENTATION.md`](SEMANTIC_ROUTING_AND_SEGMENTATION.md);
+- [`FUNCTIONAL_TRANSLATION.md`](FUNCTIONAL_TRANSLATION.md);
+- [`R3_PRAGMATICS_EVALUATOR.md`](R3_PRAGMATICS_EVALUATOR.md);
+- [`R3_NEGATIVE_CONTROLS.md`](R3_NEGATIVE_CONTROLS.md);
+- [`../specs/R3_EVALUATION_CONTRACT_V1.yaml`](../specs/R3_EVALUATION_CONTRACT_V1.yaml);
+- [`../research/PRAGMATICS_RESEARCH_NOTES.md`](../research/PRAGMATICS_RESEARCH_NOTES.md);
+- [`../research/PRAGMATICS_REFERENCES.md`](../research/PRAGMATICS_REFERENCES.md).
+
 ### Gate
 
-The system must recover known mappings, preserve uncertainty, and correctly identify at least some non-equivalences under the frozen R2 evaluator.
+Semantic-control qualification requires recovery of known mappings, uncertainty preservation, and correct identification of at least some non-equivalences under the frozen R2 evaluator.
+
+Pragmatic qualification may additionally emit `PRAGMATICALLY_GROUNDED_WITHIN_TESTED_SCOPE` only after applicable P01–P20 tests, required negative controls, positive oracles, and pragmatic conservation audits pass under a frozen R3 profile.
+
+R3 PASS cannot compensate for R2 grounding failure and does not establish human-like intention, consciousness, theory of mind, or universal pragmatics.
+
+Current status: `R3_PRAGMATICS_EVALUATOR_SPECIFIED / HARNESS_NOT_BUILT / NO_PRAGMATIC_QUALIFICATION`.
 
 ## R4 — Zero-shared-vocabulary grounded communication
 
@@ -350,22 +391,25 @@ Some research can proceed in parallel:
 - synthetic-language generator design;
 - nonlinguistic channel taxonomy;
 - semantic conservation metrics;
+- pragmatics/common-ground/interaction research;
 - physical-layer/bootstrap research;
 - safety/governance research.
 
 Experimental claims remain ordered by qualification gates.
 
-## Near-term next steps after R1/R2 design
+## Near-term next steps after R1/R2/R3 design
 
 1. Implement the R2 deterministic world/evaluator skeleton before implementing a sophisticated learner.
-2. Implement P00-P03 positive controls and N00-N24 negative controls.
-3. Freeze the control acceptance matrix and verify `HARNESS_TRUSTWORTHY` on intentionally broken systems.
+2. Implement P00-P03 R2 positive controls and N00-N24 R2 negative controls.
+3. Freeze the R2 control acceptance matrix and verify `HARNESS_TRUSTWORTHY` on intentionally broken systems.
 4. Convert a bounded subset of the first 100 challenge families into machine-readable scenario specifications.
 5. Implement the common substrate adapter contract.
 6. Implement the smallest credible TPH, DCA, and PIS candidates under matched budgets.
-7. Calibrate and freeze the first candidate-independent qualification profile.
+7. Calibrate and freeze the first candidate-independent R2 qualification profile.
 8. Run R1 candidates only after the hidden holdout generation rule is frozen.
-9. Build one synthetic language with deliberately non-English semantics for R3.
-10. Build one continuous nonlinguistic channel for R5-compatible early stress testing.
-11. Preserve every run with code/config/world/evaluator digests and immutable metric traces.
-12. Treat discovery of any new shortcut as an evaluator-version event requiring a new negative control and requalification.
+9. Implement an R3 synthetic pragmatic world family supporting at least P01, P02, P03, P07, P11, P14, and P20 without human speech-act labels.
+10. Implement `RP00`–`RP03` and `RN00`–`RN09`, then verify the R3 harness classifies them as specified before candidate pragmatic qualification.
+11. Build one synthetic language with deliberately non-English semantics for R3 semantic controls.
+12. Build one continuous nonlinguistic channel for R5-compatible early stress testing.
+13. Preserve every run with code/config/world/evaluator digests and immutable metric traces.
+14. Treat discovery of any new shortcut as an evaluator-version event requiring a new negative control and requalification.

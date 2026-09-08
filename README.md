@@ -56,16 +56,36 @@ The system must be able to consider continuous signals, timing, motion, geometry
 6. **Uncertainty is part of meaning.** Ambiguity must not be silently collapsed.
 7. **Provenance is part of meaning.** Observation, supplied claim, inference, prediction, and evaluator truth must remain distinct.
 8. **Translation may be lossy or impossible.** `NO_FAITHFUL_EQUIVALENT` is a valid result.
-9. **Communication success is not enough.** Agents can invent private codes that solve a task without learning the intended concepts.
-10. **Meaning must survive tests.** Novel instances, context changes, role reversal, composition, intervention, and counterfactual prediction are stronger evidence than agreement on a symbol.
-11. **English is a renderer, not the semantic center.** Other natural languages, diagrams, equations, actions, or other modalities are equally valid target realizations.
-12. **A universal ontology is not assumed.** The universal layer should be a grammar for representing hypotheses, relationships, uncertainty, provenance, and evidence—not an encyclopedia of human concepts.
+9. **Communication success is not enough.** Agents can invent private codes that solve a task without learning reusable grounded distinctions.
+10. **Arbitrary notation is not failure.** A convention may use arbitrary signs; the failure is hidden common ground or task-bound code that does not survive grounding tests.
+11. **Meaning must survive tests.** Novel instances, context changes, role reversal, composition, intervention, cross-task transfer, partner transfer, and counterfactual prediction are stronger evidence than agreement on a symbol.
+12. **English is a renderer, not the semantic center.** Other natural languages, diagrams, equations, actions, or other modalities are equally valid target realizations.
+13. **A universal ontology is not assumed.** The universal layer should be a grammar for representing hypotheses, relationships, uncertainty, provenance, and evidence—not an encyclopedia of human concepts.
+14. **Grounding claims are scoped.** No finite evaluator proves a uniquely correct ontology or universal meaning; certificates bind the exact worlds, interventions, controls, and threats survived.
+
+## Current R1/R2 architecture challenge
+
+The project now has three deliberately competing minimal semantic substrates:
+
+- **TPH — Typed Probabilistic Hypergraph:** explicit structured relational hypotheses;
+- **DCA — Denotational Constraint Algebra:** executable constraints/operators over compatible situations and trajectories;
+- **PIS — Predictive-Intervention State:** action-conditioned predictions and signal-induced predictive changes.
+
+No substrate is architecture canon. The richer candidates must empirically earn their additional commitments.
+
+The R2 evaluator is designed to distinguish grounded convention from private shortcut code using causal message interventions, world-factor interventions, nuisance shifts, role reversal, cross-task transfer, partner swap, sensor shifts, counterfactual tests, ontology mismatch, conservation audits, and a required suite of intentionally deceptive negative controls.
+
+A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is intentionally no `UNIVERSALLY_GROUNDED` status.
 
 ## Repository map
 
 - [`docs/PROJECT_THESIS.md`](docs/PROJECT_THESIS.md) — the refined concept and hypotheses.
 - [`docs/DESIGN_PRINCIPLES.md`](docs/DESIGN_PRINCIPLES.md) — architecture-level constraints.
-- [`docs/SEMANTIC_SUBSTRATE.md`](docs/SEMANTIC_SUBSTRATE.md) — proposed formal intermediate representation.
+- [`docs/SEMANTIC_SUBSTRATE.md`](docs/SEMANTIC_SUBSTRATE.md) — proposed semantic responsibilities before R1 competition.
+- [`docs/R1_SUBSTRATE_COMPETITION.md`](docs/R1_SUBSTRATE_COMPETITION.md) — three genuinely competing minimal semantic substrates and the fair competition rule.
+- [`docs/R2_ADVERSARIAL_EVALUATOR.md`](docs/R2_ADVERSARIAL_EVALUATOR.md) — adversarial semantic-grounding evaluator and scoped certificate.
+- [`docs/R2_NEGATIVE_CONTROLS.md`](docs/R2_NEGATIVE_CONTROLS.md) — 25 shortcut systems plus positive oracles the harness must classify correctly.
+- [`specs/R1R2_EVALUATION_CONTRACT_V1.yaml`](specs/R1R2_EVALUATION_CONTRACT_V1.yaml) — machine-readable R1/R2 evaluation contract.
 - [`docs/BOOTSTRAP_PROTOCOL.md`](docs/BOOTSTRAP_PROTOCOL.md) — how communication could be established from zero shared symbols.
 - [`docs/SEMANTIC_CONSERVATION.md`](docs/SEMANTIC_CONSERVATION.md) — what it means to preserve meaning.
 - [`docs/EXPERIMENTAL_PROGRAM.md`](docs/EXPERIMENTAL_PROGRAM.md) — staged falsification program.
@@ -76,22 +96,32 @@ The system must be able to consider continuous signals, timing, motion, geometry
 - [`docs/RESEARCH_LANDSCAPE.md`](docs/RESEARCH_LANDSCAPE.md) — relationship to prior research.
 - [`docs/ROADMAP.md`](docs/ROADMAP.md) — ordered research phases and gates.
 - [`research/CLAIMS_AND_EVIDENCE.md`](research/CLAIMS_AND_EVIDENCE.md) — evidence-status ledger.
-- [`research/REFERENCES.md`](research/REFERENCES.md) — literature and source notes.
+- [`research/REFERENCES.md`](research/REFERENCES.md) — base literature and source notes.
+- [`research/R1R2_RESEARCH_NOTES.md`](research/R1R2_RESEARCH_NOTES.md) — representation/evaluator research synthesis.
+- [`research/R1R2_REFERENCES.md`](research/R1R2_REFERENCES.md) — sources added specifically for R1/R2.
 
 ## The key experimental standard
 
 A semantic mapping is not counted as established merely because the receiver performs correctly once.
 
-A candidate concept should survive, where applicable:
+A candidate distinction should survive, where applicable:
 
-1. novel instances;
-2. novel contexts;
-3. role reversal;
-4. recombination with other established concepts;
-5. interventions on the world;
-6. counterfactual or predictive tests;
-7. changed perceptual presentation;
-8. independent reconstruction by an evaluator that does not share the agents' private latent state.
+1. communication ablation;
+2. direct message intervention;
+3. world-factor intervention;
+4. nuisance transformations;
+5. novel instances;
+6. novel contexts;
+7. role reversal;
+8. recombination with other established distinctions;
+9. transfer to a task with different optimal actions;
+10. acquisition/use by an independently initialized partner;
+11. changed perceptual presentation;
+12. counterfactual or predictive tests;
+13. ontology-mismatch/non-equivalence traps;
+14. independent evaluator reconstruction;
+15. provenance and semantic-conservation audit;
+16. automated search for simpler shortcut explanations.
 
 The system must also be rewarded for correctly saying that two conceptual structures are only partially overlapping or non-equivalent.
 
@@ -105,6 +135,6 @@ For an embodied probe, that machinery could interact locally with a recipient an
 
 ## Status
 
-`RESEARCH_BOOTSTRAP / NOT_IMPLEMENTATION_READY`
+`R1_R2_DESIGN_BASELINED / IMPLEMENTATION_NOT_STARTED / NO_SEMANTIC_QUALIFICATION`
 
-This repository currently defines a research program, not a proven universal language, universal ontology, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.
+The repository currently defines a research program and an adversarial qualification design, not a proven universal language, universal ontology, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.

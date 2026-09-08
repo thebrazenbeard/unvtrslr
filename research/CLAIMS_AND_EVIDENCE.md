@@ -313,6 +313,232 @@ An evaluator that only recognizes obvious random failure has not demonstrated sh
 
 **Project consequence:** R2 requires a suite of adversarial negative controls designed to perform well on naive task metrics.
 
+## Human verbal-language Pass 1 additions
+
+## C041 — Humans can reduce referential ambiguity across repeated ambiguous contexts
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Smith & Yu (2008) show infant cross-situational accumulation of word-referent evidence across ambiguous trials.
+
+**Project consequence:** maintain competing mapping hypotheses across encounters; do not require one-shot ostension.
+
+**Claim ceiling:** this does not establish arbitrary-agent grounding, unknown signalhood, or sufficiency of passive co-occurrence.
+
+## C042 — Conventionally defined joint attention is not necessary or sufficient for human word learning
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Akhtar & Gernsbacher (2007) review evidence for word learning without conventional joint-attention markers and joint attention without commensurate vocabulary learning.
+
+**Project consequence:** gaze, pointing, and shared visual fixation cannot be mandatory bootstrap primitives.
+
+**Open:** what weaker cross-party evidence relation is actually necessary.
+
+## C043 — Human turn-taking is strongly structured across languages but must not become universal framing canon
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Stivers et al. (2009) find broad commonalities in minimizing gaps/overlap across ten languages with cultural timing variation.
+
+**Project consequence:** turn-like alternation is legitimate signalhood evidence, not a required discrete-message architecture.
+
+## C044 — Repair is a robust human conversational mechanism for resolving communication problems
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Dingemanse et al. (2015) find broad cross-linguistic commonalities in other-initiated repair.
+
+**Project consequence:** test repair early and compare repair-rich/disabled/corrupted conditions.
+
+**Constraint:** repair functions must be inferred from interaction; evaluator labels such as `REPAIR` or `CORRECTION` are leakage.
+
+## C045 — Humans can rapidly invent communication conventions in unfamiliar restricted channels
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Galantucci (2005) demonstrates rapid emergence of novel graphic communication systems under task restrictions.
+
+**Project consequence:** negotiated convention is empirically plausible for humans.
+
+**Claim ceiling:** convention invention is not evidence of decoding pre-existing counterpart semantics.
+
+## C046 — Human vocal iconicity can bootstrap some novel mappings
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Perlman & Lupyan (2018) and Ćwiek et al. (2021) show above-chance human comprehension of novel iconic vocalizations, including cross-cultural tests.
+
+**Project consequence:** iconicity is an accelerator/control condition.
+
+**Claim ceiling:** no species-neutral or arbitrary-channel universality follows.
+
+## C047 — Cultural transmission can increase regularity/structure after a signaling system exists
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Kirby, Cornish & Smith (2008) show artificial human languages become more learnable/structured across transmission chains.
+
+**Project consequence:** separate initial grounding, convention stabilization, and later systematization/compositional emergence.
+
+**Claim ceiling:** the experiment prespecifies meanings and channels; it is not zero-shared-semantics evidence.
+
+## C048 — Human languages partition semantic domains differently
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Semantic typology documents substantial cross-linguistic variation in category boundaries across domains such as color, kinship, number, folk biology, and space.
+
+**Project consequence:** one-to-one lexical mapping cannot be assumed even for human controls; partial overlap and one-to-many/many-to-one mappings must be first-class.
+
+## C049 — Information-source/provenance distinctions can themselves be linguistic meaning
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Typological work on evidentiality shows that some languages grammaticalize source-of-information distinctions that others express differently or optionally.
+
+**Project consequence:** provenance is not only audit metadata. A faithful mediator may need to conserve observed/reported/inferred distinctions as semantic content.
+
+## C050 — Strong human structural universals should not be assumed without explicit burden
+
+**Status:** `SUPPORTED_LIMITED_SCOPE / CONTESTED_THEORETICAL_INTERPRETATION`
+
+Evans & Levinson (2009) synthesize typological evidence to argue for deep structural diversity and against simplistic strong universals. The theoretical debate is not closed.
+
+**Project consequence:** noun/verb, subject, word order, tense, recursion, or other familiar categories may be human-language controls or candidate structures but not generic bootstrap primitives by default.
+
+## C051 — Literal self-description from zero shared semantics is circular unless prerequisite distinctions are independently grounded
+
+**Status:** `PROJECT_HYPOTHESIS / LOGICAL_CHALLENGE`
+
+A protocol cannot rely on an instruction like `this signal means repeat` if `this`, `signal`, `means`, and `repeat` are themselves ungrounded.
+
+**Project consequence:** test the staged hypothesis `self-demonstrating -> convention-forming -> recursively self-describing` instead of treating self-description as the initial primitive.
+
+## C052 — Discovery and invention are separate semantic achievements
+
+**Status:** `DESIGN_REQUIREMENT`
+
+A system may create a useful convention without recovering a counterpart's pre-existing semantic practice.
+
+**Project consequence:** bridge provenance must distinguish `DISCOVERED_CORRESPONDENCE`, `NEGOTIATED_CONVENTION`, `MIXED_OR_ADAPTED_CONVENTION`, `INFERRED_EQUIVALENCE`, and `EVALUATOR_DEFINED_RELATION`.
+
+## C053 — A shared physical world does not guarantee an identifiable shared semantic distinction
+
+**Status:** `PROJECT_BOUNDARY / INFERENCE`
+
+If two candidate mappings induce the same learner-observable interaction distribution under every mutually available intervention, no bootstrap restricted to that surface can identify which mapping is true.
+
+**Project consequence:** add R0.5 interaction-identifiability/common-ground auditing and permit `UNDERDETERMINED_IN_SCOPE` before semantic qualification.
+
+## C054 — Human-language evidence is a graded control family, not proof of the full target
+
+**Status:** `DESIGN_REQUIREMENT / PROJECT_BOUNDARY`
+
+Human communication experiments begin with large shared biological, perceptual, developmental, social, and cultural priors.
+
+**Project consequence:** every human-derived mechanism must be retested as those shared priors are removed in later signed/nonverbal, nonhuman, asymmetric, synthetic-alien, and from-scratch conditions.
+
+## Human signed/nonverbal Pass 2 additions
+
+## C055 — Established signed languages are full human linguistic systems
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Signed-language research documents phonological, morphological, syntactic, discourse, prosodic, and productive structure in established signed languages.
+
+**Project consequence:** signed-language controls must preserve the visual-gestural signal itself; English glosses are evaluator preprocessing and cannot serve as the strongest learner input.
+
+## C056 — Meaning-bearing linguistic structure can be simultaneous and multichannel
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Signed languages can distribute linguistic information across two hands, face, head, torso, spatial loci, and timing, with sequential and simultaneous structure both contributing.
+
+**Project consequence:** a universal ingress interface must not require all communication to be serialized as a one-dimensional sequence of discrete tokens.
+
+## C057 — Community and transmission can add systematicity beyond isolated individual or dyadic systems
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Nicaraguan Sign Language and Al-Sayyid Bedouin Sign Language research shows community use and transmission associated with increasing systematicity and grammatical/prosodic structure.
+
+**Project consequence:** dyadic semantic bootstrap, community conventionalization, and language emergence are separate qualification regimes.
+
+## C058 — Homesign can exhibit structured productive communication without a conventional language model
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE / CONTESTED_FRAMING`
+
+Homesign studies document stable and structured communication systems created by deaf individuals without sustained access to a conventional language model. Contemporary scholarship also contests terminology, methods, and some theoretical framing in the homesign literature.
+
+**Project consequence:** homesign is evidence for human structuring biases under reduced conventional input, not proof of a universal grammar or a license to treat deaf people as mere natural experiments.
+
+## C059 — Silent gesture conventionalizes and can reveal human ordering biases
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Silent-gesture experiments show that hearing humans can produce structured event representations and can conventionalize manual signals through repeated interaction.
+
+**Project consequence:** use silent gesture as a bridge condition between full language and arbitrary channels.
+
+**Claim ceiling:** recurrent human event-order biases are not evidence of a universal event grammar for arbitrary minds.
+
+## C060 — Pointing form does not uniquely determine communicative function
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Human pointing can participate in social attention and reference, while sign-language work shows pointing forms can share properties with linguistic pronouns and non-signer gestures.
+
+**Project consequence:** pointing trajectories must enter as observed behavior, not as a pre-labeled `THAT`, `YOU`, `HERE`, or attention primitive.
+
+## C061 — Iconicity is widespread across signed and spoken language but is not self-interpreting
+
+**Status:** `SUPPORTED_PRIOR_WORK / HUMAN_SCOPE`
+
+Manual/visual forms can be highly iconic, yet conventional languages remain system-specific and the intended dimension of resemblance is not determined by resemblance alone.
+
+**Project consequence:** visual iconicity is a graded difficulty/accelerator condition and requires misleading-iconicity controls.
+
+## C062 — Simple universal facial-expression-to-emotion mappings are not a safe semantic prior
+
+**Status:** `SUPPORTED_LIMITED_SCOPE / CONTESTED_FIELD`
+
+Cross-cultural facial-expression research using discovery-oriented methods documents substantial variability in how facial movements are interpreted, while signed languages may also use face/head/body movements for grammatical or prosodic functions.
+
+**Project consequence:** facial activity must remain functionally ambiguous until context and interaction support a mapping.
+
+## C063 — A dyadic semantic bridge and a community language are different achievements
+
+**Status:** `DESIGN_REQUIREMENT / INFERENCE`
+
+Human emerging-language evidence shows that community and cohort transmission can introduce structure that was not present in the initial isolated system.
+
+**Project consequence:** do not require mature grammar for dyadic bridge success, and do not retroactively credit community-created structure to the original pair.
+
+## C064 — Multimodal preprocessing can itself become semantic mediation
+
+**Status:** `DESIGN_REQUIREMENT / ADVERSARIAL_INFERENCE`
+
+Pose extraction, coordinate normalization, gaze targeting, sign glossing, or facial classification may inject the very cross-system correspondence the learner is later credited with discovering.
+
+**Project consequence:** Pass 2 strengthens the R0.5 mediation-trust and witness-provenance requirement; modality-preserving preprocessors must be auditable and replaceable with semantically neutral alternatives.
+
+## C065 — State distinguishability does not resolve functional-class ambiguity
+
+**Status:** `DESIGN_REQUIREMENT / INFERENCE`
+
+A cue can reliably distinguish states while remaining ambiguous as to whether its function is linguistic, affective, interactional, attentional, or incidental.
+
+**Project consequence:** R0.5 information availability and R2 semantic-function attribution remain separate gates.
+
+## C066 — Human manual/nonverbal evidence strengthens modality neutrality but does not establish species neutrality
+
+**Status:** `PROJECT_BOUNDARY`
+
+Signed languages, homesign, gesture, face, and touch show that human communication can use many modalities and organizational patterns beyond speech.
+
+**Project consequence:** remove speech/text/sequential-token assumptions, but retest manual/spatial/deictic and human social priors in the nonhuman Pass 3 rather than promoting them to universal canon.
+
 ## Open research gaps to investigate next
 
 1. Formal literature on signalhood/intention detection without labeled communication channels.
@@ -329,6 +555,15 @@ An evaluator that only recognizes obvious random failure has not demonstrated sh
 12. Methods for constructing adversarial world generators that do not reveal evaluator ontology.
 13. Lower bounds on the intervention set needed to distinguish competing semantic hypotheses.
 14. Complexity measures that fairly compare symbolic, denotational, and predictive substrates.
+15. Whether repair-like function can be discovered without assuming discrete turns or agent boundaries.
+16. How nonhuman systems challenge the human-derived distinction between reference, function, and intention.
+17. Formal identifiability results for semantic mappings under asymmetric observation/intervention surfaces.
+18. Methods for separating pretrained human semantic priors from in-session grounding evidence.
+19. Whether third-party acquisition is necessary, merely useful, or sometimes inappropriate for genuinely grounded conventions.
+20. Whether simultaneous/multimodal structure can be preserved through a representation-neutral interface without making the interface itself a hidden semantic substrate.
+21. How to distinguish linguistic nonmanual markers from affective/paralinguistic behavior without gloss labels.
+22. How community-size/transmission effects should interact with partner-swap and third-party-acquisition qualification.
+23. Whether tactile, chemical, electrical, or substrate-borne nonhuman channels require a different notion of signal segmentation than current R1/R2 interfaces assume.
 
 ## Promotion rule
 

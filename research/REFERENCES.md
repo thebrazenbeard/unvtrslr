@@ -202,7 +202,7 @@ https://science.nasa.gov/mission/voyager/golden-record-contents/greetings/
 
 ### Vakoch, D. A. — *Communications with Extraterrestrial Intelligence*
 
-SETI Institute overview: https://www.seti.org/book/communications-extraterrestrial-intelligence
+https://www.seti.org/book/communications-extraterrestrial-intelligence
 
 **Why it matters:** multidisciplinary SETI/message-composition work emphasizing both technical and cultural/linguistic difficulties.
 
@@ -250,9 +250,96 @@ https://www.seti.org/news/do-aliens-speak-physics-and-other-questions-about-scie
 
 **Why it matters:** sender-receiver signaling games and conventions as solutions to recurring coordination problems underpin much emergent-communication research.
 
+## Human verbal-language pass additions
+
+### Smith, L. & Yu, C. (2008). “Infants rapidly learn word-referent mappings via cross-situational statistics.” *Cognition* 106(3), 1558-1568.
+
+DOI: https://doi.org/10.1016/j.cognition.2007.06.010
+
+Open access: https://pmc.ncbi.nlm.nih.gov/articles/PMC2271000/
+
+**Why it matters:** demonstrates human infants can accumulate evidence across individually ambiguous word-scene pairings. Supports multi-hypothesis accumulation across encounters, but not arbitrary zero-prior grounding.
+
+### Akhtar, N. & Gernsbacher, M. A. (2007). “Joint Attention and Vocabulary Development: A Critical Look.” *Language and Linguistics Compass* 1(3), 195-207.
+
+DOI: https://doi.org/10.1111/j.1749-818X.2007.00014.x
+
+Open access: https://pmc.ncbi.nlm.nih.gov/articles/PMC4258841/
+
+**Why it matters:** reviews evidence that conventionally defined joint attention is neither strictly necessary nor sufficient for word learning. Prevents gaze/pointing from becoming a mandatory universal bootstrap primitive.
+
+### Stivers, T. et al. (2009). “Universals and cultural variation in turn-taking in conversation.” *PNAS* 106(26), 10587-10592.
+
+DOI: https://doi.org/10.1073/pnas.0903616106
+
+Open access: https://pmc.ncbi.nlm.nih.gov/articles/PMC2705608/
+
+**Why it matters:** cross-linguistic evidence for strong human conversational timing regularities with cultural variation. Motivates timing/alternation as evidence, not as a required discrete-turn architecture.
+
+### Dingemanse, M. et al. (2015). “Universal Principles in the Repair of Communication Problems.” *PLOS ONE* 10(9):e0136100.
+
+DOI: https://doi.org/10.1371/journal.pone.0136100
+
+Open access: https://pmc.ncbi.nlm.nih.gov/articles/PMC4573759/
+
+**Why it matters:** broad cross-linguistic evidence for other-initiated repair. Motivates repair/clarification as an early functional capability while leaving the function to be inferred from behavior rather than supplied as a label.
+
+### Galantucci, B. (2005). “An Experimental Study of the Emergence of Human Communication Systems.” *Cognitive Science* 29(5), 737-767.
+
+DOI: https://doi.org/10.1207/s15516709cog0000_34
+
+**Why it matters:** humans rapidly invent communication systems through an unfamiliar restricted graphic channel. Critical evidence for negotiated convention, but not for decoding a pre-existing language.
+
+### Perlman, M. & Lupyan, G. (2018). “People Can Create Iconic Vocalizations to Communicate Various Meanings to Naïve Listeners.” *Scientific Reports* 8:2634.
+
+DOI: https://doi.org/10.1038/s41598-018-20961-6
+
+Open access: https://pmc.ncbi.nlm.nih.gov/articles/PMC5805706/
+
+**Why it matters:** demonstrates above-chance comprehension of human-created novel iconic vocalizations across multiple semantic domains. Useful as a bootstrap accelerator/control, not a species-neutral universal.
+
+### Ćwiek, A. et al. (2021). “Novel vocalizations are understood across cultures.” *Scientific Reports* 11:10108.
+
+DOI: https://doi.org/10.1038/s41598-021-89445-4
+
+**Why it matters:** extends human vocal-iconicity evidence across diverse linguistic backgrounds; strengthens the case for motivated mappings as a human control condition while preserving the non-universality warning.
+
+### Kirby, S., Cornish, H. & Smith, K. (2008). “Cumulative cultural evolution in the laboratory: An experimental approach to the origins of structure in human language.” *PNAS* 105(31), 10681-10686.
+
+DOI: https://doi.org/10.1073/pnas.0707835105
+
+Open access: https://pmc.ncbi.nlm.nih.gov/articles/PMC2504810/
+
+**Why it matters:** shows cultural transmission can increase structure/learnability in artificial human signaling systems. Supports separating initial grounding from later convention stabilization and systematization.
+
+### Evans, N. & Levinson, S. C. (2009). “The myth of language universals: Language diversity and its importance for cognitive science.” *Behavioral and Brain Sciences* 32(5), 429-448.
+
+DOI: https://doi.org/10.1017/S0140525X0999094X
+
+**Why it matters:** strong typological challenge to simplistic structural-universal assumptions. Use conservatively because the broader theoretical debate remains contested; the practical lesson is that human grammatical categories require evidence before becoming universal bootstrap primitives.
+
+### Kemp, C., Xu, Y. & Regier, T. (2018). “Semantic Typology and Efficient Communication.” *Annual Review of Linguistics* 4, 109-128.
+
+DOI: https://doi.org/10.1146/annurev-linguistics-011817-045406
+
+**Why it matters:** reviews cross-linguistic variation in lexical category partitions across domains such as kinship, color, number, folk biology, and space. Supports explicit partial-overlap and non-isomorphic category handling.
+
+### Aikhenvald, A. Y. (2004). *Evidentiality*. Oxford University Press.
+
+DOI: https://doi.org/10.1093/oso/9780199263882.001.0001
+
+**Why it matters:** large typological account of grammaticalized information-source distinctions. Shows that provenance/evidence-source distinctions may themselves be part of the content a translator must conserve.
+
+### Murray, S. E. (2021). “Evidentiality, Modality, and Speech Acts.” *Annual Review of Linguistics* 7, 213-233.
+
+DOI: https://doi.org/10.1146/annurev-linguistics-011718-012625
+
+**Why it matters:** reviews the semantics/pragmatics of evidential constructions and their interaction with force and modality. Reinforces that source-of-evidence information can be linguistically meaningful rather than merely metadata.
+
 ## Research notes
 
 1. The literature strongly supports individual components of UNVTRSLR: grounding, emergent conventions, cross-lingual semantic representation, nonlinguistic communication, and progressive interstellar message design.
 2. The literature also provides strong warnings that task success, symbol alignment, acoustic prediction, and human semantic categories can be mistaken for genuine semantic understanding.
 3. No source reviewed so far demonstrates the full target: unknown signalhood + zero shared symbols + asymmetric perception/ontology + active grounding + compositional semantics + non-equivalence detection + self-describing interstellar bootstrap.
 4. That absence is a provisional literature-review result, not a novelty proof. The search should remain active.
+5. The human verbal-language pass adds strong evidence for ambiguity reduction, repair, convention invention, iconicity, cultural transmission, and semantic diversity under human conditions, but none of those findings alone licenses species-independent bootstrap primitives.

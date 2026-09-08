@@ -1,0 +1,305 @@
+schema_version: UNVTRSLR_R3_EVALUATION_CONTRACT_V1
+status: SPECIFIED_NOT_IMPLEMENTED
+
+scope:
+  r3: adversarial_pragmatics_and_interaction_evaluator
+  relation_to_r1_r2: additive_no_redefinition
+
+prerequisites:
+  r2_required_for_final_r3_pass: true
+  diagnostic_r3_before_full_r2: allowed
+  r3_can_compensate_for_r2_failure: false
+  test_specific_semantic_prerequisites_required: true
+  examples:
+    P01: independently_grounded_denotation_or_referential_structure
+    P03: grounded_spatial_or_referential_structure
+    P09: established_candidate_convention
+    P12: established_candidate_convention_with_temporal_history
+    P20: source_and_target_semantic_structures_available_for_conservation
+
+common_candidate_contract:
+  required:
+    - preserve_competing_pragmatic_hypotheses
+    - explicit_pragmatic_uncertainty
+    - explicit_provenance
+    - explicit_addressee_or_audience_uncertainty_when_applicable
+    - explicit_context_dependencies
+    - explicit_interaction_history_references_when_used
+    - distinguish_observed_response_from_inferred_intention
+    - preserve_noncommunicative_null_hypothesis_when_signalhood_is_unresolved
+    - support_pragmatic_conservation_ledger
+    - UNKNOWN_outcome
+    - PARTIAL_OVERLAP_outcome
+    - NO_FAITHFUL_EQUIVALENT_outcome
+  prohibited_inputs:
+    - evaluator_pragmatic_labels
+    - evaluator_function_labels
+    - evaluator_addressee_labels
+    - evaluator_audience_labels
+    - evaluator_sender_incentive_state
+    - evaluator_convention_version
+    - evaluator_channel_failure_labels
+    - challenge_family_identity
+    - hidden_shared_episode_ids
+    - hidden_shared_partner_ids
+    - other_agent_internal_state
+    - hidden_holdout_configuration
+    - evaluator_only_mutual_state
+
+trust_zones:
+  P0:
+    name: evaluator_hidden_interaction_truth
+    learner_access: forbidden
+  P1:
+    name: learner_visible_observations
+    evaluator_labels_stripped: true
+  P2:
+    name: learner_interaction
+    evaluator_truth: forbidden
+  P3:
+    name: blind_pragmatic_adjudication
+    candidate_training_access: forbidden
+
+harness_sequence:
+  - deterministic_generator_and_replay
+  - positive_pragmatic_oracle_controls
+  - required_pragmatic_negative_controls
+  - control_acceptance_matrix_check
+  - candidate_independent_threshold_calibration
+  - freeze_r3_qualification_profile
+  - candidate_hidden_evaluation
+
+critical_tests:
+  P01: same_denotation_different_function
+  P02: same_surface_different_context
+  P03: deictic_role_shift
+  P04: indirect_function
+  P05: presupposition_mismatch
+  P06: silence_or_withholding
+  P07: intended_addressee_vs_overhearer
+  P08: audience_dependent_behavior
+  P09: deceptive_sender
+  P10: strategic_ambiguity
+  P11: repair_after_misunderstanding
+  P12: convention_drift
+  P13: private_shortcut_code
+  P14: coordination_without_reusable_semantics
+  P15: stable_reference_wrong_ontology
+  P16: role_reversal
+  P17: partner_swap
+  P18: context_transfer
+  P19: multimodal_channel_conflict
+  P20: function_preserved_across_form_and_ontology
+
+negative_controls:
+  required:
+    - RN00_task_policy_mimic
+    - RN01_partner_id_pragmatist
+    - RN02_context_lookup_table
+    - RN03_surface_speech_act_classifier
+    - RN04_repair_reflex
+    - RN05_deixis_by_fixed_coordinate
+    - RN06_audience_leak
+    - RN07_reward_predictor
+    - RN08_forced_intent_labeler
+    - RN09_pragmatics_conservation_liar
+  recommended_extensions:
+    - RN10_acknowledgment_heartbeat
+    - RN11_absence_hallucinator
+    - RN12_convention_newest_wins
+    - RN13_deception_erases_semantics
+    - RN14_multimodal_average
+    - RN15_human_pragmatics_only
+
+positive_controls:
+  required:
+    - RP00_scoped_pragmatic_oracle
+    - RP01_calibrated_uncertainty_oracle
+    - RP02_partial_equivalence_oracle
+    - RP03_nonhuman_function_oracle
+
+control_acceptance_expectations:
+  RN00_task_policy_mimic:
+    overall: FAIL
+    must_fail_any_of:
+      - FUNCTION_DISCRIMINATION
+      - PRAGMATIC_CONSERVATION
+      - SHORTCUT_RESISTANCE
+  RN01_partner_id_pragmatist:
+    overall: FAIL
+    must_fail_any_of:
+      - PARTNER_TRANSFER
+      - SHORTCUT_RESISTANCE
+  RN02_context_lookup_table:
+    overall: FAIL
+    must_fail_any_of:
+      - CONTEXT_SENSITIVITY
+      - SHORTCUT_RESISTANCE
+  RN03_surface_speech_act_classifier:
+    overall: FAIL
+    must_fail_any_of:
+      - FUNCTION_DISCRIMINATION
+      - INDIRECT_INFERENCE_CALIBRATION
+      - PRAGMATIC_CONSERVATION
+      - SHORTCUT_RESISTANCE
+  RN04_repair_reflex:
+    overall: FAIL
+    must_fail_any_of:
+      - REPAIR_ROBUSTNESS
+      - SHORTCUT_RESISTANCE
+  RN05_deixis_by_fixed_coordinate:
+    overall: FAIL
+    must_fail_any_of:
+      - DEICTIC_GENERALIZATION
+      - ROLE_REVERSAL
+      - SHORTCUT_RESISTANCE
+  RN06_audience_leak:
+    overall: FAIL_OR_HARNESS_INVALID
+    learner_visible_evaluator_leak_means: HARNESS_INVALID
+  RN07_reward_predictor:
+    overall: FAIL
+    must_fail_any_of:
+      - FUNCTION_DISCRIMINATION
+      - PRAGMATIC_CONSERVATION
+      - SHORTCUT_RESISTANCE
+  RN08_forced_intent_labeler:
+    overall: FAIL
+    must_fail_any_of:
+      - AMBIGUITY_CALIBRATION
+      - INDIRECT_INFERENCE_CALIBRATION
+      - SHORTCUT_RESISTANCE
+  RN09_pragmatics_conservation_liar:
+    overall: FAIL
+    must_fail_any_of:
+      - PRAGMATIC_CONSERVATION
+      - AMBIGUITY_CALIBRATION
+      - SHORTCUT_RESISTANCE
+  RP00_scoped_pragmatic_oracle:
+    overall: PASS
+  RP01_calibrated_uncertainty_oracle:
+    overall: PASS
+  RP02_partial_equivalence_oracle:
+    overall: PASS
+  RP03_nonhuman_function_oracle:
+    overall: PASS
+
+operational_pragmatic_vector:
+  - FUNCTION_DISCRIMINATION
+  - CONTEXT_SENSITIVITY
+  - DEICTIC_GENERALIZATION
+  - ADDRESSEE_MODELING
+  - AUDIENCE_MODELING
+  - INDIRECT_INFERENCE_CALIBRATION
+  - BACKGROUND_DEPENDENCY_HANDLING
+  - REPAIR_ROBUSTNESS
+  - CONVENTION_STABILITY_AND_DRIFT
+  - PARTNER_TRANSFER
+  - ROLE_REVERSAL
+  - STRATEGIC_OR_DECEPTIVE_ROBUSTNESS
+  - AMBIGUITY_CALIBRATION
+  - MULTIMODAL_CONFLICT_HANDLING
+  - PRAGMATIC_CONSERVATION
+  - SHORTCUT_RESISTANCE
+
+pragmatic_conservation_dimensions:
+  - denotational_or_referential_structure
+  - communicative_function
+  - addressee_or_audience
+  - context_dependence
+  - epistemic_or_evidential_status
+  - background_dependency
+  - strategic_or_reliability_status
+  - ambiguity
+  - formal_or_iconic_invariant_when_applicable
+  - provenance
+
+conservation_outcomes:
+  - PRESERVED
+  - TRANSFORMED
+  - INFERRED
+  - OMITTED
+  - ADDED
+  - AMBIGUITY_COLLAPSED
+  - UNRESOLVED
+  - UNTRANSLATABLE
+  - APPROXIMATED
+  - CONTEXT_REQUIRED
+
+applicability_policy:
+  test_not_applicable_requires_explicit_justification: true
+  physically_asymmetric_role_reversal_may_be_not_applicable: true
+  not_applicable_tests_receive_pass_credit: false
+  insufficient_prerequisite_evidence_result: INDETERMINATE
+
+threshold_policy:
+  candidate_hidden_results_may_set_thresholds: false
+  calibration_sources:
+    - chance_or_null_controls
+    - positive_pragmatic_oracles
+    - pragmatic_negative_controls
+    - harness_only_pilot_worlds
+  freeze_before_candidate_hidden_evaluation: true
+  normalized_metric: "(candidate - null) / (oracle - null), direction-adjusted for losses"
+  each_critical_metric_requires:
+    - preregistered_minimum_oracle_headroom
+    - preregistered_margin_over_strongest_applicable_negative_control
+    - preregistered_confidence_interval_method
+    - preregistered_minimum_episode_count
+    - preregistered_seed_or_world_batch_rule
+  aggregate_score_can_override_critical_failure: false
+
+harness_falsifiers:
+  - surface_speech_act_classifier_passes_cross_form_function_tests
+  - repair_reflex_matches_targeted_repair_score
+  - partner_identity_lookup_passes_partner_swap
+  - fixed_coordinates_pass_deictic_role_shift
+  - random_channel_loss_is_scored_as_meaningful_withholding
+  - reward_predictor_passes_function_discrimination
+  - evaluator_pragmatic_labels_leak_to_learner
+  - forced_intent_labeler_is_not_penalized_on_unknown_or_noncommunicative_cases
+  - pragmatic_conservation_can_drop_addressee_uncertainty_or_provenance_without_penalty
+  - nonhuman_positive_oracle_fails_for_lacking_human_speech_act_structure
+
+certificate:
+  schema_version: OPERATIONAL_PRAGMATIC_GROUNDING_CERTIFICATE_V1
+  allowed_statuses:
+    - FAIL
+    - HARNESS_INVALID
+    - INDETERMINATE
+    - PARTIALLY_PRAGMATICALLY_GROUNDED
+    - PRAGMATICALLY_GROUNDED_WITHIN_TESTED_SCOPE
+  forbidden_statuses:
+    - UNIVERSAL_PRAGMATICS
+    - UNIVERSALLY_PRAGMATICALLY_GROUNDED
+    - HUMAN_LIKE_INTENTION_PROVEN
+    - THEORY_OF_MIND_PROVEN
+  required_bindings:
+    - candidate_substrate_version
+    - r2_prerequisite_status_and_scope
+    - learner_code_digest
+    - evaluator_code_digest
+    - r3_contract_digest
+    - r3_qualification_profile_digest
+    - interaction_generator_digest
+    - sensor_and_channel_configuration_digest
+    - partner_configuration_digest
+    - negative_control_suite_version
+    - positive_control_suite_version
+    - hidden_holdout_generation_rule_digest
+    - seed_or_seed_rule_commitment
+    - operational_pragmatic_vector_with_confidence_intervals
+    - critical_test_results
+    - applicability_and_not_applicable_justifications
+    - pragmatic_conservation_audit_summary
+    - surviving_alternative_explanations
+    - scope_limitations
+
+claims_boundary:
+  passing_r3_is_metaphysical_proof_of_intention: false
+  passing_r3_proves_consciousness: false
+  passing_r3_proves_theory_of_mind: false
+  human_speech_act_categories_are_universal_primitives: false
+  pragmatic_success_can_override_semantic_grounding_failure: false
+  task_success_is_shared_pragmatic_semantics: false
+  passing_r3_is_scoped_operational_pragmatic_evidence: true
+  honest_unknown_or_partial_equivalence_can_be_correct: true

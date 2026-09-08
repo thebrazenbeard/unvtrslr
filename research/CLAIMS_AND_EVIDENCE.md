@@ -313,6 +313,74 @@ An evaluator that only recognizes obvious random failure has not demonstrated sh
 
 **Project consequence:** R2 requires a suite of adversarial negative controls designed to perform well on naive task metrics.
 
+## R3 pragmatics and interaction additions
+
+## C041 — Human communicated meaning can exceed conventional sentence meaning
+
+**Status:** `SUPPORTED_LIMITED_SCOPE`
+
+Gricean and relevance-theoretic pragmatics provide extensive human-language evidence that what a speaker communicates can depend on context and inference beyond conventional sentence-level content.
+
+**Limit:** this does not establish a universal intention-recognition architecture or human pragmatic categories for arbitrary agents.
+
+**Project consequence:** R3 may test indirect/function-level interpretation while requiring explicit inference provenance and calibrated alternatives.
+
+## C042 — Human conventions can be partner-specific and history-dependent
+
+**Status:** `SUPPORTED_PRIOR_WORK`
+
+Experimental work on conceptual pacts shows that human interlocutors develop partner-specific conceptualizations and lexical entrainment that persist beyond immediate informativeness.
+
+**Project consequence:** convention records should bind participants and interaction history; partner-specific success must not be silently promoted to a general mapping.
+
+## C043 — Repair behavior is evidence of interaction structure, not proof of understanding
+
+**Status:** `SUPPORTED_LIMITED_SCOPE / DESIGN_REQUIREMENT`
+
+Conversation-analysis and cross-linguistic repair research show organized human repair practices, but a reflex policy can imitate repetition or correction after failure without representing what was misunderstood.
+
+**Project consequence:** R3 tests targeted repair against `RN04_repair_reflex` and scores novel trouble-source discrimination rather than repair-like surface behavior alone.
+
+## C044 — Task success and even causal influence are insufficient for pragmatic equivalence
+
+**Status:** `SUPPORTED_PRIOR_WORK / DESIGN_REQUIREMENT`
+
+Emergent-communication research shows that high reward, message/action correlation, and in some cases causal use can coexist with task-bound protocols that do not preserve reusable semantic or pragmatic distinctions.
+
+**Project consequence:** pragmatic qualification requires function discrimination, changed-task transfer, partner transfer where applicable, conservation audits, and shortcut controls.
+
+## C045 — Functional similarity must not erase meaning-bearing form
+
+**Status:** `SUPPORTED_PRIOR_WORK / DESIGN_REQUIREMENT`
+
+Research on iconicity, systematicity, gesture, timing, and multimodality shows that form can itself carry information. The predecessor slogan “translate functions, not words” is therefore too strong if interpreted as function automatically outranking form.
+
+**Project consequence:** translation should preserve the tested invariants that matter in scope, including formal/iconic structure when demonstrated. `FUNCTIONALLY_EQUIVALENT` remains typed and scoped rather than synonymous with `same meaning`.
+
+## C046 — Operational common ground should remain separate from claims about another agent's internal state
+
+**Status:** `DESIGN_REQUIREMENT / SUPPORTED_LIMITED_SCOPE`
+
+Human common-ground and grounding theories motivate tracking evidence of jointly usable conventions, while convention theory does not require UNVTRSLR to prove infinitely nested symmetric beliefs.
+
+**Project consequence:** separate `interactionally_supported_common_ground`, `counterpart_epistemic_hypothesis`, and evaluator-only mutual-state truth.
+
+## C047 — Human pragmatic categories are useful adversarial families, not species-neutral primitives
+
+**Status:** `SUPPORTED_LIMITED_SCOPE / PROJECT_BOUNDARY`
+
+Human-language research supports rich distinctions such as deixis, repair, presupposition, implicature, addressee effects, and request/assertion-like functions. Cross-linguistic diversity cautions against promoting those manifestations into a universal ontology.
+
+**Project consequence:** R3 uses human categories as control families while requiring a nonhuman positive oracle that can pass without human sentence or speech-act structure.
+
+## C048 — Absence or withholding is meaningful only when an expectation relation is evidenced
+
+**Status:** `DESIGN_REQUIREMENT / PROJECT_HYPOTHESIS`
+
+Human and animal signaling literature motivates treating omission or withholding as potentially communicative, but missing behavior is also explained by noise, latency, sensor failure, inactivity, or physical inability.
+
+**Project consequence:** R3 `P06` requires counterfactual evidence distinguishing strategic withholding from matched random loss before absence receives semantic credit.
+
 ## Open research gaps to investigate next
 
 1. Formal literature on signalhood/intention detection without labeled communication channels.
@@ -329,6 +397,10 @@ An evaluator that only recognizes obvious random failure has not demonstrated sh
 12. Methods for constructing adversarial world generators that do not reveal evaluator ontology.
 13. Lower bounds on the intervention set needed to distinguish competing semantic hypotheses.
 14. Complexity measures that fairly compare symbolic, denotational, and predictive substrates.
+15. Species-neutral operationalizations of communicative function that do not presuppose human speech-act inventories.
+16. Distinguishing false common ground from genuinely shared convention when internal representations are unobservable.
+17. Formal tests for pragmatic conservation under asymmetric ontology and modality.
+18. Conditions under which absence/withholding can be identified as a causal signal without over-attribution.
 
 ## Promotion rule
 

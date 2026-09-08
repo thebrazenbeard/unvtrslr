@@ -12,17 +12,19 @@ The project therefore shifts the objective from:
 
 into:
 
-> design a system that can establish a semantic bridge with an initially unknown communicator.
+> design a system that can establish and test cross-system correspondences with an initially unknown communicator, then separately qualify whether stronger semantic claims are warranted.
 
 ## Refined thesis
 
-The working thesis after the human verbal, human signed/nonverbal, and nonhuman communication research passes is:
+The working bootstrap thesis after the human verbal, human signed/nonverbal, and nonhuman communication research passes is:
 
-> Under declared conditions where an interaction surface contains recoverable distinguishing structure and no privileged mediator supplies the target correspondence, initially unaligned systems may be able to construct scoped, testable, reusable cross-system semantic correspondences without a pre-shared symbolic language.
+> Under declared conditions where an interaction surface contains recoverable distinguishing structure and no privileged mediator supplies the target correspondence, initially unaligned systems may be able to construct scoped, testable, reusable cross-system **operational correspondences** without a pre-shared symbolic language.
+
+A stronger claim of **semantic correspondence** is not granted by bootstrap success. It requires a separate, claim-specific semantic qualification that states what additional obligation the semantic interpretation satisfies beyond the strongest lower operational account and tests that obligation on discriminating evidence.
 
 The first controlled experiment remains a pair of agents interacting through a partially shared environment. The broader theory should not assume that all communication is dyadic, synchronous, discrete, intentional, or carried by a channel separate from ordinary sensing.
 
-The universal element is therefore not assumed to be English, human grammar, a fixed set of concepts, a single ontology, or even a sender-message-receiver decomposition. It is the **method for discovering, testing, qualifying, and conserving cross-system correspondences while preserving uncertainty, provenance, identifiability limits, and claim ceilings**.
+The universal element is therefore not assumed to be English, human grammar, a fixed set of concepts, a single ontology, or even a sender-message-receiver decomposition. It is the **method for discovering, testing, qualifying, and conserving cross-system correspondences while preserving uncertainty, provenance, identifiability limits, applicability, and claim ceilings**.
 
 ## Generalized problem statement
 
@@ -44,12 +46,12 @@ The initial idea described a pipeline like:
 
 That is useful intuition but too strong if interpreted literally. Mathematics is itself represented through conventions, notation, and interpretive assumptions. Formal structure alone does not solve the symbol-grounding problem.
 
-UNVTRSLR therefore treats mathematics as a **formal carrier** for semantic hypotheses that have independent grounding and evidence.
+UNVTRSLR therefore treats mathematics as a **formal carrier** for correspondence hypotheses that can later support semantic hypotheses only when independent grounding and evidence justify them.
 
 A formal substrate is valuable because it can explicitly represent:
 
 - entities and candidate entities where objecthood is supported;
-- events and states;
+- events and states where those decompositions are supported;
 - quantities and perceptual/physical transforms;
 - spatial and temporal relationships;
 - causal hypotheses;
@@ -58,42 +60,42 @@ A formal substrate is valuable because it can explicitly represent:
 - provenance;
 - alternative interpretations;
 - evidence for and against a mapping;
-- semantic invariants that should survive translation;
+- candidate invariants that should survive translation or mediation;
 - persistent, continuous, multimodal, and collectively authored signal structures.
 
-The substrate is not meaningful merely because it is mathematical. It becomes useful because its terms are connected to observations, interventions or other distinguishing histories, shared conventions, receiver effects, and predictive tests.
+The substrate is not meaningful merely because it is mathematical. It becomes useful because its terms are connected to observations, interventions or other distinguishing histories, negotiated or discovered conventions, receiver/coupled-process effects, and predictive tests.
 
 ## The stronger product concept
 
-UNVTRSLR is best understood as a **universal semantic mediation system**, with five responsibilities:
+UNVTRSLR is best understood as a **universal semantic mediation research system**, with five responsibilities:
 
 1. **Observe** a potentially communicative system without assuming its channel or grammar.
-2. **Infer** candidate structure, signalhood, contexts, cross-system relations, and communicative functions without forcing human categories.
-3. **Experiment** or otherwise seek discriminating histories to distinguish competing semantic hypotheses when the interaction surface permits it.
-4. **Stabilize** shared conventions and translation bridges while separating discovered correspondence from negotiated invention.
-5. **Render** the resulting semantic structure into a requested target representation while preserving uncertainty, provenance, non-equivalence, and claim ceilings.
+2. **Infer** candidate structure, signalhood where applicable, contexts, cross-system operational relations, and possible communicative functions without forcing human categories.
+3. **Experiment** or otherwise seek discriminating histories to distinguish competing correspondence and semantic hypotheses when the interaction surface permits it.
+4. **Stabilize** reusable cross-system correspondences while separating discovered correspondence from negotiated invention and keeping operational qualification separate from semantic qualification.
+5. **Render** supported structures into a requested target representation while preserving uncertainty, provenance, non-equivalence, applicability, and claim ceilings.
 
 That means the architecture is closer to a scientist, protocol negotiator, and translator combined than to a dictionary.
 
 ## Central research hypotheses
 
-### H1 — Shared-world grounding can establish some cross-system correspondences
+### H1 — Shared-world interaction can establish some cross-system operational correspondences
 
-If two systems can access overlapping environmental regularities and at least one distinguishing history separates rival mappings, repeated interaction may establish stable cross-system correspondences.
+If two systems can access overlapping environmental regularities and at least one distinguishing history separates rival mappings, repeated interaction may establish stable cross-system operational correspondences.
 
 This is supported in limited form by grounded language-game, human convention-formation, signed/nonverbal, and nonhuman communication research, but the project must demonstrate it under much stronger constraints.
 
-A shared physical world alone is not sufficient: the relevant perceptual quantities, segmentation, timescale, and accessible consequences may differ radically.
+A shared physical world alone is not sufficient: the relevant perceptual quantities, segmentation, timescale, and accessible consequences may differ radically. Whether an established operational correspondence supports a semantic correspondence is a separate qualification question.
 
-### H2 — Signalhood itself can be learned
+### H2 — Signalhood itself may be learnable when the concept is applicable
 
 The system need not be handed a clean message channel. It may be possible to infer that some behavior is communicative by detecting contingency, audience effects, response dependence, information gain, repetition, correction/persistence, coordination benefit, or other receiver-relevant effects.
 
-Signalhood must remain contextual. The same pattern generator or physical substrate may serve communicative and noncommunicative functions in different contexts.
+Signalhood must remain contextual and claim-specific. The same pattern generator or physical substrate may serve communicative and noncommunicative functions in different contexts, and some tested systems may lack a meaningful sender/signal decomposition entirely.
 
-### H3 — Shared semantics need not require shared perceptual encoding
+### H3 — Cross-system correspondence need not require shared perceptual encoding
 
-Systems with different sensors may still construct overlapping semantic structures if they can discover invariant or transformable relationships in a common world.
+Systems with different sensors may still construct overlapping operational and, where separately qualified, semantic structures if they can discover invariant or transformable relationships in a common world.
 
 This must be tested explicitly. Shared RGB pixels, identical object vectors, evaluator-native physical variables, or hidden common latent IDs are common language and are therefore insufficient evidence.
 
@@ -101,29 +103,29 @@ This must be tested explicitly. Shared RGB pixels, identical object vectors, eva
 
 Passive correlation may support provisional mappings, while ambiguous meanings often benefit from interventions, playbacks, contrastive exposure, environmental variation, or other discriminating regimes.
 
-If a signal may mean RED or SPHERE, changing color while preserving shape and changing shape while preserving color are stronger semantic tests than collecting more passive co-occurrences — when such interventions are actually available.
+If a candidate mapping may correspond to RED or SPHERE, changing color while preserving shape and changing shape while preserving color are stronger tests than collecting more passive co-occurrences — when such interventions are actually available.
 
-The generalized requirement is a distinguishing learner-accessible history, not a mandatory human-like action primitive.
+The generalized requirement is a distinguishing learner-accessible history appropriate to the exact claim, not a mandatory human-like action primitive.
 
-### H5 — Communication success is weaker than semantic understanding
+### H5 — Communication or coordination success is weaker than semantic qualification
 
-Two systems can coordinate using an arbitrary code that exploits task artifacts without representing the concepts an evaluator attributes to that code.
+Two systems can coordinate using an arbitrary code that exploits task artifacts without satisfying the stronger semantic interpretation an evaluator attributes to that code.
 
 Animal corpora add a related warning: rich structure, classifier-readable context, sequence prediction, synthesis, or identity information are not automatically semantic translation.
 
-Therefore task reward or statistical decodability alone cannot establish semantic grounding.
+Therefore task reward or statistical decodability alone cannot establish semantic correspondence.
 
-### H6 — Transfer/systematic reuse is a stronger test than memorized mapping
+### H6 — Transfer/systematic reuse can strengthen a claim when applicable
 
-A useful semantic system should support novel combinations and relationships, not merely repeated labels. New contexts, new partners, new perceptual presentations, role reversal where applicable, recombination, and cross-task transfer provide stronger evidence that reusable structure exists.
+A useful cross-system relation should survive the generalization tests entailed by its exact claim rather than merely repeated training instances. New contexts, new partners where partner transfer is part of the claim, new perceptual presentations, role reversal where applicable, recombination where applicable, and cross-task transfer can provide stronger evidence that reusable structure exists.
 
-Composition must not be defined as concatenated word-like syntax; it may be sequential, simultaneous, spatial, continuous, or distributed.
+No one of these is a universal rung. Composition must not be defined as concatenated word-like syntax; it may be sequential, simultaneous, spatial, continuous, distributed, or structurally inapplicable to a particular claim.
 
-### H7 — Non-equivalence is discoverable and should be preserved
+### H7 — Non-equivalence is discoverable only within declared scope and should be preserved
 
-Two systems may carve reality differently. A faithful translator should be able to report:
+Two systems may carve reality differently. A faithful mediator should be able to report:
 
-- exact equivalence;
+- exact equivalence within tested scope;
 - approximate equivalence;
 - context-dependent equivalence;
 - one-to-many mapping;
@@ -131,21 +133,21 @@ Two systems may carve reality differently. A faithful translator should be able 
 - partial overlap;
 - report/convention-only correspondence;
 - unknown mapping;
-- no faithful equivalent found within tested scope.
+- no faithful equivalent found within declared tested/search scope.
 
 Forcing every source distinction into a target category is semantic hallucination.
 
 ### H8 — A small set of cross-domain representational responsibilities may be enough
 
-UNVTRSLR does not assume a fixed universal vocabulary, but it hypothesizes that a reusable representation framework may support relationships, sequence, quantity, uncertainty, provenance, alternatives, evidence, perceptual transforms, and claim ceilings across many systems.
+UNVTRSLR does not assume a fixed universal vocabulary, but it hypothesizes that a reusable representation framework may support relationships, sequence, quantity, uncertainty, provenance, alternatives, evidence, perceptual transforms, applicability, and claim ceilings across many systems.
 
-This is deliberately weaker than claiming that human notions such as object, agent, name, word, syntax, belief, or goal are universal.
+This is deliberately weaker than claiming that human notions such as object, agent, name, word, syntax, belief, goal, function, or content are universal.
 
-### H9 — Earth communication can provide graded controls
+### H9 — Earth communication can provide graded controls without imposing one semantic evidence ladder
 
 Known human languages, signed languages, gesture and other human nonverbal systems, nonhuman vocal and non-vocal communication, synthetic languages, continuous channels, and deliberately alien artificial ontologies can provide increasingly difficult controls while retaining some evaluator knowledge.
 
-The evidence ladder must distinguish structure, receiver discrimination, demonstrated communicative function, context association, externally testable/reference-like relations, combination, social learning/culture, intentionality evidence, and the semantic claim ceiling actually earned.
+Evaluation should use **claim-specific evidence vectors and partial prerequisite graphs**, not one fixed progression. Candidate axes can include structure, receiver/coupled-process discrimination, communicative or coordinative function, context association, externally testable/reference-like relation, combination/systematic reuse, transfer/regrounding, social learning/culture, intentionality evidence, uncertainty/provenance, and semantic qualification. Each axis must record applicability and evidence state; only prerequisites entailed by the exact claim are mandatory.
 
 ### H10 — An interstellar translator is more plausible as a bootstrap system than as a prewritten phrasebook
 
@@ -155,32 +157,43 @@ Literal self-description cannot be treated as a zero-semantics primitive. The cu
 
 `self-demonstrating -> convention-forming -> recursively self-describing`
 
-### H11 — Identifiability and bridge attribution are separate gates
+The earliest stages establish operationally testable regularities and conventions. Their later use as a semantic or meta-semantic language requires separate evidence.
 
-Before claiming a semantic distinction, the project must ask whether rival mappings are distinguishable within the declared interaction surface and budget.
+### H11 — Identifiability, bridge attribution, operational qualification, and semantic qualification are separate gates
 
-But information availability alone is not enough. If evaluator, adapter, renderer, or another privileged mediator already performs the cross-system normalization, downstream success does not establish that the candidate learner discovered or constructed the bridge.
+Before claiming a distinction, the project must ask whether rival mappings are distinguishable within the declared interaction surface and budget.
 
-The project therefore separates:
+Information availability alone is not enough. If evaluator, adapter, renderer, or another privileged mediator already performs the cross-system normalization, downstream success does not establish that the candidate learner discovered or constructed the bridge.
+
+And even a clean, reusable operational bridge does not automatically establish the stronger semantic interpretation.
+
+The project therefore separates at least:
 
 - `DISTINCTION_IDENTIFIABLE_IN_SURFACE`;
-- `SEMANTIC_BRIDGE_ATTRIBUTABLE_TO_LEARNER`.
+- `BRIDGE_ATTRIBUTABLE_TO_LEARNER`;
+- operational relation/grounding state;
+- semantic interpretation/qualification state;
+- applicability/coverage state;
+- claim ceiling.
+
+These axes are not a monotonic ladder.
 
 ## What would falsify or materially narrow the thesis
 
 The project should be considered materially falsified or narrowed if, after controlling for hidden common priors and leakage:
 
-- systems cannot establish stable grounded mappings without a predeclared symbolic channel;
+- systems cannot establish stable operational correspondences without a predeclared symbolic channel under the conditions where the thesis predicts they should;
 - successful mappings collapse when perceptual representations differ;
-- apparent semantics fail novel-context, receiver-effect, transfer, role-reversal where applicable, or discriminating-history tests;
+- apparent semantic interpretations fail the claim-discriminating tests they preregister;
 - all successful systems require a large human-authored ontology;
-- the protocol cannot distinguish genuine non-equivalence from translation failure;
-- signalhood cannot be learned without essentially being labeled by the evaluator;
+- the protocol cannot distinguish scoped non-equivalence from search/evidence failure;
+- signalhood claims cannot be learned without essentially being labeled by the evaluator;
 - communication success remains explainable by task-specific private codes;
 - semantic conservation cannot be operationalized independently of target-language similarity;
-- apparently grounded distinctions disappear when evaluator/adapter normalization is removed;
+- apparently learner-discovered distinctions disappear when evaluator/adapter normalization is removed;
 - the actual communication channel lies outside the learner's sensory or timescale budget and no honest failure state is available;
-- the architecture requires a single sender, receiver, discrete message, or dedicated channel even when the observed communication system does not have those properties.
+- the architecture requires a single sender, receiver, discrete message, or dedicated channel even when the observed communication system does not have those properties;
+- a semantic label cannot be shown to add any independently testable obligation beyond the best supported lower operational comparator.
 
 A negative result would still be scientifically valuable because it would tell us which assumptions really are necessary.
 
@@ -200,17 +213,20 @@ UNVTRSLR does **not** currently claim:
 - that intentionality is necessary for all communication;
 - that compositionality is universal;
 - that the first 100 challenges are natural kinds or a fixed developmental sequence;
+- that operational correspondence automatically entails semantic correspondence;
 - that a safe policy for transmitting information into space has been settled.
 
 ## Working definition of success
 
-A mature UNVTRSLR system would receive an unfamiliar stream of behavior, environmental change, or candidate signals and, through observation and interaction where available, construct a calibrated translation bridge that can say not merely:
+A mature UNVTRSLR system would receive an unfamiliar stream of behavior, environmental change, or candidate signals and, through observation and interaction where available, construct a calibrated cross-system bridge that can first establish what operational relation is supported and only then say what semantic interpretation, if any, has independently survived qualification.
+
+A strong report would look less like:
 
 > “signal X means Y”
 
-but:
+and more like:
 
-> “Under contexts C1 and C2, pattern X participates in a receiver-relevant relation best explained by bridge hypothesis Y with confidence p. Competing hypothesis Z remains plausible. The pattern has survived tests T1-T4, its distinguishing evidence has provenance P, and the bridge is attributable to the learner rather than evaluator normalization. The closest target rendering is ..., but source and target categories overlap only partially and this claim is bounded to the tested interaction surface.”
+> “Under contexts C1 and C2, pattern X participates in operational relation R with confidence p and provenance P. Competing operational hypothesis Z remains plausible or has been rejected by tests T1-T4. The bridge is attributable to the learner rather than evaluator normalization. A proposed semantic interpretation Y is separately supported/not supported under semantic test family S; the closest target rendering is ..., with the following scope, uncertainty, and non-equivalence limitations.”
 
 That is the standard this repository is designed to approach.
 

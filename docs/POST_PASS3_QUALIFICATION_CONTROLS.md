@@ -6,6 +6,8 @@ Predecessor frozen evidence checkpoint: `NONHUMAN_COMMUNICATION_PASS_3@ca6cc0c4f
 
 This addendum converts the current One/Four/Nine/Thirteen adversarial round plus post-Pass-3 methodological research into explicit candidate controls. It does not alter the frozen Pass 3 subject and does not replace `docs/R2_ADVERSARIAL_EVALUATOR.md` or `docs/NONHUMAN_CONTROL_OVERLAYS.md` yet.
 
+The status language below is deliberately conservative and does **not** depend on Draft PR #2 merging. It is compatible with an operational-vs-semantic split while current `main` remains authoritative.
+
 Use stable semantic control IDs in cross-worker coordination. Numbered local aliases may exist only inside a frozen suite.
 
 ## CTRL_GLOBAL_STATE_WATERMARK
@@ -49,7 +51,7 @@ A semantic interpretation is frozen and performs well on genuinely fresh IID evi
 
 ### Required design
 
-Identify the strongest live structured rival(s) and create a holdout/intervention/domain-shift condition that makes the semantic interpretation and those rivals predict materially different outcomes while preserving the narrower operational relation where possible.
+Identify the strongest live structured operational rival(s) and create a holdout/intervention/domain-shift condition that makes the semantic interpretation and those rivals predict materially different outcomes while preserving the narrower operational relation where possible.
 
 ### Required statuses
 
@@ -95,7 +97,7 @@ An open/null alternative is useful but is not itself a model-adequacy certificat
 
 ### Failure being tested
 
-The evaluator chooses a semantic label after inspecting the learner's discovered operational partition and then treats same-data fit as semantic confirmation.
+The evaluator chooses a semantic label after inspecting the learner's discovered operational relation and then treats same-data fit as semantic confirmation.
 
 ### Required statuses
 
@@ -186,20 +188,24 @@ A clean, transferable operational relation may survive every provenance and robu
 
 ### Candidate criterion
 
-Let `R` be the strongest verified nonsemantic operational/predictive relation and `S` a proposed semantic interpretation.
+Let `R` be the strongest live structured operational comparator not yet shown to satisfy the stronger semantic claim and `S` the proposed semantic interpretation.
 
-`S` earns promotion beyond `VERIFIED_OPERATIONAL_RELATION` only if:
+`S` earns a stronger semantic qualification only if:
 
-1. `S` entails at least one preregistered prediction/intervention/transfer/conservation obligation not already entailed by `R`;
-2. the obligation is claim-discriminating against the strongest live operational rivals;
+1. the exact interpretation `S` entails at least one preregistered prediction/intervention/transfer/conservation obligation not already entailed by `R`;
+2. the obligation is claim-discriminating against the strongest live structured operational rivals;
 3. the learner/evaluator passes it on independent evidence;
 4. provenance and hypothesis-family controls remain clean.
 
+### Anti-arbitrary-surplus principle
+
+**Extra difficulty is not semantic content.** The evaluator may not promote `S` merely by adding an arbitrary hard test that `R` did not happen to be designed for. The additional obligation must be justified by the content of the exact semantic interpretation and must discriminate `S` from a lower operational account for a reason relevant to that interpretation.
+
+If `S` and `R` make the same predictions on the chosen test, the test does not establish semantic surplus regardless of difficulty.
+
 ### Failure disposition
 
-If no discriminating obligation can be stated, the semantic label may be retained as a human rendering but the scientific claim ceiling remains:
-
-`VERIFIED_OPERATIONAL_RELATION / HUMAN_SEMANTIC_RENDERING_NOT_INDEPENDENTLY_ESTABLISHED`.
+If no claim-grounded discriminating obligation can be stated, preserve the lower operational result. A human semantic rendering may be recorded, but the semantic qualification remains unresolved/not independently established.
 
 ### Open attack
 
@@ -207,7 +213,7 @@ This criterion may be too strict, too weak, or circular. It must be challenged b
 
 ## R0.5 versus R2 placement proposal
 
-Keep the pre-R1 gate thin.
+Keep the pre-R1 gate thin and representation-neutral.
 
 Candidate R0.5 responsibilities:
 
@@ -221,9 +227,11 @@ Candidate R0.5 responsibilities:
 - `HYPOTHESIS_FAMILY_STATUS` at the level needed to expose open/misspecified rivals;
 - `CLAIM_CEILING` and `SCOPE`.
 
+R0.5 does not require a universal functional-class, form/referent, speaker/listener, or content ontology. Target-specific metadata may be carried when an exact claim needs it.
+
 Candidate R2/semantic-qualification responsibilities:
 
-- communicative use versus informational cue;
+- communicative use versus informational cue where applicable;
 - semantic interpretation versus operational relation;
 - confirmatory versus exploratory naming;
 - claim-discriminating holdouts/interventions;
@@ -235,17 +243,26 @@ This placement is provisional and should remain falsifiable by One/Four/Thirteen
 
 ## Current control-chain principle
 
-A strong candidate semantic result should survive a chain closer to:
+Do not treat the following as a universal semantic ladder. It is a **claim-construction checklist** whose steps are used only when entailed/applicable to the exact claim:
 
-`surface distinction exists`
-`-> learner boundary preserves required distinctions`
-`-> privileged telemetry/bridge oracles are excluded or scoped`
-`-> learner/counterpart attribution is clean`
-`-> target/rival family provenance is clean`
-`-> exploratory naming is separated from confirmation`
-`-> fresh evidence actually discriminates the claim from live rivals`
-`-> structured alternative pressure does not expose misspecification`
-`-> semantic interpretation adds a falsifiable obligation beyond the operational relation`
-`-> claim ceiling remains bounded to the tested world/intervention family`.
+- establish that a learner-accessible distinction exists;
+- verify that the learner boundary preserves the distinctions required by the claim;
+- exclude or scope privileged telemetry/bridge oracles;
+- establish learner/counterpart attribution as required;
+- keep target/rival family provenance clean;
+- separate exploratory naming from confirmation;
+- require fresh evidence that actually discriminates a semantic claim from live structured operational rivals;
+- stress structured alternative adequacy;
+- require any claimed semantic surplus to be claim-grounded rather than arbitrary difficulty;
+- preserve applicability, coverage, uncertainty, and claim ceiling.
 
-Passing this chain would still establish only `GROUNDED_WITHIN_TESTED_SCOPE` or a narrower status, never universal meaning.
+## Result packaging
+
+A completed run reports orthogonal state rather than one ambiguous generic `GROUNDED_WITHIN_TESTED_SCOPE` label:
+
+- **operational relation/grounding state** — what cross-system operational relation is actually supported;
+- **semantic interpretation/qualification state** — whether a separately frozen semantic interpretation has survived its claim-specific discriminating tests;
+- **applicability/coverage state** — which tests were meaningful and which remain unresolved/inapplicable;
+- **claim ceiling** — the strongest wording warranted by the exact evidence and scope.
+
+Research prose may use descriptions such as `operational correspondence supported within tested scope` or `semantic correspondence supported within tested scope`, but only with the corresponding evidence axis stated. No generic status silently licenses semantic interpretation, and no scoped result licenses universal meaning.

@@ -3,7 +3,7 @@
 Date: 2026-09-07
 Branch: `work/vera-semantic-pragmatics-r1-20260907`
 Base: `main@0b3285393ff319f18f40af8c2ba863edea0df2bf`
-Status: DESIGN_APPROVED_IN_CHAT / SPEC_PENDING_REVIEW / IMPLEMENTATION_NOT_STARTED
+Status: DESIGN_APPROVED_IN_CHAT / FIRST_CYCLE_IMPLEMENTED_ON_BRANCH / REVIEW_PENDING
 
 ## Purpose
 
@@ -222,4 +222,6 @@ This design does not:
 
 ## First implementation frontier
 
-After this spec is reviewed, implementation planning should begin with the crosswalk and literature/evidence ledger before modifying the current core architecture. That ordering gives later architecture edits explicit provenance and creates an audit trail for rejected as well as accepted predecessor ideas.
+The first cycle described by this spec has been implemented on the dedicated branch and is pending independent review. The cycle produced the provenance crosswalk, literature/evidence ledgers, neutral conceptual documents, the R3 pragmatics evaluator/controls/contract, and conservative project-integration edits.
+
+This status does not imply merge, harness implementation, semantic or pragmatic qualification, or acceptance as architecture canon. The next engineering frontier after review is implementation of the frozen evaluator/control harnesses on an explicitly authorized branch; any merge or protected integration remains separately authorized.

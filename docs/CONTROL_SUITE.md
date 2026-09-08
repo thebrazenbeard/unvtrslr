@@ -502,3 +502,152 @@ In addition to the general required reporting, record:
 - whether the tested distinction was identifiable from learner-visible evidence at all;
 - whether a third party could reconstruct the convention;
 - whether success depended on specifically human perceptual/pragmatic common ground.
+
+---
+
+## Human signed/nonverbal Pass 2 control overlays
+
+These overlays preserve the distinction between full signed languages, emerging/homesign systems, silent gesture, and nonlinguistic human behavior.
+
+### SNV-1 — raw signed-language control
+
+Supply modality-preserving signed-language data rather than English gloss strings.
+
+Acceptable learner inputs may include raw video, pose/kinematic streams, optical flow, or other representations that preserve the relevant manual/nonmanual timing without semantic labels.
+
+Run an explicitly invalid comparator using English glosses.
+
+**Failure caught:** pre-solving segmentation, lexical identity, simultaneity, and grammar through gloss annotation.
+
+### SNV-2 — simultaneous-channel preservation
+
+Construct meanings whose crucial evidence is distributed simultaneously across handshape/motion plus a nonmanual or second-manual channel.
+
+Compare:
+
+- full multimodal stream;
+- flattened sequential token stream;
+- one articulator removed;
+- synchrony jittered while marginal features remain.
+
+**Failure caught:** architecture silently assuming all language is one-dimensional token sequence.
+
+### SNV-3 — sign/gesture functional ambiguity
+
+Present physically similar point-like or iconic movements with different established functions across contexts: referential, participant marking, direction, command, discourse management, or nonlinguistic gesture.
+
+Do not supply the functional class.
+
+**Failure caught:** mapping human-looking form directly to an evaluator semantic label.
+
+### SNV-4 — shared-space subsidy matrix
+
+Vary whether the parties share:
+
+- coordinate origin;
+- orientation;
+- viewpoint;
+- object segmentation;
+- spatial-locus persistence;
+- scene visibility.
+
+Include a condition where a common UI coordinate system creates an artificial perfect bridge.
+
+**Failure caught:** treating renderer-normalized space as semantics discovered by the learners.
+
+### SNV-5 — visual iconicity ladder
+
+Pair:
+
+- highly iconic/motivated manual forms;
+- arbitrary conventional signs;
+- weak iconicity;
+- misleading resemblance aligned with a nuisance feature.
+
+**Failure caught:** claiming generic grounding when success depends on human visual iconicity.
+
+### SNV-6 — homesign versus community-language regime
+
+Compare:
+
+1. isolated individual/homesign-like production;
+2. dyadic negotiation;
+3. stable multi-user community;
+4. sequential cohort or transmission condition.
+
+Measure which properties appear at each regime rather than treating mature grammar as a prerequisite for semantic success.
+
+**Failure caught:** conflating dyadic convention, individual structured communication, community conventionalization, and language emergence.
+
+### SNV-7 — silent-gesture conventionalization
+
+Start hearing non-signers with no permitted speech/writing and an unfamiliar manual channel.
+
+Track form reduction, convergence, reuse, ambiguity, transfer, and third-party acquisition across repeated interaction.
+
+Include a one-shot pantomime condition.
+
+**Failure caught:** treating initially transparent pantomime as equivalent to a conventionalized language.
+
+### SNV-8 — facial-expression universality trap
+
+Construct a condition in which a facial movement is reliably used by the counterpart for a function that conflicts with an evaluator/pretrained `emotion` interpretation.
+
+Score recovery of demonstrated function, not agreement with a canonical emotion label.
+
+**Failure caught:** hard-coded human facial-expression semantics.
+
+### SNV-9 — linguistic/nonlinguistic face ambiguity
+
+In a signed-language control, allow the face/head/body to carry grammatical or prosodic information in some contexts and affective/paralinguistic information in others.
+
+**Failure caught:** preprocessing all nonmanual activity as emotion/noise or, conversely, as grammar.
+
+### SNV-10 — pointing/gaze label-channel trap
+
+Deliberately provide shared gaze or highlighted loci in one invalid condition and remove/asymmetrize them in the valid condition.
+
+**Failure caught:** experimenter attention cues acting as an undeclared referent label.
+
+### SNV-11 — community dependence
+
+Freeze a dyadic bridge and test it before and after multi-user transmission.
+
+Record whether additional systematicity appears without granting the later community system retroactive credit for what the original dyad knew.
+
+**Failure caught:** laundering community-created structure into evidence that the initial zero-shared-symbol pair discovered it.
+
+### SNV-12 — modality-preserving repair
+
+Allow misunderstanding/repair signals to be distributed across timing, repetition, gaze, facial action, spatial isolation, or manual modification without a dedicated `repair` token.
+
+**Failure caught:** assuming repair must be sequential, lexical, or verbally explicit.
+
+### SNV-13 — tactile channel control
+
+When touch is available, provide raw timing/location/force information without predefined social meaning. Compare cultures/contexts or synthetic roles where the same touch pattern has different functions.
+
+**Failure caught:** treating touch or interpersonal distance as a universal semantic code.
+
+### SNV-14 — mediation provenance / bridge-oracle control
+
+For any spatial, visual, pose, or landmark normalization, record the transform provenance. Include a deliberately invalid mediator that has evaluator truth plus receiver-specific representation access and inserts a perfectly generalizing visual cue.
+
+Expected result: the downstream distinction may be identifiable, but learner bridge attribution must fail and `EVALUATOR_SUBSIDY_DETECTED` must trigger.
+
+**Failure caught:** semantic normalization hidden in computer-vision/coordinate preprocessing rather than learned by the candidate.
+
+## Pass 2 reporting additions
+
+Record:
+
+- whether the source is an established signed language, emerging/community language, homesign, silent gesture, or nonlinguistic behavior;
+- raw modalities and preprocessing transforms;
+- simultaneous channels preserved or removed;
+- spatial frame/viewpoint common ground;
+- manual/nonmanual functional labels withheld from learners;
+- iconicity condition;
+- community size and transmission history;
+- whether a form/function mapping existed before the experiment;
+- mediation trust/provenance for vision, pose, coordinate, and attention transforms;
+- whether success survives a modality-preserving but semantically neutral replacement preprocessing pipeline.

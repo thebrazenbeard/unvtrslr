@@ -469,3 +469,127 @@ In addition to the existing bootstrap failures, record when applicable:
 - `ICONICITY_DEPENDENT` — a mapping succeeds only under motivated human-like form/meaning resemblance;
 - `REPAIR_DEPENDENT` — qualification succeeds only when an explicit repair channel is available;
 - `HUMAN_PRIOR_DEPENDENT` — success disappears under controls that remove pretrained/shared human semantic priors.
+
+---
+
+## Human signed/nonverbal evidence refinements — Pass 2
+
+These refinements derive from `research/HUMAN_NONVERBAL_AND_SIGNED.md`. They test which Pass 1 assumptions survive when speech is removed. They remain human evidence, not claims about arbitrary minds.
+
+### Preserve overlapping and simultaneous signal structure
+
+Do not force every candidate signal into a one-dimensional token sequence. The interaction representation should permit:
+
+- overlapping temporal spans;
+- independently moving articulators;
+- synchrony as a relation distinct from adjacency;
+- manual and nonmanual channels carrying different functions at the same time;
+- segmentation hypotheses that can cross conventional channel boundaries.
+
+A sequential tokenization may be one learned representation, but in the strongest condition it cannot be the only admissible ingress form.
+
+### Channel, environment, and grammar may overlap
+
+Signed languages can recruit physical space as a grammatical and discourse resource. Therefore the architecture should not assume a clean universal split between `message payload` and `shared environment`.
+
+A spatial locus can simultaneously be:
+
+- a physical location;
+- an indexical cue;
+- a discourse-maintained referential locus;
+- part of a grammatical construction;
+- or irrelevant motion.
+
+The learner must earn that functional classification. Shared coordinates, object IDs, or viewpoint-normalized space supplied by the experiment are declared common-ground subsidies.
+
+### Functional class is a hypothesis
+
+Forms such as pointing, gaze shifts, facial movements, head movements, posture changes, or repeated trajectories must not enter the learner state already labeled as:
+
+- pronoun;
+- demonstrative;
+- attention;
+- emotion;
+- question;
+- negation;
+- grammar;
+- repair;
+- signal.
+
+The same physical family can serve linguistic, paralinguistic, affective, interactional, or noncommunicative functions depending on system and context.
+
+### Separate dyadic bootstrap from community language emergence
+
+A bridge stabilized by two participants does not need to reproduce every property of a mature human language. Human emerging-sign evidence indicates that community use and transmission can add systematicity and grammatical complexity over time.
+
+Track at least three regimes separately:
+
+1. `ISOLATED_OR_DYADIC_CONVENTION`;
+2. `COMMUNITY_CONVENTIONALIZATION`;
+3. `INTERGENERATIONAL_OR_COHORT_TRANSMISSION`.
+
+Success at regime 1 should not be relabeled as full language emergence; failure to show mature grammar at regime 1 should not invalidate a useful semantic bridge.
+
+### Homesign is evidence for human structuring biases, not a universal grammar download
+
+Homesign research supports the claim that humans can build structured, productive communication without access to a conventional language model. It does not establish which of those structures are necessary for semantics, nor which would appear in nonhuman cognition.
+
+Contemporary critiques of homesign scholarship also require cautious terminology and separation between empirical structure and theoretical claims about what counts as language.
+
+### Pointing/deixis is not self-grounding
+
+Treat a pointing-like trajectory as an observable behavior. Candidate meanings may include reference, participant marking, location, direction, command, attention management, or another function.
+
+Qualification should vary:
+
+- target presence/absence;
+- competing salient loci;
+- viewpoint;
+- gaze alignment;
+- shared coordinate frame;
+- conventional versus novel pointing practice.
+
+The system should fail if it simply maps human-looking pointing to evaluator `THAT` labels.
+
+### Visual iconicity remains a graded condition
+
+Add visual/manual counterparts to the Pass 1 iconicity ladder:
+
+- strongly motivated/iconic forms;
+- weakly iconic forms;
+- arbitrary conventional forms;
+- misleading resemblance aligned to nuisance structure.
+
+Iconicity can accelerate learning without settling which aspect of the form is intended as meaningful.
+
+### Facial and body movements require cultural/contextual qualification
+
+Do not treat canonical human facial-expression labels as universal truth. When facial or bodily patterns are used, score the counterpart's demonstrated functional use rather than resemblance to a preselected emotion taxonomy.
+
+A facial movement can also be grammatical or prosodic in a signed language; affective and linguistic interpretations must remain separate hypotheses until evidence resolves them.
+
+### R0.5 must include functional ambiguity as well as distinguishability
+
+Pass 2 sharpens the R0.5 distinction between information availability and semantic attribution. A cue may reliably distinguish states while leaving its function underdetermined.
+
+For each distinguishing witness track:
+
+- physical origin;
+- transformations/provenance;
+- temporal relation to other channels;
+- functional-class hypotheses still live;
+- shared-geometry/embodiment assumptions;
+- whether the mapping pre-existed the interaction, was negotiated dyadically, or emerged through community transmission.
+
+A witness can be statistically informative without justifying the evaluator's preferred semantic label.
+
+### Additional scoped outcomes
+
+Where useful, record:
+
+- `SIMULTANEITY_DEPENDENT` — success disappears when overlapping channels are flattened;
+- `SHARED_SPATIAL_FRAME_DEPENDENT` — success relies on a supplied coordinate/viewpoint normalization;
+- `POINTING_PRIOR_DEPENDENT` — performance relies on human-pretrained deictic expectations;
+- `FACIAL_CATEGORY_PRIOR_DEPENDENT` — performance relies on evaluator/pretrained emotion labels rather than counterpart function;
+- `COMMUNITY_TRANSMISSION_DEPENDENT` — structure appears only after multi-user or cohort transmission;
+- `SEQUENTIALIZATION_LOSS` — a preprocessing step deletes or distorts meaning-bearing simultaneous structure.

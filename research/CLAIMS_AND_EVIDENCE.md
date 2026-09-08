@@ -31,7 +31,7 @@ Grounded language-game and robot experiments show shared lexicons and simple com
 
 **Status:** `SUPPORTED_PRIOR_WORK`
 
-Bouchacourt & Baroni (2018) show successful communication despite visual representations that do not capture the conceptual properties humans assume the symbols denote.
+Bouchacourt & Baroni (2018) show successful communication despite visual representations that do not capture the conceptual properties humans might assume.
 
 **Project consequence:** task reward alone cannot qualify semantic grounding.
 
@@ -409,74 +409,6 @@ If inaccessible simulator or instrumentation machinery secretly exports privileg
 
 **Project consequence:** bind generator/renderer/instrumentation artifacts where possible and fail closed with a narrower claim when material generative provenance cannot be established.
 
-## R3 pragmatics and interaction additions
-
-## C051 — Human communicated meaning can exceed conventional sentence meaning
-
-**Status:** `SUPPORTED_LIMITED_SCOPE`
-
-Gricean and relevance-theoretic pragmatics provide extensive human-language evidence that what a speaker communicates can depend on context and inference beyond conventional sentence-level content.
-
-**Limit:** this does not establish a universal intention-recognition architecture or human pragmatic categories for arbitrary agents.
-
-**Project consequence:** R3 may test indirect/function-level interpretation while requiring explicit inference provenance and calibrated alternatives.
-
-## C052 — Human conventions can be partner-specific and history-dependent
-
-**Status:** `SUPPORTED_PRIOR_WORK`
-
-Experimental work on conceptual pacts shows that human interlocutors develop partner-specific conceptualizations and lexical entrainment that persist beyond immediate informativeness.
-
-**Project consequence:** convention records should bind participants and interaction history; partner-specific success must not be silently promoted to a general mapping.
-
-## C053 — Repair behavior is evidence of interaction structure, not proof of understanding
-
-**Status:** `SUPPORTED_LIMITED_SCOPE / DESIGN_REQUIREMENT`
-
-Conversation-analysis and cross-linguistic repair research show organized human repair practices, but a reflex policy can imitate repetition or correction after failure without representing what was misunderstood.
-
-**Project consequence:** R3 tests targeted repair against `RN04_repair_reflex` and scores novel trouble-source discrimination rather than repair-like surface behavior alone.
-
-## C054 — Task success and even causal influence are insufficient for pragmatic equivalence
-
-**Status:** `SUPPORTED_PRIOR_WORK / DESIGN_REQUIREMENT`
-
-Emergent-communication research shows that high reward, message/action correlation, and in some cases causal use can coexist with task-bound protocols that do not preserve reusable semantic or pragmatic distinctions.
-
-**Project consequence:** pragmatic qualification requires function discrimination, changed-task transfer, partner transfer where applicable, conservation audits, and shortcut controls.
-
-## C055 — Functional similarity must not erase meaning-bearing form
-
-**Status:** `SUPPORTED_PRIOR_WORK / DESIGN_REQUIREMENT`
-
-Research on iconicity, systematicity, gesture, timing, and multimodality shows that form can itself carry information. The predecessor slogan “translate functions, not words” is therefore too strong if interpreted as function automatically outranking form.
-
-**Project consequence:** translation should preserve the tested invariants that matter in scope, including formal/iconic structure when demonstrated. `FUNCTIONALLY_EQUIVALENT` remains typed and scoped rather than synonymous with `same meaning`.
-
-## C056 — Operational common ground should remain separate from claims about another agent's internal state
-
-**Status:** `DESIGN_REQUIREMENT / SUPPORTED_LIMITED_SCOPE`
-
-Human common-ground and grounding theories motivate tracking evidence of jointly usable conventions, while convention theory does not require UNVTRSLR to prove infinitely nested symmetric beliefs.
-
-**Project consequence:** separate `interactionally_supported_common_ground`, `counterpart_epistemic_hypothesis`, and evaluator-only mutual-state truth.
-
-## C057 — Human pragmatic categories are useful adversarial families, not species-neutral primitives
-
-**Status:** `SUPPORTED_LIMITED_SCOPE / PROJECT_BOUNDARY`
-
-Human-language research supports rich distinctions such as deixis, repair, presupposition, implicature, addressee effects, and request/assertion-like functions. Cross-linguistic diversity cautions against promoting those manifestations into a universal ontology.
-
-**Project consequence:** R3 uses human categories as control families while requiring a nonhuman positive oracle that can pass without human sentence or speech-act structure.
-
-## C058 — Absence or withholding is meaningful only when an expectation relation is evidenced
-
-**Status:** `DESIGN_REQUIREMENT / PROJECT_HYPOTHESIS`
-
-Human and animal signaling literature motivates treating omission or withholding as potentially communicative, but missing behavior is also explained by noise, latency, sensor failure, inactivity, or physical inability.
-
-**Project consequence:** R3 `P06` requires counterfactual evidence distinguishing strategic withholding from matched random loss before absence receives semantic credit.
-
 ## Open research gaps to investigate next
 
 1. Formal literature on signalhood/intention detection without labeled communication channels.
@@ -497,10 +429,6 @@ Human and animal signaling literature motivates treating omission or withholding
 16. Methods for verifying instrumentation/generative provenance without circularly trusting the experiment author.
 17. Structured-rival generation methods that reduce evaluator ontology lock-in without making the hypothesis family unfalsifiably open-ended.
 18. Boundary-model tests for distributed, overlapping, swarm, and non-agent-like systems.
-19. Species-neutral operationalizations of communicative function that do not presuppose human speech-act inventories.
-20. Distinguishing false common ground from genuinely shared convention when internal representations are unobservable.
-21. Formal tests for pragmatic conservation under asymmetric ontology and modality.
-22. Conditions under which absence/withholding can be identified as a causal signal without over-attribution.
 
 ## Promotion rule
 
@@ -522,5 +450,3 @@ For stronger semantic interpretation claims, additionally require where material
 - generative/witness provenance sufficient for the claim;
 - an evidence-supported claim ceiling;
 - a claim-specific falsifiable semantic delta rather than arbitrary extra difficulty.
-
-For stronger pragmatic interpretation claims, apply the same claim-control discipline: preserve lower operational success when the pragmatic label remains unresolved, bind the tested participant/context/function family, and require evidence that distinguishes the claimed pragmatic interpretation from strong live non-pragmatic or alternative-function explanations.

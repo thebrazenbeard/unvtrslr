@@ -119,7 +119,7 @@ For a gesture-like system independently manipulate:
 - opportunity to persist;
 - opportunity to elaborate or switch modality.
 
-Intentionality evidence may raise a signalhood/function score when behavior changes appropriately, but its absence must not invalidate communication systems whose operation does not require flexible intentional production.
+Intentionality evidence may raise a signalhood/function score when behavior changes appropriately, but its absence must not invalidate communication systems whose operation does not require flexible intentional production. If the exact intentionality probe is not supported in scope, report the separate applicability state (`STRUCTURALLY_INAPPLICABLE_IN_SCOPE` or `APPLICABILITY_UNRESOLVED`) rather than treating inapplicability as a pass.
 
 Failure caught: either assuming intention from structured behavior or making human-like intention a universal prerequisite.
 
@@ -174,13 +174,28 @@ Expected reporting should distinguish:
 - receiver perceptual quantity;
 - empirically supported bridge among them.
 
-## Required evidence ladder
+## Claim-specific evidence vector
 
-Every nonhuman-inspired control should state which rung it tests:
+Every nonhuman-inspired control should record only the evidence axes that are relevant to the exact claim under test. Candidate axes include:
 
-`STRUCTURE -> RECEIVER_DISCRIMINATION -> COMMUNICATIVE_FUNCTION -> CONTEXT_ASSOCIATION -> REFERENCE_LIKE_EVIDENCE -> COMBINATION -> SOCIAL_LEARNING/CULTURE -> INTENTIONALITY_EVIDENCE -> SEMANTIC_CLAIM_CEILING`
+- observable structure;
+- receiver discrimination;
+- communicative function;
+- context association;
+- reference-like evidence;
+- combination/systematic reuse;
+- social learning/culture;
+- intentionality evidence;
+- semantic-qualification evidence.
 
-A lower rung must never be silently promoted to a higher rung.
+For each relevant axis record:
+
+- applicability: `APPLICABLE_TESTED | STRUCTURALLY_INAPPLICABLE_IN_SCOPE | APPLICABILITY_UNRESOLVED`;
+- evidence state and exact evidence references;
+- whether the axis is a prerequisite for the exact claim;
+- the resulting effect on coverage and claim ceiling.
+
+These axes form a partial prerequisite graph, not one universal monotonic ladder. Evidence on one axis must never be silently relabeled as evidence for a different axis or stronger semantic claim.
 
 ## Required provenance fields
 

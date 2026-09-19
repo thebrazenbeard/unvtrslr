@@ -8,11 +8,13 @@ This document pressure-tests `docs/FIRST_100_CHALLENGES.md` against the Pass 3 n
 
 The first 100 are evaluator challenges, not a universal developmental ladder, not 100 universal concepts, and not requirements that every communication system must satisfy.
 
-Pass 3 adds a new allowed outcome:
+Current applicability handling uses a separate three-state axis:
 
-`NOT_APPLICABLE_TO_OBSERVED_COMMUNICATION_SYSTEM`
+- `APPLICABLE_TESTED`;
+- `STRUCTURALLY_INAPPLICABLE_IN_SCOPE`;
+- `APPLICABILITY_UNRESOLVED`.
 
-Use it only when the challenge itself presupposes an unsupported ontology/function for the tested system. Do not use it to excuse an ordinary failure on a challenge whose prerequisites are actually present.
+Use `STRUCTURALLY_INAPPLICABLE_IN_SCOPE` only when independent, non-circular evidence shows that the exact challenge presupposes an unavailable ontology/function/capability in the declared scope. Candidate failure cannot establish inapplicability. `APPLICABILITY_UNRESOLVED` is neither pass nor exclusion. Historical Pass-3 checkpoints may retain the older `NOT_APPLICABLE_TO_OBSERVED_COMMUNICATION_SYSTEM` label for provenance.
 
 ## Cross-species pressure by family
 
@@ -109,7 +111,7 @@ Challenges 81-90 remain extremely useful for testing a mediator that claims broa
 Required labels:
 - `HUMAN_CONTROL_RELEVANT`;
 - `AGENTIC_SYSTEM_RELEVANT`;
-- or `NOT_APPLICABLE_TO_OBSERVED_COMMUNICATION_SYSTEM`.
+- or the separate applicability state `STRUCTURALLY_INAPPLICABLE_IN_SCOPE` / `APPLICABILITY_UNRESOLVED`, as evidence warrants.
 
 Specific caution:
 - `goal`, `belief`, `known`, `unknown`, `assertion`, `question`, and `warning` are evaluator interpretations until operationally grounded.

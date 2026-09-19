@@ -146,6 +146,44 @@ and separately:
 
 No excluded challenge increases the pass numerator.
 
+### Applicability axes do not translate implicitly
+
+The project currently uses applicability language on three different axes. They are intentionally non-interchangeable:
+
+1. **First-100 challenge applicability** (this document):
+   - `APPLICABLE_TESTED`
+   - `STRUCTURALLY_INAPPLICABLE_IN_SCOPE`
+   - `APPLICABILITY_UNRESOLVED`
+
+2. **Fixture capability availability** (the V2 evaluation contract capability manifest):
+   - `REQUIRED_BY_FIXTURE`
+   - `SUPPORTED_OPTIONAL`
+   - `NOT_APPLICABLE_JUSTIFIED`
+   - `UNRESOLVED`
+
+3. **Operational grounding-dimension applicability** (the V2 evaluation contract grounding vector):
+   - `REQUIRED_AND_TESTED`
+   - `REQUIRED_BUT_NOT_TESTED`
+   - `NOT_APPLICABLE_JUSTIFIED`
+   - `UNRESOLVED`
+
+No state on one axis automatically promotes, translates, or satisfies a state on another axis.
+
+In particular:
+
+- `STRUCTURALLY_INAPPLICABLE_IN_SCOPE` for a challenge does not by itself establish `NOT_APPLICABLE_JUSTIFIED` for a fixture capability or operational grounding dimension;
+- `NOT_APPLICABLE_JUSTIFIED` for a capability or dimension does not by itself establish that a First-100 challenge is structurally inapplicable;
+- a structurally inapplicable challenge may affect another axis only through an explicit rule that preserves the relevant positive-evidence, anti-evasion, re-entry, and coverage-reduction requirements of both axes;
+- unresolved status on any required axis remains unresolved and cannot be laundered through a more favorable status on another axis.
+
+Any machine-readable manifest, certificate, or receipt that carries applicability state must identify the axis explicitly, using separate fields or an equivalent typed namespace such as:
+
+- `challenge_applicability_status`;
+- `fixture_capability_status`;
+- `operational_dimension_applicability_status`.
+
+A generic untyped `applicability_status` is insufficient when records from more than one of these axes can be composed.
+
 ## 5. Orthogonal qualification state
 
 Operational evidence and semantic qualification are not successive rungs of one ladder. A run records independent axes.

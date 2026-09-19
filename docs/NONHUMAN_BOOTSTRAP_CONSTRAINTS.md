@@ -196,8 +196,15 @@ Add where applicable:
 - `INTENTIONALITY_UNRESOLVED_NOT_REQUIRED`;
 - `COLLECTIVE_PROVENANCE_ONLY`;
 - `PERSISTENT_ENVIRONMENTAL_SIGNAL`;
-- `EVALUATOR_VARIABLE_NOT_SHARED_PERCEPTUAL_VARIABLE`;
-- `NOT_APPLICABLE_TO_OBSERVED_COMMUNICATION_SYSTEM`.
+- `EVALUATOR_VARIABLE_NOT_SHARED_PERCEPTUAL_VARIABLE`.
+
+Applicability is a separate axis from failure state:
+
+- `APPLICABLE_TESTED`;
+- `STRUCTURALLY_INAPPLICABLE_IN_SCOPE`;
+- `APPLICABILITY_UNRESOLVED`.
+
+`STRUCTURALLY_INAPPLICABLE_IN_SCOPE` requires non-circular evidence that the exact probe's prerequisite is absent in scope; it is not a pass and reduces the coverage/claim ceiling where the omitted probe matters. `APPLICABILITY_UNRESOLVED` is neither pass nor exclusion. Frozen Pass-3 checkpoints may retain the older `NOT_APPLICABLE_TO_OBSERVED_COMMUNICATION_SYSTEM` wording as historical provenance, but it is not the current machine-status vocabulary.
 
 ## 14. Revised thesis pressure
 

@@ -6,9 +6,9 @@
   "draft_pr": 5,
   "canonical_main_observed": "903d79c6e47bb9f73bd7700edd35315777e9f5d1",
   "checkpoint_path": "docs/superpowers/execution-frontiers/2026-09-19-unvtrslr-semantic-pragmatics-exodus-reconstruction-v1.md",
-  "checkpoint_commit": "84d28e57515ec69b9486cf3e309b61c03d83c031",
-  "checkpoint_git_blob": "2347618ea4bc8cb56227e419809afab5ecad58b5",
-  "checkpoint_sha256": "777874fe3bafe3cb7a308a89110c1769d01226121e7c489cbc991719423a5ae7",
+  "checkpoint_commit": "b555eb00267152585a1cc230ebea7409290ea40f",
+  "checkpoint_git_blob": "f431c477dc2e98aeeec72361718d2bc4142f726d",
+  "checkpoint_sha256": "e8c3e6c78bc9884541ecf4da1aaee535f3d122f6b0ba55b01ea51d1f7822341c",
   "pre_checkpoint_head": "ce24741272d545ace327c382144f994f0be0653c",
   "pr2_observed_head": "0eccfc36e1993323fb13199bbf86beaf424b47c9",
   "pr4_observed_head": "13b6c490138809c705294b196d2984a2666b81b9",
@@ -16,5 +16,9 @@
   "bus_vera_route": "bus/vera-v2",
   "future_interface_owner": "BT2 Coordinator",
   "next_directive": "BT2::UNVTRSLR::RECONSTRUCT_AND_INTEGRATE::PR2_PR4_PR5_PROJECTV2_BUS",
-  "protected_effects_performed": false
+  "protected_effects_performed": false,
+  "pr5_project_v2_membership_observed": true,
+  "pr5_project_v2_added_at": "2026-09-20T00:16:59Z",
+  "pr5_project_v2_status_changed_at": "2026-09-20T00:17:01Z",
+  "branch_head_before_receipt": "b555eb00267152585a1cc230ebea7409290ea40f"
 }

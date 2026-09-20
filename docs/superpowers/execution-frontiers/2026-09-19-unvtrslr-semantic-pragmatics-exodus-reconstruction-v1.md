@@ -77,6 +77,9 @@ Draft PR created during Exodus:
 - base: `main`
 - draft: true
 - pre-checkpoint PR head: `ce24741272d545ace327c382144f994f0be0653c`
+- post-initial-checkpoint PR head observed before this refresh: `f976f5deb79e4639b65fa25d64994e8fecc519f2`
+- mergeable: true at that observation
+- ProjectV2 membership/status automation observed after PR creation
 - claim ceiling: design/research only; not merged, not implemented, not qualified.
 
 ### Other live draft streams that materially constrain this lane
@@ -121,7 +124,7 @@ The available GitHub connector exposes GraphQL-backed PR review/review-thread op
 
 At this evacuation cut the connector does NOT expose a generic ProjectV2 board query that returns project title, fields, views, or item field values. Do not infer those values from membership events.
 
-PR #5 was newly created during evacuation. Its ProjectV2 membership/status must be fresh-checked later; no event had appeared immediately after creation.
+PR #5 was added to a ProjectV2 by GitHub project automation at 2026-09-20T00:16:59Z, followed by a ProjectV2 item-status change at 2026-09-20T00:17:01Z. The generic board title/field values remain unavailable through the current connector surface and must not be inferred.
 
 Do not mutate Project Settings without Patrick's exact authority.
 

@@ -151,3 +151,31 @@ __all__ += [
     "strict_renderer_mapping",
     "target_grounding_model_from_dict",
 ]
+
+from .target_constructions import (
+    FrozenTargetConstruction,
+    OperationalSemanticSequence,
+    QualifiedConstructionTranslation,
+    TargetConstructionEpisode,
+    TargetConstructionModel,
+    TargetConstructionRendering,
+    fit_target_construction_model,
+    operational_semantic_sequence,
+    render_semantic_sequence,
+    target_construction_model_from_dict,
+    translate_qualified_construction,
+)
+
+__all__ += [
+    "FrozenTargetConstruction",
+    "OperationalSemanticSequence",
+    "QualifiedConstructionTranslation",
+    "TargetConstructionEpisode",
+    "TargetConstructionModel",
+    "TargetConstructionRendering",
+    "fit_target_construction_model",
+    "operational_semantic_sequence",
+    "render_semantic_sequence",
+    "target_construction_model_from_dict",
+    "translate_qualified_construction",
+]

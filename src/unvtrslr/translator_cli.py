@@ -9,9 +9,11 @@ from .cli import _read_wav
 from .translator import (
     AcousticContextEpisode,
     fit_reference_translator,
+    fit_source_calibration_profile,
     prepare_audio_evidence,
     reference_translator_model_from_dict,
-    translate_source_evidence,
+    source_calibration_profile_from_dict,
+    translate_query_evidence,
 )
 from .unit_registry import LocalUnitEvidence
 
@@ -50,13 +52,12 @@ def _load_episodes(path: str) -> list[AcousticContextEpisode]:
                 continue
             obj = json.loads(raw)
             try:
-                evidence = [_row(row) for row in obj["evidence"]]
                 episodes.append(
                     AcousticContextEpisode.build(
                         obj["episode_id"],
                         obj["source_id"],
                         obj["context"],
-                        evidence,
+                        [_row(row) for row in obj["evidence"]],
                     )
                 )
             except KeyError as exc:
@@ -73,6 +74,13 @@ def _load_model(path: str):
     return reference_translator_model_from_dict(obj)
 
 
+def _load_profile(path: str, model):
+    obj = json.loads(Path(path).read_text(encoding="utf-8"))
+    if "profile" in obj:
+        obj = obj["profile"]
+    return source_calibration_profile_from_dict(obj, model)
+
+
 def _load_renderer(path: str | None) -> dict[str, str] | None:
     if path is None:
         return None
@@ -87,7 +95,7 @@ def _load_renderer(path: str | None) -> dict[str, str] | None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="UNVTRSLR reference translator fit/prepare/translate CLI."
+        description="UNVTRSLR source-calibrated reference translator CLI."
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -104,28 +112,36 @@ def main() -> None:
 
     fit = subparsers.add_parser(
         "fit",
-        help="fit a frozen reference translator from JSONL acoustic/context episodes",
+        help="fit a frozen translator from JSONL acoustic/context episodes",
     )
     fit.add_argument("episodes")
     fit.add_argument("--semantic-min-sources", type=int, default=2)
+    fit.add_argument("--semantic-min-positive-per-source", type=int, default=2)
     fit.add_argument("--min-sources", type=int, default=2)
     fit.add_argument("--min-units-per-source", type=int, default=3)
     fit.add_argument("--cluster-distance", type=float, default=0.65)
     fit.add_argument("--match-threshold", type=float, default=None)
 
+    calibrate = subparsers.add_parser(
+        "calibrate",
+        help=(
+            "freeze one new source's normalization profile from calibration "
+            "evidence only"
+        ),
+    )
+    calibrate.add_argument("model")
+    calibrate.add_argument("evidence")
+
     translate = subparsers.add_parser(
         "translate",
-        help="translate a prepared one-source evidence batch with a frozen model",
+        help=(
+            "translate query evidence using a previously frozen source profile"
+        ),
     )
     translate.add_argument("model")
+    translate.add_argument("profile")
     translate.add_argument("evidence")
     translate.add_argument("--renderer")
-    translate.add_argument(
-        "--query-recording",
-        action="append",
-        default=None,
-        help="translate only units from this recording ID; repeatable",
-    )
 
     args = parser.parse_args()
 
@@ -148,6 +164,9 @@ def main() -> None:
         model, registry = fit_reference_translator(
             _load_episodes(args.episodes),
             semantic_min_sources=args.semantic_min_sources,
+            semantic_min_positive_per_source=(
+                args.semantic_min_positive_per_source
+            ),
             min_sources=args.min_sources,
             min_units_per_source=args.min_units_per_source,
             cluster_distance=args.cluster_distance,
@@ -166,22 +185,26 @@ def main() -> None:
         return
 
     model = _load_model(args.model)
-    evidence = _load_evidence(args.evidence)
-    query_keys = None
-    if args.query_recording:
-        allowed = set(args.query_recording)
-        query_keys = [
-            (row.recording_id, row.source_id, row.local_unit_id)
-            for row in evidence
-            if row.recording_id in allowed
-        ]
-        if not query_keys:
-            raise ValueError("no evidence rows matched --query-recording")
 
-    result = translate_source_evidence(
+    if args.command == "calibrate":
+        profile = fit_source_calibration_profile(
+            model,
+            _load_evidence(args.evidence),
+        )
+        print(
+            json.dumps(
+                {"profile": profile.to_dict()},
+                indent=2,
+                sort_keys=True,
+            )
+        )
+        return
+
+    profile = _load_profile(args.profile, model)
+    result = translate_query_evidence(
         model,
-        evidence,
-        query_keys=query_keys,
+        profile,
+        _load_evidence(args.evidence),
         renderer=_load_renderer(args.renderer),
     )
     print(json.dumps(asdict(result), indent=2, sort_keys=True))

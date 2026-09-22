@@ -30,10 +30,14 @@ from .translator import (
     FrozenSemanticRelation,
     ReferenceTranslation,
     ReferenceTranslatorModel,
+    SourceCalibrationProfile,
     fit_reference_translator,
+    fit_source_calibration_profile,
     freeze_operational_relations,
     prepare_audio_evidence,
     reference_translator_model_from_dict,
+    source_calibration_profile_from_dict,
+    translate_query_evidence,
     translate_source_evidence,
 )
 
@@ -59,9 +63,13 @@ __all__ = [
     "FrozenSemanticRelation",
     "ReferenceTranslation",
     "ReferenceTranslatorModel",
+    "SourceCalibrationProfile",
     "fit_reference_translator",
+    "fit_source_calibration_profile",
     "freeze_operational_relations",
     "prepare_audio_evidence",
     "reference_translator_model_from_dict",
+    "source_calibration_profile_from_dict",
+    "translate_query_evidence",
     "translate_source_evidence",
 ]

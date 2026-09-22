@@ -25,6 +25,17 @@ from .event_evidence import (
     evidence_from_audio_event_result,
     evidence_from_event_frames,
 )
+from .translator import (
+    AcousticContextEpisode,
+    FrozenSemanticRelation,
+    ReferenceTranslation,
+    ReferenceTranslatorModel,
+    fit_reference_translator,
+    freeze_operational_relations,
+    prepare_audio_evidence,
+    reference_translator_model_from_dict,
+    translate_source_evidence,
+)
 
 __all__ = [
     "acoustic_fingerprint",
@@ -44,4 +55,13 @@ __all__ = [
     "frozen_unit_model_from_dict",
     "evidence_from_audio_event_result",
     "evidence_from_event_frames",
+    "AcousticContextEpisode",
+    "FrozenSemanticRelation",
+    "ReferenceTranslation",
+    "ReferenceTranslatorModel",
+    "fit_reference_translator",
+    "freeze_operational_relations",
+    "prepare_audio_evidence",
+    "reference_translator_model_from_dict",
+    "translate_source_evidence",
 ]

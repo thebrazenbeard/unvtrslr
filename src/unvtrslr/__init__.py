@@ -179,3 +179,23 @@ __all__ += [
     "target_construction_model_from_dict",
     "translate_qualified_construction",
 ]
+
+from .multilingual_qualification import (
+    EvaluationRecord,
+    MultilingualQualificationReport,
+    QualificationThresholds,
+    SliceMetrics,
+    TrainingExposure,
+    audit_holdout_split,
+    evaluate_multilingual_holdout,
+)
+
+__all__ += [
+    "EvaluationRecord",
+    "MultilingualQualificationReport",
+    "QualificationThresholds",
+    "SliceMetrics",
+    "TrainingExposure",
+    "audit_holdout_split",
+    "evaluate_multilingual_holdout",
+]

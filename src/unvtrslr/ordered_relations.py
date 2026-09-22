@@ -67,6 +67,8 @@ class OrderedRelationModel:
     schema: str
     model_id: str
     claim_ceiling: str
+    translator_model_id: str
+    acoustic_model_id: str
     min_ordered_support: int
     min_reverse_support: int
     min_order_source_coverage: int
@@ -406,8 +408,12 @@ class OrderedRelationLearner:
 def _ordered_model_id(
     learner: OrderedRelationLearner,
     relations: Sequence[FrozenOrderedRelation],
+    translator_model_id: str,
+    acoustic_model_id: str,
 ) -> str:
     parts = [
+        str(translator_model_id),
+        str(acoustic_model_id),
         str(learner.min_ordered_support),
         str(learner.min_reverse_support),
         str(learner.min_order_source_coverage),
@@ -447,8 +453,13 @@ def _ordered_model_id(
 
 def fit_ordered_relation_model(
     episodes: Iterable[Episode],
+    *,
+    translator_model_id: str,
+    acoustic_model_id: str,
     **learner_kwargs,
 ) -> OrderedRelationModel:
+    if not translator_model_id or not acoustic_model_id:
+        raise ValueError("translator/acoustic model IDs are required")
     learner = OrderedRelationLearner(**learner_kwargs).fit(episodes)
     relations: list[FrozenOrderedRelation] = []
     for first, second in learner.pairs:
@@ -475,11 +486,18 @@ def fit_ordered_relation_model(
     if not relations:
         raise ValueError("no ordered relation survived the frozen evidence gates")
 
-    model_id = _ordered_model_id(learner, relations)
+    model_id = _ordered_model_id(
+        learner,
+        relations,
+        translator_model_id,
+        acoustic_model_id,
+    )
     return OrderedRelationModel(
         schema=_ORDER_SCHEMA,
         model_id=model_id,
         claim_ceiling=_ORDER_CLAIM_CEILING,
+        translator_model_id=str(translator_model_id),
+        acoustic_model_id=str(acoustic_model_id),
         min_ordered_support=learner.min_ordered_support,
         min_reverse_support=learner.min_reverse_support,
         min_order_source_coverage=learner.min_order_source_coverage,
@@ -515,6 +533,8 @@ def ordered_relation_model_from_dict(obj: Mapping) -> OrderedRelationModel:
         schema=str(obj["schema"]),
         model_id=str(obj["model_id"]),
         claim_ceiling=str(obj["claim_ceiling"]),
+        translator_model_id=str(obj["translator_model_id"]),
+        acoustic_model_id=str(obj["acoustic_model_id"]),
         min_ordered_support=int(obj["min_ordered_support"]),
         min_reverse_support=int(obj["min_reverse_support"]),
         min_order_source_coverage=int(obj["min_order_source_coverage"]),
@@ -553,7 +573,12 @@ def ordered_relation_model_from_dict(obj: Mapping) -> OrderedRelationModel:
         min_information_bits=model.min_information_bits,
         ambiguity_margin=model.ambiguity_margin,
     )
-    expected = _ordered_model_id(learner, model.relations)
+    expected = _ordered_model_id(
+        learner,
+        model.relations,
+        model.translator_model_id,
+        model.acoustic_model_id,
+    )
     if expected != model.model_id:
         raise ValueError("ordered relation model integrity check failed")
     return model
@@ -610,6 +635,12 @@ def translate_qualified_sequence(
     renderer: Mapping[str, str] | None = None,
 ) -> StructuredReferenceTranslation:
     """Compose qualified acoustic/lexical translation with ordered relations."""
+    ordered_model = ordered_relation_model_from_dict(ordered_model.to_dict())
+    if ordered_model.translator_model_id != translator_model.model_id:
+        raise ValueError("ordered model belongs to a different translator model")
+    if ordered_model.acoustic_model_id != translator_model.acoustic_model.model_id:
+        raise ValueError("ordered model belongs to a different acoustic model")
+
     lexical = translate_qualified_query(
         translator_model,
         qualified_source,

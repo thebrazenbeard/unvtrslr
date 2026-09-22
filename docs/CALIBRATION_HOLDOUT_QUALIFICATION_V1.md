@@ -88,7 +88,9 @@ Only a profile satisfying both gates reaches:
 - qualification thresholds;
 - resulting status.
 
-Its content-derived `qualification_id` fails closed on tampering.
+Its content-derived `qualification_id` fails closed on ordinary tampering.
+
+The ID is an integrity/provenance checksum, **not a cryptographic authenticity signature**. Reload therefore also reconstructs logical constraints independently of the hash: supported fraction must equal the stored counts, matched global IDs must exist in the frozen acoustic model, supported distances cannot exceed the frozen match threshold, prototype coverage cannot exceed supported count, and the stored qualification status must follow from the frozen metrics and thresholds. Recomputing the hash cannot legitimize an internally impossible certificate.
 
 The certificate claim ceiling is:
 

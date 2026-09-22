@@ -14,6 +14,7 @@ dependencies = [
 
 [project.scripts]
 unvtrslr-fingerprint = "unvtrslr.cli:main"
+unvtrslr-register-units = "unvtrslr.registry_cli:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

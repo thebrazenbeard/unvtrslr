@@ -303,6 +303,47 @@ def source_calibration_qualification_from_dict(
         set(qualification.matched_global_units)
     ):
         raise ValueError("qualification prototype coverage metadata is inconsistent")
+    if tuple(sorted(set(qualification.matched_global_units))) != qualification.matched_global_units:
+        raise ValueError("qualification matched global units must be sorted and unique")
+    if qualification.distinct_global_unit_count > qualification.supported_unit_count:
+        raise ValueError("qualification prototype coverage exceeds supported count")
+    expected_fraction = (
+        qualification.supported_unit_count
+        / qualification.qualification_unit_count
+    )
+    if abs(qualification.supported_fraction - expected_fraction) > 1e-12:
+        raise ValueError("qualification supported fraction is inconsistent")
+    valid_global_ids = {
+        prototype.global_unit_id
+        for prototype in model.acoustic_model.prototypes
+    }
+    if any(
+        global_id not in valid_global_ids
+        for global_id in qualification.matched_global_units
+    ):
+        raise ValueError("qualification references unknown frozen acoustic unit")
+    if (
+        qualification.max_supported_distance is not None
+        and qualification.max_supported_distance
+        > model.acoustic_model.match_threshold + 1e-12
+    ):
+        raise ValueError("qualification supported distance exceeds acoustic threshold")
+    if qualification.min_supported_fraction <= 0.0 or qualification.min_supported_fraction > 1.0:
+        raise ValueError("qualification minimum supported fraction is invalid")
+    if qualification.min_distinct_global_units < 2:
+        raise ValueError("qualification minimum prototype coverage is invalid")
+    expected_status = (
+        "INSUFFICIENT_HELD_OUT_MATCH_RATE"
+        if qualification.supported_fraction < qualification.min_supported_fraction
+        else (
+            "INSUFFICIENT_HELD_OUT_PROTOTYPE_COVERAGE"
+            if qualification.distinct_global_unit_count
+            < qualification.min_distinct_global_units
+            else "HELD_OUT_ACOUSTIC_CALIBRATION_QUALIFIED"
+        )
+    )
+    if qualification.status != expected_status:
+        raise ValueError("qualification status is inconsistent with frozen metrics")
 
     expected = _qualification_id(
         model,

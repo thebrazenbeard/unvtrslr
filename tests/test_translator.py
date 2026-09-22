@@ -218,3 +218,32 @@ def test_translator_model_rejects_tampered_semantic_relation():
         assert "integrity" in str(exc)
     else:
         raise AssertionError("tampered translator model should fail")
+
+
+def test_translator_model_rejects_tampered_claim_ceiling():
+    model = fit_model()
+    payload = model.to_dict()
+    payload["claim_ceiling"] = "UNBOUNDED_TRANSLATION"
+
+    try:
+        reference_translator_model_from_dict(payload)
+    except ValueError as exc:
+        assert "claim ceiling" in str(exc)
+    else:
+        raise AssertionError("tampered claim ceiling should fail")
+
+
+def test_translator_model_rejects_duplicate_token_relations():
+    model = fit_model()
+    payload = model.to_dict()
+    payload["semantic_relations"] = (
+        list(payload["semantic_relations"])
+        + [dict(payload["semantic_relations"][0])]
+    )
+
+    try:
+        reference_translator_model_from_dict(payload)
+    except ValueError as exc:
+        assert "duplicate token" in str(exc)
+    else:
+        raise AssertionError("duplicate token relation should fail")

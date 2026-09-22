@@ -180,7 +180,7 @@ def fit_reference_translator(
     *,
     semantic_min_sources: int = 2,
     min_sources: int = 2,
-    min_units_per_source: int = 2,
+    min_units_per_source: int = 3,
     cluster_distance: float = 0.65,
     scale_floor: float = 0.25,
     match_threshold: float | None = None,
@@ -198,6 +198,11 @@ def fit_reference_translator(
         raise ValueError("at least one acoustic/context episode is required")
     if semantic_min_sources < 2:
         raise ValueError("semantic_min_sources must be >= 2")
+    if min_units_per_source < 3:
+        raise ValueError(
+            "end-to-end translation requires at least three "
+            "acoustic contrasts per source"
+        )
 
     evidence = [
         row

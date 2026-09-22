@@ -240,3 +240,44 @@ def test_qualification_certificate_tamper_is_rejected():
         assert "integrity" in str(exc)
     else:
         raise AssertionError("tampered qualification should fail closed")
+
+
+def test_self_consistent_hash_cannot_bypass_metric_logic():
+    from unvtrslr.calibration_qualification import (
+        _qualification_id,
+    )
+
+    m = model()
+    fitted = fit_and_qualify_source_profile(
+        m,
+        calibration(),
+        held_out(),
+        min_supported_fraction=1.0,
+        min_distinct_global_units=3,
+    )
+    payload = fitted.to_dict()
+    q = payload["qualification"]
+    q["supported_fraction"] = 0.5
+    q["qualification_id"] = _qualification_id(
+        m,
+        fitted.profile,
+        q["qualification_evidence_digest"],
+        q["qualification_unit_count"],
+        q["supported_unit_count"],
+        q["supported_fraction"],
+        q["distinct_global_unit_count"],
+        tuple(q["matched_global_units"]),
+        q["max_supported_distance"],
+        q["min_supported_fraction"],
+        q["min_distinct_global_units"],
+        q["status"],
+    )
+
+    try:
+        qualified_source_profile_from_dict(payload, m)
+    except ValueError as exc:
+        assert "fraction is inconsistent" in str(exc)
+    else:
+        raise AssertionError(
+            "logically impossible certificate should fail even with recomputed hash"
+        )

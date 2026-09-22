@@ -21,6 +21,10 @@ from .unit_model import (
     fit_frozen_unit_model,
     frozen_unit_model_from_dict,
 )
+from .event_evidence import (
+    evidence_from_audio_event_result,
+    evidence_from_event_frames,
+)
 
 __all__ = [
     "acoustic_fingerprint",
@@ -38,4 +42,6 @@ __all__ = [
     "assign_source_units",
     "fit_frozen_unit_model",
     "frozen_unit_model_from_dict",
+    "evidence_from_audio_event_result",
+    "evidence_from_event_frames",
 ]

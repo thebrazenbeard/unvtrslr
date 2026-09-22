@@ -17,6 +17,13 @@ from .unit_model import (
 from .unit_registry import LocalUnitEvidence, UnitRegistryResult
 
 
+_REFERENCE_TRANSLATOR_SCHEMA = "UNVTRSLR_REFERENCE_TRANSLATOR_MODEL_V1"
+_REFERENCE_TRANSLATOR_CLAIM_CEILING = (
+    "OUT_OF_SAMPLE_ACOUSTIC_MATCH_TO_CROSS_SOURCE_"
+    "OPERATIONAL_RELATION_WITHIN_REFERENCE_FIXTURES"
+)
+
+
 @dataclass(frozen=True)
 class AcousticContextEpisode:
     episode_id: str
@@ -282,12 +289,9 @@ def fit_reference_translator(
         semantic_relations,
     )
     model = ReferenceTranslatorModel(
-        schema="UNVTRSLR_REFERENCE_TRANSLATOR_MODEL_V1",
+        schema=_REFERENCE_TRANSLATOR_SCHEMA,
         model_id=model_id,
-        claim_ceiling=(
-            "OUT_OF_SAMPLE_ACOUSTIC_MATCH_TO_CROSS_SOURCE_"
-            "OPERATIONAL_RELATION_WITHIN_REFERENCE_FIXTURES"
-        ),
+        claim_ceiling=_REFERENCE_TRANSLATOR_CLAIM_CEILING,
         acoustic_model=acoustic_model,
         semantic_min_sources=semantic_min_sources,
         semantic_relations=semantic_relations,
@@ -416,10 +420,20 @@ def reference_translator_model_from_dict(
         semantic_min_sources=int(obj["semantic_min_sources"]),
         semantic_relations=relations,
     )
-    if model.schema != "UNVTRSLR_REFERENCE_TRANSLATOR_MODEL_V1":
+    if model.schema != _REFERENCE_TRANSLATOR_SCHEMA:
         raise ValueError("unsupported reference translator model schema")
+    if model.claim_ceiling != _REFERENCE_TRANSLATOR_CLAIM_CEILING:
+        raise ValueError("unsupported reference translator claim ceiling")
+    if model.semantic_min_sources < 2:
+        raise ValueError("persisted semantic source floor must be >= 2")
+    if not model.semantic_relations:
+        raise ValueError("persisted translator has no semantic relations")
+    tokens = [relation.token for relation in model.semantic_relations]
+    if len(tokens) != len(set(tokens)):
+        raise ValueError("persisted translator contains duplicate token relations")
     if any(
         relation.positive_source_coverage < model.semantic_min_sources
+        or relation.positive_source_coverage > relation.support
         for relation in model.semantic_relations
     ):
         raise ValueError("persisted semantic relation violates source-coverage gate")

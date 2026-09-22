@@ -21,6 +21,7 @@ unvtrslr-qualify-calibration = "unvtrslr.calibration_qualification_cli:main"
 unvtrslr-order = "unvtrslr.ordered_relations_cli:main"
 unvtrslr-target = "unvtrslr.target_grounding_cli:main"
 unvtrslr-construct = "unvtrslr.target_constructions_cli:main"
+unvtrslr-qualify-multilingual = "unvtrslr.multilingual_qualification_cli:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]

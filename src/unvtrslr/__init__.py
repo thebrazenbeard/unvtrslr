@@ -121,3 +121,33 @@ __all__ += [
     "translate_ordered_sequence",
     "translate_qualified_sequence",
 ]
+
+from .target_grounding import (
+    FrozenNonEquivalence,
+    FrozenTargetLexeme,
+    NonEquivalenceObservation,
+    TargetAtomRendering,
+    TargetGroundingEpisode,
+    TargetGroundingModel,
+    TargetRenderingResult,
+    fit_target_grounding_model,
+    render_atom,
+    render_relations,
+    strict_renderer_mapping,
+    target_grounding_model_from_dict,
+)
+
+__all__ += [
+    "FrozenNonEquivalence",
+    "FrozenTargetLexeme",
+    "NonEquivalenceObservation",
+    "TargetAtomRendering",
+    "TargetGroundingEpisode",
+    "TargetGroundingModel",
+    "TargetRenderingResult",
+    "fit_target_grounding_model",
+    "render_atom",
+    "render_relations",
+    "strict_renderer_mapping",
+    "target_grounding_model_from_dict",
+]

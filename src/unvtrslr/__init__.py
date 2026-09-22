@@ -13,6 +13,14 @@ from .unit_registry import (
     build_unit_registry,
     evidence_from_event_result,
 )
+from .unit_model import (
+    FrozenUnitModel,
+    FrozenUnitPrototype,
+    OutOfSampleUnitAssignment,
+    assign_source_units,
+    fit_frozen_unit_model,
+    frozen_unit_model_from_dict,
+)
 
 __all__ = [
     "acoustic_fingerprint",
@@ -24,4 +32,10 @@ __all__ = [
     "UnitRegistryResult",
     "build_unit_registry",
     "evidence_from_event_result",
+    "FrozenUnitModel",
+    "FrozenUnitPrototype",
+    "OutOfSampleUnitAssignment",
+    "assign_source_units",
+    "fit_frozen_unit_model",
+    "frozen_unit_model_from_dict",
 ]

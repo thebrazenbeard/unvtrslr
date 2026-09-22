@@ -107,7 +107,8 @@ This draft lineage now contains executable reference candidates in addition to t
 - nuisance-conditioned cross-linguistic calibration;
 - cross-situational operational correspondence learning;
 - source-calibrated reference translation with frozen query-independent normalization;
-- order-sensitive AB-vs-BA operational relations over frozen global acoustic units.
+- order-sensitive AB-vs-BA operational relations over frozen global acoustic units;
+- learned target-language grounding from target-side demonstrations, including explicit ambiguity and scoped non-equivalence.
 
 The current integrated successor is documented in [`docs/REFERENCE_TRANSLATOR_V2.md`](docs/REFERENCE_TRANSLATOR_V2.md).
 
@@ -163,6 +164,7 @@ A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is
 - [`docs/REFERENCE_TRANSLATOR_V2.md`](docs/REFERENCE_TRANSLATOR_V2.md) — source-calibrated end-to-end successor integration.
 - [`docs/CALIBRATION_HOLDOUT_QUALIFICATION_V1.md`](docs/CALIBRATION_HOLDOUT_QUALIFICATION_V1.md) — held-out acoustic qualification for frozen source calibration profiles.
 - [`docs/ORDERED_COMPOSITIONAL_RELATIONS_V1.md`](docs/ORDERED_COMPOSITIONAL_RELATIONS_V1.md) — AB-vs-BA order-sensitive operational structure over frozen global acoustic units.
+- [`docs/LEARNED_TARGET_GROUNDING_V1.md`](docs/LEARNED_TARGET_GROUNDING_V1.md) — target-language realization learned from grounded demonstrations rather than a hand-authored atom-to-word codebook.
 
 ## The key experimental standard
 

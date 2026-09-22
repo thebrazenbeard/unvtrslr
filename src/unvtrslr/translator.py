@@ -247,6 +247,26 @@ def fit_reference_translator(
             "end-to-end translation requires at least three "
             "acoustic contrasts per source"
         )
+    episode_ids = [episode.episode_id for episode in materialized]
+    if len(episode_ids) != len(set(episode_ids)):
+        raise ValueError("training episode_id values must be unique")
+
+    evidence_by_source: dict[str, list[LocalUnitEvidence]] = {}
+    for episode in materialized:
+        evidence_by_source.setdefault(episode.source_id, []).extend(episode.evidence)
+    for source_id, source_rows in evidence_by_source.items():
+        vectors = np.asarray([row.vector for row in source_rows], dtype=float)
+        if not np.all(np.isfinite(vectors)):
+            raise ValueError("training acoustic vectors must be finite")
+        distinct = {
+            tuple(float(value) for value in row.vector)
+            for row in source_rows
+        }
+        if len(distinct) < min_units_per_source:
+            raise ValueError(
+                f"source {source_id!r} has fewer than {min_units_per_source} "
+                "distinct acoustic states"
+            )
 
     evidence = [
         row
@@ -411,6 +431,14 @@ def fit_source_calibration_profile(
     if len(rows) < required:
         raise ValueError(
             f"source calibration requires at least {required} distinct acoustic units"
+        )
+    distinct_vectors = {
+        tuple(float(value) for value in row.vector)
+        for row in rows
+    }
+    if len(distinct_vectors) < required:
+        raise ValueError(
+            f"source calibration requires at least {required} distinct acoustic states"
         )
 
     dimensions = {len(row.vector) for row in rows}

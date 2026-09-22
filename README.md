@@ -95,6 +95,22 @@ R0.5 may legitimately return `UNIDENTIFIABLE_WITHIN_INTERACTION_SURFACE`, `PREPR
 
 See [`docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md`](docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md).
 
+## Executable reference stack on this draft branch
+
+This draft lineage now contains executable reference candidates in addition to the original research/design program:
+
+- acoustic measurement and information channels;
+- candidate acoustic event discovery;
+- non-destructive raw event descriptors;
+- cross-recording recurrence registry;
+- frozen out-of-sample acoustic unit models;
+- nuisance-conditioned cross-linguistic calibration;
+- cross-situational operational correspondence learning;
+- source-calibrated reference translation with frozen query-independent normalization.
+
+The current integrated successor is documented in [`docs/REFERENCE_TRANSLATOR_V2.md`](docs/REFERENCE_TRANSLATOR_V2.md).
+
+The implementation claim remains narrow: these components have synthetic/reference fixtures and explicit fail-closed states. They have **not** established universal translation, uniquely correct semantics, real-corpus qualification, or deployment readiness.
 ## Current R1/R2 architecture challenge
 
 The project has three deliberately competing minimal semantic substrates:
@@ -137,6 +153,13 @@ A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is
 - [`research/REFERENCES.md`](research/REFERENCES.md) — base literature and source notes.
 - [`research/R1R2_RESEARCH_NOTES.md`](research/R1R2_RESEARCH_NOTES.md) — representation/evaluator research synthesis.
 - [`research/R1R2_REFERENCES.md`](research/R1R2_REFERENCES.md) — sources added specifically for R1/R2.
+- [`docs/ACOUSTIC_MATHEMATICAL_FINGERPRINT_V1.md`](docs/ACOUSTIC_MATHEMATICAL_FINGERPRINT_V1.md) — executable acoustic measurement contract.
+- [`docs/CANDIDATE_EVENT_DISCOVERY_V1.md`](docs/CANDIDATE_EVENT_DISCOVERY_V1.md) — prelinguistic event-hypothesis layer.
+- [`docs/CROSS_RECORDING_UNIT_REGISTRY_V1.md`](docs/CROSS_RECORDING_UNIT_REGISTRY_V1.md) — cross-source recurrence registry.
+- [`docs/FROZEN_UNIT_MODEL_V1.md`](docs/FROZEN_UNIT_MODEL_V1.md) — stable out-of-sample acoustic identity model.
+- [`docs/RAW_EVENT_ACOUSTIC_EVIDENCE_V1.md`](docs/RAW_EVENT_ACOUSTIC_EVIDENCE_V1.md) — non-destructive raw event evidence view.
+- [`docs/REFERENCE_SEMANTIC_BRIDGE_V1.md`](docs/REFERENCE_SEMANTIC_BRIDGE_V1.md) — operational cross-situational correspondence learner.
+- [`docs/REFERENCE_TRANSLATOR_V2.md`](docs/REFERENCE_TRANSLATOR_V2.md) — source-calibrated end-to-end successor integration.
 
 ## The key experimental standard
 
@@ -177,6 +200,6 @@ For an embodied probe, that machinery could interact locally with a recipient an
 
 ## Status
 
-`R0_5_R1_R2_DESIGN_BASELINED / IMPLEMENTATION_NOT_STARTED / NO_SEMANTIC_QUALIFICATION`
+`R0_5_R1_R2_DESIGN_BASELINED / REFERENCE_IMPLEMENTATION_CANDIDATES_ACTIVE / NO_REAL_CORPUS_SEMANTIC_QUALIFICATION`
 
-The repository currently defines a research program, a pre-R1 experiment-integrity audit, competing semantic representations, and an adversarial qualification design. It is not a proven universal language, universal ontology, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.
+The repository now contains both the research program and draft executable reference candidates for measurement, event discovery, cross-source acoustic identity, operational grounding, and source-calibrated translation. These are reference implementations under adversarial review, not a proven universal language, universal ontology, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.

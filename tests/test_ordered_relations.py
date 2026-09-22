@@ -233,3 +233,51 @@ def test_recomputed_hash_cannot_legitimize_impossible_relation():
         raise AssertionError(
             "logically impossible order model should fail despite recomputed hash"
         )
+
+
+def test_recomputed_hash_cannot_legitimize_inconsistent_effect():
+    from unvtrslr.ordered_relations import (
+        OrderedRelationLearner,
+        _ordered_model_id,
+    )
+
+    model = fit_ordered_relation_model(
+        ordered_training(),
+        translator_model_id="translator-1",
+        acoustic_model_id="acoustic-1",
+        valid_token_ids={"a", "b"},
+    )
+    payload = model.to_dict()
+    payload["relations"][0]["effect"] = 9.0
+
+    relation_type = type(model.relations[0])
+    forged_relations = tuple(
+        relation_type(**row)
+        for row in payload["relations"]
+    )
+    learner = OrderedRelationLearner(
+        min_ordered_support=payload["min_ordered_support"],
+        min_reverse_support=payload["min_reverse_support"],
+        min_order_source_coverage=payload["min_order_source_coverage"],
+        min_positive_sources=payload["min_positive_sources"],
+        min_positive_per_source=payload["min_positive_per_source"],
+        min_probability=payload["min_probability"],
+        min_effect=payload["min_effect"],
+        min_information_bits=payload["min_information_bits"],
+        ambiguity_margin=payload["ambiguity_margin"],
+    )
+    payload["model_id"] = _ordered_model_id(
+        learner,
+        forged_relations,
+        payload["translator_model_id"],
+        payload["acoustic_model_id"],
+    )
+
+    try:
+        ordered_relation_model_from_dict(payload)
+    except ValueError as exc:
+        assert "effect is inconsistent" in str(exc)
+    else:
+        raise AssertionError(
+            "inconsistent effect should fail despite recomputed hash"
+        )

@@ -602,10 +602,33 @@ def ordered_relation_model_from_dict(obj: Mapping) -> OrderedRelationModel:
             raise ValueError("frozen ordered relation violates reverse-source gate")
         if relation.positive_source_coverage < model.min_positive_sources:
             raise ValueError("frozen ordered relation violates positive-source gate")
+        if relation.ordered_source_coverage > relation.ordered_support:
+            raise ValueError("ordered source coverage exceeds ordered support")
+        if relation.reverse_source_coverage > relation.reverse_support:
+            raise ValueError("reverse source coverage exceeds reverse support")
+        if relation.positive_source_coverage > relation.ordered_source_coverage:
+            raise ValueError("positive source coverage exceeds ordered source coverage")
+        if (
+            relation.positive_source_coverage * model.min_positive_per_source
+            > relation.ordered_support
+        ):
+            raise ValueError("positive source replication exceeds ordered support")
+        if not 0.0 <= relation.p_atom_given_ordered <= 1.0:
+            raise ValueError("ordered relation probability is invalid")
+        if not 0.0 <= relation.p_atom_given_reverse <= 1.0:
+            raise ValueError("reverse relation probability is invalid")
         if relation.p_atom_given_ordered < model.min_probability:
             raise ValueError("frozen ordered relation violates probability gate")
+        expected_effect = (
+            relation.p_atom_given_ordered
+            - relation.p_atom_given_reverse
+        )
+        if abs(relation.effect - expected_effect) > 1e-12:
+            raise ValueError("ordered relation effect is inconsistent")
         if relation.effect < model.min_effect:
             raise ValueError("frozen ordered relation violates effect gate")
+        if not 0.0 <= relation.information_bits <= 1.0 + 1e-12:
+            raise ValueError("ordered relation information value is invalid")
         if relation.information_bits < model.min_information_bits:
             raise ValueError("frozen ordered relation violates information gate")
 

@@ -161,6 +161,7 @@ def test_source_profile_roundtrip_and_tamper_detection():
     assert restored == profile
 
     payload = profile.to_dict()
+    payload["center"] = list(payload["center"])
     payload["center"][0] += 1.0
     try:
         source_calibration_profile_from_dict(payload, model)
@@ -285,3 +286,76 @@ def test_translator_model_rejects_duplicate_token_relations():
         assert "duplicate token" in str(exc)
     else:
         raise AssertionError("duplicate token relation should fail")
+
+
+def test_source_profile_rejects_duplicate_acoustic_states():
+    model = fit_model()
+    duplicate = [
+        evidence("cal-a", "s3", (1000.0, 50.0)),
+        evidence("cal-b", "s3", (1000.0, 50.0)),
+        evidence("cal-c", "s3", (1000.0, 50.0)),
+    ]
+
+    try:
+        fit_source_calibration_profile(model, duplicate)
+    except ValueError as exc:
+        assert "distinct acoustic states" in str(exc)
+    else:
+        raise AssertionError("duplicate calibration states should fail closed")
+
+
+def test_training_episode_ids_must_be_unique():
+    rows = training_episodes()
+    duplicate = AcousticContextEpisode.build(
+        rows[0].episode_id,
+        rows[0].source_id,
+        rows[0].context,
+        rows[0].evidence,
+    )
+
+    try:
+        fit_reference_translator(
+            rows + [duplicate],
+            cluster_distance=0.30,
+            match_threshold=0.30,
+        )
+    except ValueError as exc:
+        assert "episode_id" in str(exc)
+    else:
+        raise AssertionError("duplicate episode IDs should fail closed")
+
+
+def test_training_requires_three_distinct_acoustic_states_per_source():
+    rows = training_episodes()
+    rebuilt = []
+    for episode in rows:
+        if episode.source_id == "s1":
+            replacement = [
+                evidence(
+                    row.recording_id,
+                    row.source_id,
+                    (0.0, 0.0),
+                )
+                for row in episode.evidence
+            ]
+            rebuilt.append(
+                AcousticContextEpisode.build(
+                    episode.episode_id,
+                    episode.source_id,
+                    episode.context,
+                    replacement,
+                )
+            )
+        else:
+            rebuilt.append(episode)
+
+    try:
+        fit_reference_translator(
+            rebuilt,
+            cluster_distance=0.30,
+            match_threshold=0.30,
+        )
+    except ValueError as exc:
+        assert "distinct acoustic states" in str(exc)
+    else:
+        raise AssertionError("duplicate training states should fail closed")

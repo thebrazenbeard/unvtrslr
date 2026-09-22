@@ -449,6 +449,8 @@ def target_grounding_model_from_dict(
         raise ValueError("target model has no upstream model binding")
     if tuple(sorted(set(model.upstream_model_ids))) != model.upstream_model_ids:
         raise ValueError("upstream model IDs must be sorted and unique")
+    if any(not value for value in model.upstream_model_ids):
+        raise ValueError("upstream model IDs must not be empty")
     if not model.semantic_atoms:
         raise ValueError("target model semantic namespace is empty")
     if tuple(sorted(set(model.semantic_atoms))) != model.semantic_atoms:
@@ -478,8 +480,12 @@ def target_grounding_model_from_dict(
     lexeme_keys = [(row.atom, row.target_token) for row in model.lexemes]
     if len(lexeme_keys) != len(set(lexeme_keys)):
         raise ValueError("target model contains duplicate lexeme relations")
+    if tuple(sorted(lexeme_keys)) != tuple(lexeme_keys):
+        raise ValueError("target lexeme relations must be canonically ordered")
 
     for row in model.lexemes:
+        if not row.target_token:
+            raise ValueError("target token must not be empty")
         if row.atom not in atom_set:
             raise ValueError("target lexeme references atom outside semantic namespace")
         if row.support < model.bridge_min_support:
@@ -490,6 +496,13 @@ def target_grounding_model_from_dict(
             raise ValueError("target lexeme violates source replication gate")
         if row.positive_source_coverage > row.support:
             raise ValueError("target lexeme source coverage exceeds support")
+        if (
+            row.positive_source_coverage * model.min_positive_per_source
+            > row.support
+        ):
+            raise ValueError(
+                "target lexeme replicated positive count exceeds total support"
+            )
         if not 0.0 <= row.p_atom_given_token <= 1.0:
             raise ValueError("target lexeme probability is invalid")
         if not 0.0 <= row.p_atom_without_token <= 1.0:
@@ -510,7 +523,11 @@ def target_grounding_model_from_dict(
     noeq_keys = [(row.atom, row.scope_id) for row in model.non_equivalences]
     if len(noeq_keys) != len(set(noeq_keys)):
         raise ValueError("target model contains duplicate non-equivalence claims")
+    if tuple(sorted(noeq_keys)) != tuple(noeq_keys):
+        raise ValueError("non-equivalence claims must be canonically ordered")
     for row in model.non_equivalences:
+        if not row.scope_id:
+            raise ValueError("non-equivalence scope ID must not be empty")
         if row.atom not in atom_set:
             raise ValueError(
                 "non-equivalence claim references atom outside semantic namespace"

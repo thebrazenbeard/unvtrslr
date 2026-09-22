@@ -105,3 +105,65 @@ def test_report_order_is_deterministic_for_same_seed():
     a = calibrate_feature_information(rows, permutations=32, seed=11).to_dict()
     b = calibrate_feature_information(list(reversed(rows)), permutations=32, seed=11).to_dict()
     assert a == b
+
+
+def test_pairwise_joint_gain_detects_combinatorial_code():
+    from unvtrslr.calibration import calibrate_pairwise_interactions
+
+    rows = []
+    for source_index in range(4):
+        source = f"xor-source-{source_index}"
+        for pitch_bit, slope in [(0, -2.0), (1, 2.0)]:
+            for timbre_bit, centroid in [(0, 700.0), (1, 1700.0)]:
+                system = "B" if (pitch_bit ^ timbre_bit) else "A"
+                for repeat in range(3):
+                    rows.append(
+                        FingerprintObservation(
+                            f"{source}-{pitch_bit}-{timbre_bit}-{repeat}",
+                            system,
+                            source,
+                            fp(
+                                slope=slope + 0.01 * repeat,
+                                centroid=centroid + 2.0 * repeat,
+                            ),
+                        )
+                    )
+
+    interactions = calibrate_pairwise_interactions(
+        rows,
+        feature_names=("pitch_relative_slope", "spectral_centroid_median_hz"),
+        max_bins=2,
+        permutations=128,
+        seed=19,
+    )
+    assert len(interactions) == 1
+    pair = interactions[0]
+    assert pair.best_individual_information_bits < 0.05
+    assert pair.joint_conditional_information_bits > 0.9
+    assert pair.joint_gain_over_best_bits > 0.9
+    assert pair.status == "JOINT_GAIN_SUPPORTED"
+
+
+def test_pairwise_sparse_joint_states_fail_closed():
+    from unvtrslr.calibration import calibrate_pairwise_interactions
+
+    rows = []
+    for source_index in range(3):
+        source = f"sparse-{source_index}"
+        for i in range(4):
+            rows.append(
+                FingerprintObservation(
+                    f"{source}-{i}",
+                    "A" if i % 2 == 0 else "B",
+                    source,
+                    fp(slope=float(i), centroid=600.0 + 300.0 * i),
+                )
+            )
+    pair = calibrate_pairwise_interactions(
+        rows,
+        feature_names=("pitch_relative_slope", "spectral_centroid_median_hz"),
+        max_bins=4,
+        permutations=16,
+        seed=2,
+    )[0]
+    assert pair.status == "SPARSE_JOINT_STATE_UNIDENTIFIABLE"

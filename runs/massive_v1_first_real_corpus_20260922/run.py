@@ -139,17 +139,19 @@ def write_jsonl(path: Path, rows) -> None:
 
 def gzip_copy(path: Path) -> Path:
     output = path.with_suffix(path.suffix + ".gz")
-    with path.open("rb") as source, gzip.open(
-        output,
-        "wb",
-        compresslevel=9,
-        mtime=0,
-    ) as target:
-        while True:
-            chunk = source.read(1024 * 1024)
-            if not chunk:
-                break
-            target.write(chunk)
+    with path.open("rb") as source, output.open("wb") as raw_target:
+        with gzip.GzipFile(
+            filename="",
+            mode="wb",
+            fileobj=raw_target,
+            compresslevel=9,
+            mtime=0,
+        ) as target:
+            while True:
+                chunk = source.read(1024 * 1024)
+                if not chunk:
+                    break
+                target.write(chunk)
     return output
 
 
@@ -380,7 +382,8 @@ def main() -> int:
 
     model_manifest = {
         "run_id": RUN_ID,
-        "executed_commit": os.environ.get("GITHUB_SHA", "UNKNOWN"),
+        "pr_head_sha": os.environ.get("UNVTRSLR_HEAD_SHA", "UNKNOWN"),
+        "checked_out_sha": os.environ.get("GITHUB_SHA", "UNKNOWN"),
         "github_ref": os.environ.get("GITHUB_REF", "UNKNOWN"),
         "github_event_name": os.environ.get(
             "GITHUB_EVENT_NAME",
@@ -420,7 +423,8 @@ def main() -> int:
             "WITHIN_DECLARED_OPERATIONAL_ADAPTER"
         ),
         "dataset_sha256": provenance["dataset_sha256"],
-        "executed_commit": model_manifest["executed_commit"],
+        "pr_head_sha": model_manifest["pr_head_sha"],
+        "checked_out_sha": model_manifest["checked_out_sha"],
         "evaluation_record_count": len(evaluation_records),
         "training_record_count": len(training_exposures),
         "languages": list(LOCALES),

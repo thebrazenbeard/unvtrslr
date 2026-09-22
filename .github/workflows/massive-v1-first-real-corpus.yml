@@ -44,6 +44,7 @@ jobs:
       - name: Execute preregistered real-corpus packet
         env:
           PYTHONPATH: src
+          UNVTRSLR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           rm -rf runs/massive_v1_first_real_corpus_20260922/generated
           python runs/massive_v1_first_real_corpus_20260922/run.py \

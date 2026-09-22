@@ -1,3 +1,5 @@
+> **Historical blocked design.** V1 exact head `8a5df39b08afc91f9bd3f11d1130be8762d983a5` was blocked after coordinator self-review found query-dependent source normalization: query units participated in estimating the same source profile used to classify them. Adding an unrelated extreme query could therefore change earlier translation outcomes. Review was cancelled. See `REFERENCE_TRANSLATOR_V2.md` for the source-calibrated successor.
+
 # End-to-End Reference Translator V1
 
 Status: `INTEGRATION_CANDIDATE / CROSS-SOURCE OPERATIONAL TRANSLATION`

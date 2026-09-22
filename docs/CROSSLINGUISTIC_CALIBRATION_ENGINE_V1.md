@@ -71,3 +71,14 @@ Permutation testing is diagnostic, not a universal significance procedure. Small
 `KNOWN_SYSTEM_MEASUREMENT_PRIOR_ONLY_NO_UNKNOWN_SEMANTIC_DECODING`
 
 A high-scoring feature may justify prioritizing that measurement in later unknown-system experiments. It does not establish what an unknown signal means, that two systems share an ontology, or that translation has been achieved.
+
+
+## Cross-channel combinations
+
+V1 also exposes `calibrate_pairwise_interactions()` for cases where information is encoded jointly across two acoustic dimensions.
+
+It measures nuisance-conditioned information in the joint pair and reports the gain over the better individual feature. This detects simple combinatorial/XOR-like codes in which neither feature is informative by itself.
+
+The evaluator also requires repeated observations for each joint state within nuisance strata. Sparse saturated joint states fail closed as `SPARSE_JOINT_STATE_UNIDENTIFIABLE`.
+
+The metric is deliberately called **joint gain**, not information-theoretic synergy. A full partial-information decomposition would require stronger assumptions and machinery than V1 currently implements.

@@ -160,6 +160,7 @@ A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is
 - [`docs/RAW_EVENT_ACOUSTIC_EVIDENCE_V1.md`](docs/RAW_EVENT_ACOUSTIC_EVIDENCE_V1.md) — non-destructive raw event evidence view.
 - [`docs/REFERENCE_SEMANTIC_BRIDGE_V1.md`](docs/REFERENCE_SEMANTIC_BRIDGE_V1.md) — operational cross-situational correspondence learner.
 - [`docs/REFERENCE_TRANSLATOR_V2.md`](docs/REFERENCE_TRANSLATOR_V2.md) — source-calibrated end-to-end successor integration.
+- [`docs/CALIBRATION_HOLDOUT_QUALIFICATION_V1.md`](docs/CALIBRATION_HOLDOUT_QUALIFICATION_V1.md) — held-out acoustic qualification for frozen source calibration profiles.
 
 ## The key experimental standard
 

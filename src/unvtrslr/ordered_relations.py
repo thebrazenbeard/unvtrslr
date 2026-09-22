@@ -456,11 +456,27 @@ def fit_ordered_relation_model(
     *,
     translator_model_id: str,
     acoustic_model_id: str,
+    valid_token_ids: Iterable[str],
     **learner_kwargs,
 ) -> OrderedRelationModel:
     if not translator_model_id or not acoustic_model_id:
         raise ValueError("translator/acoustic model IDs are required")
-    learner = OrderedRelationLearner(**learner_kwargs).fit(episodes)
+    rows = list(episodes)
+    vocabulary = {str(token) for token in valid_token_ids}
+    if not vocabulary:
+        raise ValueError("valid_token_ids must not be empty")
+    observed = {
+        token
+        for episode in rows
+        for token in episode.signal
+    }
+    unknown = observed - vocabulary
+    if unknown:
+        raise ValueError(
+            "ordered training contains tokens outside the frozen acoustic "
+            f"vocabulary: {sorted(unknown)!r}"
+        )
+    learner = OrderedRelationLearner(**learner_kwargs).fit(rows)
     relations: list[FrozenOrderedRelation] = []
     for first, second in learner.pairs:
         inference = learner.infer(first, second)
@@ -561,6 +577,37 @@ def ordered_relation_model_from_dict(obj: Mapping) -> OrderedRelationModel:
         raise ValueError("ordered relation model contains duplicate patterns")
     if any(first == second for first, second in patterns):
         raise ValueError("self-pairs cannot be order contrasts")
+    if model.min_ordered_support < 1 or model.min_reverse_support < 1:
+        raise ValueError("ordered relation support floors must be positive")
+    if model.min_order_source_coverage < 1:
+        raise ValueError("ordered relation source-coverage floor must be positive")
+    if model.min_positive_sources < 1 or model.min_positive_per_source < 1:
+        raise ValueError("ordered relation replication floors must be positive")
+    if not 0.0 < model.min_probability <= 1.0:
+        raise ValueError("ordered relation probability floor is invalid")
+    if model.min_effect <= 0.0:
+        raise ValueError("ordered relation effect floor must be positive")
+    if model.min_information_bits < 0.0:
+        raise ValueError("ordered relation information floor is invalid")
+    if model.ambiguity_margin < 0.0:
+        raise ValueError("ordered relation ambiguity margin is invalid")
+    for relation in model.relations:
+        if relation.ordered_support < model.min_ordered_support:
+            raise ValueError("frozen ordered relation violates ordered-support gate")
+        if relation.reverse_support < model.min_reverse_support:
+            raise ValueError("frozen ordered relation violates reverse-support gate")
+        if relation.ordered_source_coverage < model.min_order_source_coverage:
+            raise ValueError("frozen ordered relation violates ordered-source gate")
+        if relation.reverse_source_coverage < model.min_order_source_coverage:
+            raise ValueError("frozen ordered relation violates reverse-source gate")
+        if relation.positive_source_coverage < model.min_positive_sources:
+            raise ValueError("frozen ordered relation violates positive-source gate")
+        if relation.p_atom_given_ordered < model.min_probability:
+            raise ValueError("frozen ordered relation violates probability gate")
+        if relation.effect < model.min_effect:
+            raise ValueError("frozen ordered relation violates effect gate")
+        if relation.information_bits < model.min_information_bits:
+            raise ValueError("frozen ordered relation violates information gate")
 
     learner = OrderedRelationLearner(
         min_ordered_support=model.min_ordered_support,

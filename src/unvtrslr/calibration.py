@@ -289,3 +289,141 @@ def calibrate_feature_information(
         identifiability_status=ident,
         features=tuple(associations),
     )
+
+
+@dataclass(frozen=True)
+class FeatureInteraction:
+    feature_a: str
+    feature_b: str
+    observations: int
+    joint_conditional_information_bits: float
+    best_individual_information_bits: float
+    joint_gain_over_best_bits: float
+    null_mean_bits: float
+    null_std_bits: float
+    null_z: float | None
+    status: str
+
+
+def calibrate_pairwise_interactions(
+    observations: Iterable[FingerprintObservation],
+    *,
+    target: str = "system_id",
+    nuisance_fields: Sequence[str] = ("source_id",),
+    feature_names: Sequence[str] | None = None,
+    max_bins: int = 3,
+    permutations: int = 128,
+    seed: int = 0,
+    min_observations: int = 12,
+    min_joint_gain_bits: float = 0.05,
+    min_joint_state_count: int = 2,
+    max_pairs: int | None = None,
+) -> tuple[FeatureInteraction, ...]:
+    """Find feature pairs whose joint information exceeds either feature alone.
+
+    This is deliberately a joint-gain diagnostic, not a claim of unique
+    information-theoretic synergy. It catches simple combinatorial/XOR-like codes
+    while avoiding that stronger decomposition claim.
+    """
+    obs = sorted(list(observations), key=lambda o: o.observation_id)
+    if not obs:
+        raise ValueError("at least one observation is required")
+    if permutations < 0:
+        raise ValueError("permutations must be >= 0")
+
+    ident = _identifiability(obs, target, nuisance_fields)
+    targets = [str(_attr(o, target)) for o in obs]
+    strata = [tuple(_attr(o, field) for field in nuisance_fields) for o in obs]
+    flattened = [fingerprint_scalars(o.fingerprint) for o in obs]
+
+    available = sorted({name for row in flattened for name in row})
+    if feature_names is not None:
+        requested = set(feature_names)
+        available = [name for name in available if name in requested]
+
+    pairs = [
+        (available[i], available[j])
+        for i in range(len(available))
+        for j in range(i + 1, len(available))
+    ]
+    if max_pairs is not None:
+        pairs = pairs[: max(0, int(max_pairs))]
+
+    rng = np.random.default_rng(seed)
+    results: list[FeatureInteraction] = []
+
+    for feature_a, feature_b in pairs:
+        selected = [
+            (i, row[feature_a], row[feature_b])
+            for i, row in enumerate(flattened)
+            if feature_a in row and feature_b in row
+        ]
+        if len(selected) < min_observations:
+            continue
+
+        idxs = [i for i, _, _ in selected]
+        xa = _quantile_bins([a for _, a, _ in selected], max_bins=max_bins)
+        xb = _quantile_bins([b for _, _, b in selected], max_bins=max_bins)
+        if len(set(xa)) < 2 or len(set(xb)) < 2:
+            continue
+
+        joint = list(zip(xa, xb))
+        y = [targets[i] for i in idxs]
+        z = [strata[i] for i in idxs]
+
+        cell_counts: dict[tuple, int] = {}
+        for joint_state, nuisance_state in zip(joint, z):
+            key = (nuisance_state, joint_state)
+            cell_counts[key] = cell_counts.get(key, 0) + 1
+        sparse_joint = bool(cell_counts) and min(cell_counts.values()) < min_joint_state_count
+
+        ia = conditional_mutual_information(xa, y, z)
+        ib = conditional_mutual_information(xb, y, z)
+        ij = conditional_mutual_information(joint, y, z)
+        best = max(ia, ib)
+        gain = max(0.0, ij - best)
+
+        null = []
+        for _ in range(permutations):
+            perm_y = _permuted_targets_within_strata(y, z, rng=rng)
+            null.append(conditional_mutual_information(joint, perm_y, z))
+        null_mean = float(np.mean(null)) if null else 0.0
+        null_std = float(np.std(null)) if null else 0.0
+        null_z = None if null_std <= 1e-12 else float((ij - null_mean) / null_std)
+
+        if ident != "IDENTIFIABLE_WITHIN_OBSERVED_STRATA":
+            status = ident
+        elif sparse_joint:
+            status = "SPARSE_JOINT_STATE_UNIDENTIFIABLE"
+        elif ij <= null_mean + max(1e-9, 2.0 * null_std):
+            status = "NO_CLEAR_JOINT_INFORMATION_ABOVE_NULL"
+        elif gain < min_joint_gain_bits:
+            status = "JOINT_INFORMATION_REDUNDANT_WITH_BEST_INDIVIDUAL"
+        else:
+            status = "JOINT_GAIN_SUPPORTED"
+
+        results.append(
+            FeatureInteraction(
+                feature_a=feature_a,
+                feature_b=feature_b,
+                observations=len(selected),
+                joint_conditional_information_bits=float(ij),
+                best_individual_information_bits=float(best),
+                joint_gain_over_best_bits=float(gain),
+                null_mean_bits=null_mean,
+                null_std_bits=null_std,
+                null_z=null_z,
+                status=status,
+            )
+        )
+
+    results.sort(
+        key=lambda row: (
+            row.joint_gain_over_best_bits,
+            row.joint_conditional_information_bits - row.null_mean_bits,
+            row.feature_a,
+            row.feature_b,
+        ),
+        reverse=True,
+    )
+    return tuple(results)

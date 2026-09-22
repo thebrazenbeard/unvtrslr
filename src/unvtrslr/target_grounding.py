@@ -95,6 +95,12 @@ class TargetGroundingModel:
     target_language_id: str
     upstream_model_ids: tuple[str, ...]
     semantic_atoms: tuple[str, ...]
+    bridge_alpha: float
+    bridge_min_support: int
+    bridge_min_probability: float
+    bridge_min_effect: float
+    bridge_min_information_bits: float
+    bridge_ambiguity_margin: float
     min_positive_sources: int
     min_positive_per_source: int
     min_non_equivalence_sources: int
@@ -145,6 +151,12 @@ def _target_model_id(
     target_language_id: str,
     upstream_model_ids: Sequence[str],
     semantic_atoms: Sequence[str],
+    bridge_alpha: float,
+    bridge_min_support: int,
+    bridge_min_probability: float,
+    bridge_min_effect: float,
+    bridge_min_information_bits: float,
+    bridge_ambiguity_margin: float,
     min_positive_sources: int,
     min_positive_per_source: int,
     min_non_equivalence_sources: int,
@@ -156,6 +168,12 @@ def _target_model_id(
         str(target_language_id),
         repr(tuple(upstream_model_ids)),
         repr(tuple(semantic_atoms)),
+        repr(float(bridge_alpha)),
+        str(int(bridge_min_support)),
+        repr(float(bridge_min_probability)),
+        repr(float(bridge_min_effect)),
+        repr(float(bridge_min_information_bits)),
+        repr(float(bridge_ambiguity_margin)),
         str(int(min_positive_sources)),
         str(int(min_positive_per_source)),
         str(int(min_non_equivalence_sources)),
@@ -338,6 +356,12 @@ def fit_target_grounding_model(
         target_language_id=str(target_language_id),
         upstream_model_ids=upstream,
         semantic_atoms=atoms,
+        bridge_alpha=bridge_alpha,
+        bridge_min_support=bridge_min_support,
+        bridge_min_probability=bridge_min_probability,
+        bridge_min_effect=bridge_min_effect,
+        bridge_min_information_bits=bridge_min_information_bits,
+        bridge_ambiguity_margin=bridge_ambiguity_margin,
         min_positive_sources=min_positive_sources,
         min_positive_per_source=min_positive_per_source,
         min_non_equivalence_sources=min_non_equivalence_sources,
@@ -352,6 +376,12 @@ def fit_target_grounding_model(
         target_language_id=str(target_language_id),
         upstream_model_ids=upstream,
         semantic_atoms=atoms,
+        bridge_alpha=bridge_alpha,
+        bridge_min_support=bridge_min_support,
+        bridge_min_probability=bridge_min_probability,
+        bridge_min_effect=bridge_min_effect,
+        bridge_min_information_bits=bridge_min_information_bits,
+        bridge_ambiguity_margin=bridge_ambiguity_margin,
         min_positive_sources=min_positive_sources,
         min_positive_per_source=min_positive_per_source,
         min_non_equivalence_sources=min_non_equivalence_sources,
@@ -395,6 +425,12 @@ def target_grounding_model_from_dict(
         target_language_id=str(obj["target_language_id"]),
         upstream_model_ids=tuple(str(value) for value in obj["upstream_model_ids"]),
         semantic_atoms=tuple(str(value) for value in obj["semantic_atoms"]),
+        bridge_alpha=float(obj["bridge_alpha"]),
+        bridge_min_support=int(obj["bridge_min_support"]),
+        bridge_min_probability=float(obj["bridge_min_probability"]),
+        bridge_min_effect=float(obj["bridge_min_effect"]),
+        bridge_min_information_bits=float(obj["bridge_min_information_bits"]),
+        bridge_ambiguity_margin=float(obj["bridge_ambiguity_margin"]),
         min_positive_sources=int(obj["min_positive_sources"]),
         min_positive_per_source=int(obj["min_positive_per_source"]),
         min_non_equivalence_sources=int(obj["min_non_equivalence_sources"]),
@@ -419,6 +455,18 @@ def target_grounding_model_from_dict(
         raise ValueError("semantic atoms must be sorted and unique")
     atom_set = set(model.semantic_atoms)
 
+    if model.bridge_alpha <= 0:
+        raise ValueError("target bridge alpha must be > 0")
+    if model.bridge_min_support < 1:
+        raise ValueError("target bridge support floor must be positive")
+    if not 0.0 < model.bridge_min_probability <= 1.0:
+        raise ValueError("target bridge probability floor is invalid")
+    if model.bridge_min_effect <= 0.0:
+        raise ValueError("target bridge effect floor must be positive")
+    if model.bridge_min_information_bits < 0.0:
+        raise ValueError("target bridge information floor is invalid")
+    if model.bridge_ambiguity_margin < 0.0:
+        raise ValueError("target bridge ambiguity margin is invalid")
     if model.min_positive_sources < 2 or model.min_positive_per_source < 1:
         raise ValueError("target lexeme replication floors are invalid")
     if (
@@ -434,6 +482,8 @@ def target_grounding_model_from_dict(
     for row in model.lexemes:
         if row.atom not in atom_set:
             raise ValueError("target lexeme references atom outside semantic namespace")
+        if row.support < model.bridge_min_support:
+            raise ValueError("target lexeme violates bridge support gate")
         if row.support < model.min_positive_sources * model.min_positive_per_source:
             raise ValueError("target lexeme support is inconsistent with replication gate")
         if row.positive_source_coverage < model.min_positive_sources:
@@ -448,8 +498,14 @@ def target_grounding_model_from_dict(
             row.effect - (row.p_atom_given_token - row.p_atom_without_token)
         ) > 1e-12:
             raise ValueError("target lexeme effect is inconsistent")
+        if row.p_atom_given_token < model.bridge_min_probability:
+            raise ValueError("target lexeme violates probability gate")
+        if row.effect < model.bridge_min_effect:
+            raise ValueError("target lexeme violates effect gate")
         if not 0.0 <= row.information_bits <= 1.0 + 1e-12:
             raise ValueError("target lexeme information value is invalid")
+        if row.information_bits < model.bridge_min_information_bits:
+            raise ValueError("target lexeme violates information gate")
 
     noeq_keys = [(row.atom, row.scope_id) for row in model.non_equivalences]
     if len(noeq_keys) != len(set(noeq_keys)):
@@ -471,6 +527,12 @@ def target_grounding_model_from_dict(
         target_language_id=model.target_language_id,
         upstream_model_ids=model.upstream_model_ids,
         semantic_atoms=model.semantic_atoms,
+        bridge_alpha=model.bridge_alpha,
+        bridge_min_support=model.bridge_min_support,
+        bridge_min_probability=model.bridge_min_probability,
+        bridge_min_effect=model.bridge_min_effect,
+        bridge_min_information_bits=model.bridge_min_information_bits,
+        bridge_ambiguity_margin=model.bridge_ambiguity_margin,
         min_positive_sources=model.min_positive_sources,
         min_positive_per_source=model.min_positive_per_source,
         min_non_equivalence_sources=model.min_non_equivalence_sources,

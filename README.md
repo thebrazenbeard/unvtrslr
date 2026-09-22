@@ -109,7 +109,8 @@ This draft lineage now contains executable reference candidates in addition to t
 - source-calibrated reference translation with frozen query-independent normalization;
 - order-sensitive AB-vs-BA operational relations over frozen global acoustic units;
 - learned target-language grounding from target-side demonstrations, including explicit ambiguity and scoped non-equivalence;
-- multiword target constructions and target-specific ordering learned directly from grounded sequence demonstrations.
+- multiword target constructions and target-specific ordering learned directly from grounded sequence demonstrations;
+- leakage-audited multilingual held-out qualification across declared real corpora.
 
 The current integrated successor is documented in [`docs/REFERENCE_TRANSLATOR_V2.md`](docs/REFERENCE_TRANSLATOR_V2.md).
 
@@ -167,6 +168,8 @@ A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is
 - [`docs/ORDERED_COMPOSITIONAL_RELATIONS_V1.md`](docs/ORDERED_COMPOSITIONAL_RELATIONS_V1.md) — AB-vs-BA order-sensitive operational structure over frozen global acoustic units.
 - [`docs/LEARNED_TARGET_GROUNDING_V1.md`](docs/LEARNED_TARGET_GROUNDING_V1.md) — target-language realization learned from grounded demonstrations rather than a hand-authored atom-to-word codebook.
 - [`docs/MULTIWORD_TARGET_CONSTRUCTIONS_V1.md`](docs/MULTIWORD_TARGET_CONSTRUCTIONS_V1.md) — multiword realization and target-side ordering learned from grounded semantic-sequence demonstrations without a hand-authored grammar.
+- [`docs/MULTILINGUAL_HELDOUT_QUALIFICATION_V1.md`](docs/MULTILINGUAL_HELDOUT_QUALIFICATION_V1.md) — leakage-declared real multilingual evaluation regimes, metrics, and qualification contract.
+- [`research/MULTILINGUAL_CORPUS_MANIFEST_V1.json`](research/MULTILINGUAL_CORPUS_MANIFEST_V1.json) — pinned corpus roles, versions, strengths, and limitations.
 
 ## The key experimental standard
 
@@ -207,6 +210,6 @@ For an embodied probe, that machinery could interact locally with a recipient an
 
 ## Status
 
-`R0_5_R1_R2_DESIGN_BASELINED / REFERENCE_IMPLEMENTATION_CANDIDATES_ACTIVE / NO_REAL_CORPUS_SEMANTIC_QUALIFICATION`
+`R0_5_R1_R2_DESIGN_BASELINED / REFERENCE_IMPLEMENTATION_CANDIDATES_ACTIVE / REAL_CORPUS_QUALIFICATION_HARNESS_ACTIVE / NO_REAL_CORPUS_PASS`
 
 The repository now contains both the research program and draft executable reference candidates for measurement, event discovery, cross-source acoustic identity, operational grounding, and source-calibrated translation. These are reference implementations under adversarial review, not a proven universal language, universal ontology, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.

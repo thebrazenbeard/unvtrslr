@@ -27,7 +27,7 @@ Can interacting systems with:
 - no guaranteed shared segmentation of objects/events/agents/messages,
 - and only whatever causal or observational interaction surface is actually available,
 
-**discover signalhood or other stable interaction regularities, establish grounded semantic invariants, create compositional communication, and identify both translatable and genuinely non-equivalent concepts?**
+**discover signalhood or other stable interaction regularities, establish grounded semantic invariants, create compositional communication, preserve interactional/pragmatic distinctions where demonstrated, and identify both translatable and genuinely non-equivalent concepts?**
 
 If that can be demonstrated under increasingly hostile controls, UNVTRSLR becomes more than a translator. It becomes a candidate **semantic bootstrap protocol**.
 
@@ -47,6 +47,7 @@ UNVTRSLR does not assume:
 - a shared concept of an object,
 - fixed message boundaries,
 - exactly two naturally individuated agents,
+- human speech-act categories,
 - or even that a behavior is intended as communication.
 
 The system must be able to consider continuous signals, timing, motion, geometry, environmental modification, multimodal behavior, distributed processes, and contextual meaning.
@@ -70,10 +71,12 @@ The system must be able to consider continuous signals, timing, motion, geometry
 15. **Experiment integrity precedes semantic credit.** If preprocessing destroys a distinction, instrumentation leaks simulator truth, or a hidden bridge performs semantic normalization, the learner does not get credit for recovering that distinction.
 16. **Semantic naming must be earned separately.** A real operational partition may remain semantically unnamed. Post-hoc human interpretations are exploratory until frozen and tested on claim-discriminating fresh evidence.
 17. **Stronger semantic words incur stronger empirical burdens.** If `semantic correspondence` adds no falsifiable obligation beyond `reusable operational relation`, use the weaker claim.
+18. **Pragmatic function is also a hypothesis.** Addressee, audience, communicative function, background assumptions, repair, convention state, and sender reliability must be tested rather than inferred from human-looking form.
+19. **Preserve tested invariants, not slogans.** Surface identity is neither necessary nor sufficient for faithful translation, but functional similarity is not sufficient either; form must be conserved when form itself carries a demonstrated distinction.
 
 ## R0.5 — pre-R1 information and experiment-integrity audit
 
-Before the R1 substrates are compared, UNVTRSLR now inserts a deliberately thin **R0.5** layer.
+Before the R1 substrates are compared, UNVTRSLR inserts a deliberately thin **R0.5** layer.
 
 R0.5 does not attempt to solve semantics. It asks:
 
@@ -109,11 +112,23 @@ No substrate is architecture canon. The richer candidates must empirically earn 
 
 The R2 evaluator is designed to distinguish grounded convention from private shortcut code using causal message interventions, world-factor interventions, nuisance shifts, role reversal, cross-task transfer, partner swap, sensor shifts, counterfactual tests, ontology mismatch, conservation audits, and a required suite of intentionally deceptive negative controls.
 
-R2 now also separates **operational relation verification** from **semantic interpretation confirmation**. A post-hoc label cannot be confirmed using the same evidence that selected it; fresh IID evidence is not enough if it preserves the original confound; and a stronger semantic claim must carry an explicit `SEMANTIC_SURPLUS_OBLIGATION`—some additional falsifiable prediction or qualification burden beyond ordinary operational success.
+R2 also separates **operational relation verification** from **semantic interpretation confirmation**. A post-hoc label cannot be confirmed using the same evidence that selected it; fresh IID evidence is not enough if it preserves the original confound; and a stronger semantic claim must carry an explicit `SEMANTIC_SURPLUS_OBLIGATION`—some additional falsifiable prediction or qualification burden beyond ordinary operational success.
 
 See [`docs/R2_SEMANTIC_CLAIM_CONTROLS.md`](docs/R2_SEMANTIC_CLAIM_CONTROLS.md).
 
 A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is intentionally no `UNIVERSALLY_GROUNDED` status.
+
+## R3 pragmatics and interaction challenge
+
+R3 retains the existing human-language and synthetic-language control phase and adds a scoped pragmatics/interaction qualification profile. It asks whether a grounded bridge still preserves meaning when reference alone is insufficient—for example when the same referent is used with a different communicative function, when perspective or addressee changes, when a convention drifts, when a sender is deceptive, when silence rather than an emitted symbol matters, or when modalities conflict.
+
+R3 is downstream of R0.5 and R2. A pragmatic label cannot outrun the R0.5 claim ceiling or bypass R2 semantic-claim controls. If the target distinction was not empirically identifiable, was destroyed by preprocessing, was supplied by a hidden bridge, or was selected post-hoc without claim-discriminating confirmation, R3 cannot repair that defect by obtaining high interactional performance.
+
+The R3 design intentionally treats human pragmatic categories as **test families**, not universal ontology. Its positive controls include a synthetic nonhuman communicative-function oracle specifically to catch evaluators that accidentally define communication as human speech acts.
+
+The required negative controls are designed to look competent on naive metrics: task-policy codes, partner-ID policies, context lookup tables, surface speech-act classifiers, canned repair, fixed-coordinate deixis, audience-label leakage, reward predictors, forced intent labeling, and fluent-but-lossy pragmatic rendering.
+
+A future passing result may receive `PRAGMATICALLY_GROUNDED_WITHIN_TESTED_SCOPE`. There is intentionally no `UNIVERSAL_PRAGMATICS` status, and R3 cannot compensate for R0.5 or R2 failure.
 
 ## Repository map
 
@@ -126,6 +141,13 @@ A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is
 - [`docs/R2_NEGATIVE_CONTROLS.md`](docs/R2_NEGATIVE_CONTROLS.md) — shortcut systems plus positive oracles the harness must classify correctly.
 - [`docs/R2_SEMANTIC_CLAIM_CONTROLS.md`](docs/R2_SEMANTIC_CLAIM_CONTROLS.md) — confirmatory/exploratory interpretation discipline, structured-rival adequacy, claim-discriminating holdouts, and semantic-surplus obligations.
 - [`specs/R1R2_EVALUATION_CONTRACT_V1.yaml`](specs/R1R2_EVALUATION_CONTRACT_V1.yaml) — machine-readable R1/R2 evaluation contract; a future revision must bind the R0.5 fields and new claim controls before implementation qualification.
+- [`docs/PRAGMATICS_AND_COMMUNICATIVE_FUNCTION.md`](docs/PRAGMATICS_AND_COMMUNICATIVE_FUNCTION.md) — species-neutral candidate communicative-function layer.
+- [`docs/COMMON_GROUND_AND_CONVENTION.md`](docs/COMMON_GROUND_AND_CONVENTION.md) — scoped common-ground evidence, convention lifecycle, false-common-ground tests, and transfer.
+- [`docs/SEMANTIC_ROUTING_AND_SEGMENTATION.md`](docs/SEMANTIC_ROUTING_AND_SEGMENTATION.md) — plural segmentation, context-sensitive route competition, multimodality, and the separation of interpretation from salience.
+- [`docs/FUNCTIONAL_TRANSLATION.md`](docs/FUNCTIONAL_TRANSLATION.md) — typed invariant-conservation successor to “translate functions, not words.”
+- [`docs/R3_PRAGMATICS_EVALUATOR.md`](docs/R3_PRAGMATICS_EVALUATOR.md) — P01–P20 adversarial pragmatic/interaction evaluator.
+- [`docs/R3_NEGATIVE_CONTROLS.md`](docs/R3_NEGATIVE_CONTROLS.md) — strong intentionally broken pragmatic systems plus positive oracles.
+- [`specs/R3_EVALUATION_CONTRACT_V1.yaml`](specs/R3_EVALUATION_CONTRACT_V1.yaml) — machine-readable R3 evaluation contract.
 - [`docs/BOOTSTRAP_PROTOCOL.md`](docs/BOOTSTRAP_PROTOCOL.md) — how communication could be established from zero shared symbols.
 - [`docs/SEMANTIC_CONSERVATION.md`](docs/SEMANTIC_CONSERVATION.md) — what it means to preserve meaning.
 - [`docs/EXPERIMENTAL_PROGRAM.md`](docs/EXPERIMENTAL_PROGRAM.md) — staged falsification program.
@@ -133,12 +155,15 @@ A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is
 - [`docs/CONTROL_SUITE.md`](docs/CONTROL_SUITE.md) — Earth-language, synthetic, nonlinguistic, asymmetric, and negative controls.
 - [`docs/INTERSTELLAR_DEPLOYMENT.md`](docs/INTERSTELLAR_DEPLOYMENT.md) — probe, broadcast, and hybrid architectures.
 - [`docs/FAILURE_MODES.md`](docs/FAILURE_MODES.md) — ways the project can fool itself.
-- [`docs/RESEARCH_LANDSCAPE.md`](docs/RESEARCH_LANDSCAPE.md) — relationship to prior research.
+- [`docs/RESEARCH_LANDSCAPE.md`](docs/RESEARCH_LANDSCAPE.md) — relationship to prior research, including pragmatics/common ground/repair/iconicity/emergent-communication cautions.
 - [`docs/ROADMAP.md`](docs/ROADMAP.md) — ordered research phases and gates.
 - [`research/CLAIMS_AND_EVIDENCE.md`](research/CLAIMS_AND_EVIDENCE.md) — evidence-status ledger.
 - [`research/REFERENCES.md`](research/REFERENCES.md) — base literature and source notes.
 - [`research/R1R2_RESEARCH_NOTES.md`](research/R1R2_RESEARCH_NOTES.md) — representation/evaluator research synthesis.
 - [`research/R1R2_REFERENCES.md`](research/R1R2_REFERENCES.md) — sources added specifically for R1/R2.
+- [`research/VERA_SEMANTIC_HISTORY_CROSSWALK.md`](research/VERA_SEMANTIC_HISTORY_CROSSWALK.md) — provenance-bearing transfer of predecessor semantic lessons, with explicit `DO_NOT_INHERIT` boundaries.
+- [`research/PRAGMATICS_RESEARCH_NOTES.md`](research/PRAGMATICS_RESEARCH_NOTES.md) — adversarial synthesis and rejected overclaims from the first pragmatics research cycle.
+- [`research/PRAGMATICS_REFERENCES.md`](research/PRAGMATICS_REFERENCES.md) — re-checkable literature ledger and scope limits.
 
 ## The key experimental standard
 
@@ -165,7 +190,11 @@ A candidate distinction should survive, where applicable:
 17. R0.5 preprocessing/generative-provenance and bridge-attribution controls;
 18. confirmatory-vs-post-hoc hypothesis-family provenance;
 19. claim-discriminating holdout or intervention against strongest live structured alternatives;
-20. an explicit semantic-surplus obligation for any claim stronger than an operational relation.
+20. an explicit semantic-surplus obligation for any claim stronger than an operational relation;
+21. pragmatic-function contrast under fixed denotation;
+22. addressee/audience and perspective shifts;
+23. targeted repair versus reflex repair;
+24. pragmatic conservation under ambiguity, deception, and multimodal conflict.
 
 The system must also be rewarded for correctly preserving unmodeled relations, uncertainty, partial overlap, and non-equivalence rather than forcing them into evaluator-authored categories.
 
@@ -179,6 +208,6 @@ For an embodied probe, that machinery could interact locally with a recipient an
 
 ## Status
 
-`R0_5_R1_R2_DESIGN_BASELINED / IMPLEMENTATION_NOT_STARTED / NO_SEMANTIC_QUALIFICATION`
+`R0_5_R1_R2_DESIGN_BASELINED / R3_PRAGMATICS_DESIGN_SPECIFIED / IMPLEMENTATION_NOT_STARTED / NO_SEMANTIC_OR_PRAGMATIC_QUALIFICATION`
 
-The repository currently defines a research program, a pre-R1 experiment-integrity audit, competing semantic representations, and an adversarial qualification design. It is not a proven universal language, universal ontology, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.
+The repository currently defines a research program, a pre-R1 experiment-integrity audit, competing semantic representations, adversarial semantic-claim controls, and an R3 pragmatic-robustness design. It is not a proven universal language, universal ontology, universal pragmatics, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.

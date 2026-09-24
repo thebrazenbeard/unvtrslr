@@ -2,7 +2,7 @@
 
 ## Status
 
-`R0_5_R1_R2_DESIGN_BASELINED / IMPLEMENTATION_NOT_STARTED / NOT_IMPLEMENTATION_READY`
+`R0_5_R1_R2_DESIGN_BASELINED / R3_PRAGMATICS_DESIGN_SPECIFIED / IMPLEMENTATION_NOT_STARTED / NOT_IMPLEMENTATION_READY`
 
 The roadmap is intentionally gated. Later phases do not inherit qualification merely because earlier phases succeeded.
 
@@ -169,13 +169,20 @@ No post-hoc semantic interpretation may be promoted using the same evidence that
 
 Current status: `R2_EVALUATOR_SPECIFIED / R2_SEMANTIC_CLAIM_CONTROLS_SPECIFIED / HARNESS_NOT_BUILT`.
 
-## R3 — Human-language and synthetic-language controls
+## R3 — Human/synthetic semantic and pragmatic controls
 
 ### Objective
 
-Prove that the protocol can recover known semantic relationships without direct dictionaries.
+Prove that the protocol can recover known semantic relationships without direct dictionaries and preserve interactional distinctions when denotation alone is insufficient.
 
-### Work
+R3 contains two complementary qualification profiles rather than replacing the existing control phase:
+
+1. human-language and synthetic-language semantic controls;
+2. adversarial pragmatics and interaction controls.
+
+R3 is downstream of both R0.5 and R2. It cannot repair a target distinction that R0.5 found unidentifiable, preprocessing-destroyed, evaluator-subsidized, or post-hoc without claim-discriminating confirmation, and it cannot compensate for R2 grounding failure.
+
+### Semantic-control work
 
 - multiple unrelated natural-language controls;
 - at least one signed/spatial control;
@@ -183,9 +190,49 @@ Prove that the protocol can recover known semantic relationships without direct 
 - synthetic context-dependent language;
 - synthetic non-equivalent categories.
 
+### Pragmatics/interaction work
+
+- same denotation with different communicative functions;
+- same form under causally different versus nuisance contexts;
+- deictic/perspective role shifts;
+- indirect-function and background-dependency tests;
+- addressee versus overhearer distinctions;
+- audience-dependent behavior;
+- targeted repair versus reflex repair;
+- convention establishment, drift, repair, and false common ground;
+- strategic ambiguity and deceptive use of an intact convention;
+- partner transfer and role reversal where applicable;
+- multimodal channel conflict;
+- function preservation across different forms and ontologies;
+- explicit pragmatic conservation accounting.
+
+### R3 design artifacts
+
+- [`PRAGMATICS_AND_COMMUNICATIVE_FUNCTION.md`](PRAGMATICS_AND_COMMUNICATIVE_FUNCTION.md);
+- [`COMMON_GROUND_AND_CONVENTION.md`](COMMON_GROUND_AND_CONVENTION.md);
+- [`SEMANTIC_ROUTING_AND_SEGMENTATION.md`](SEMANTIC_ROUTING_AND_SEGMENTATION.md);
+- [`FUNCTIONAL_TRANSLATION.md`](FUNCTIONAL_TRANSLATION.md);
+- [`R3_PRAGMATICS_EVALUATOR.md`](R3_PRAGMATICS_EVALUATOR.md);
+- [`R3_NEGATIVE_CONTROLS.md`](R3_NEGATIVE_CONTROLS.md);
+- [`../specs/R3_EVALUATION_CONTRACT_V1.yaml`](../specs/R3_EVALUATION_CONTRACT_V1.yaml);
+- [`../research/PRAGMATICS_RESEARCH_NOTES.md`](../research/PRAGMATICS_RESEARCH_NOTES.md);
+- [`../research/PRAGMATICS_REFERENCES.md`](../research/PRAGMATICS_REFERENCES.md).
+
 ### Gate
 
-The system must recover known mappings, preserve uncertainty, and correctly identify at least some non-equivalences under the frozen R0.5/R2 evaluator stack.
+Semantic-control qualification requires recovery of known mappings, uncertainty preservation, and correct identification of at least some non-equivalences under the frozen R0.5/R2 evaluator stack.
+
+Pragmatic qualification may additionally emit `PRAGMATICALLY_GROUNDED_WITHIN_TESTED_SCOPE` only after:
+
+- the R0.5 claim ceiling permits the tested semantic/pragmatic claim;
+- the underlying R2 grounding/semantic-claim requirements are satisfied;
+- applicable P01–P20 tests pass;
+- required R3 negative controls and positive oracles behave as preregistered;
+- pragmatic conservation survives audit.
+
+R3 PASS does not establish human-like intention, consciousness, theory of mind, or universal pragmatics.
+
+Current status: `R3_PRAGMATICS_EVALUATOR_SPECIFIED / HARNESS_NOT_BUILT / NO_PRAGMATIC_QUALIFICATION`.
 
 ## R4 — Zero-shared-vocabulary grounded communication
 
@@ -408,24 +455,27 @@ Some research can proceed in parallel:
 - synthetic-language generator design;
 - nonlinguistic channel taxonomy;
 - semantic conservation metrics;
+- pragmatics/common-ground/interaction research;
 - physical-layer/bootstrap research;
 - experiment-integrity and instrumentation-leak research;
 - safety/governance research.
 
 Experimental claims remain ordered by qualification gates.
 
-## Near-term next steps after R0.5/R1/R2 design
+## Near-term next steps after R0.5/R1/R2/R3 design
 
-1. Revise the machine-readable evaluation contract to include R0.5 audit fields, stable semantic control IDs, generative/instrumentation provenance, claim-discriminating holdout status, structured-rival adequacy, and semantic-surplus obligations.
+1. Revise the machine-readable R1/R2 evaluation contract to include R0.5 audit fields, stable semantic control IDs, generative/instrumentation provenance, claim-discriminating holdout status, structured-rival adequacy, and semantic-surplus obligations.
 2. Implement the deterministic world/evaluator skeleton before implementing a sophisticated learner.
-3. Implement the positive controls and existing N00-N24 negative controls plus the new semantic/integrity controls (`CTRL_BRIDGE_ORACLE`, `CTRL_RAW_SCENE_ORACLE`, `CTRL_GLOBAL_STATE_WATERMARK`, `CTRL_DESTRUCTIVE_QUOTIENT`, `CTRL_POSTHOC_SEMANTIC_NAMING`, `CTRL_IID_HOLDOUT_ILLUSION`).
-4. Freeze the control acceptance matrix and verify `R0_5_AUDIT_QUALIFIED` and `HARNESS_TRUSTWORTHY` on intentionally broken systems.
+3. Implement the R2 positive controls and existing N00-N24 negative controls plus the semantic/integrity controls (`CTRL_BRIDGE_ORACLE`, `CTRL_RAW_SCENE_ORACLE`, `CTRL_GLOBAL_STATE_WATERMARK`, `CTRL_DESTRUCTIVE_QUOTIENT`, `CTRL_POSTHOC_SEMANTIC_NAMING`, `CTRL_IID_HOLDOUT_ILLUSION`).
+4. Freeze the R0.5/R2 control acceptance matrix and verify `R0_5_AUDIT_QUALIFIED` and `HARNESS_TRUSTWORTHY` on intentionally broken systems.
 5. Convert a bounded subset of the first 100 challenge families into machine-readable scenario specifications.
 6. Implement the common substrate adapter contract.
 7. Implement the smallest credible TPH, DCA, and PIS candidates under matched budgets.
-8. Calibrate and freeze the first candidate-independent qualification profile.
+8. Calibrate and freeze the first candidate-independent R2 qualification profile.
 9. Run R1 candidates only after the hidden holdout generation rule, hypothesis-family provenance rules, and instrumentation boundary are frozen.
-10. Build one synthetic language with deliberately non-English semantics for R3.
-11. Build one continuous/nonlinguistic channel for R5-compatible early stress testing, including at least one condition where forced serialization destroys a target-relevant distinction.
-12. Preserve every run with code/config/world/evaluator/instrumentation digests, boundary model, rival-family version, and immutable metric traces.
-13. Treat discovery of any new shortcut, semantic-subsidy path, or claim-control failure as an evaluator-version event requiring a new control and requalification.
+10. Implement an R3 synthetic pragmatic world family supporting at least P01, P02, P03, P07, P11, P14, and P20 without human speech-act labels.
+11. Implement R3 `RP00`–`RP03` and `RN00`–`RN09`, then verify the R3 harness classifies them as specified before candidate pragmatic qualification.
+12. Build one synthetic language with deliberately non-English semantics for R3 semantic controls.
+13. Build one continuous/nonlinguistic channel for R5-compatible early stress testing, including at least one condition where forced serialization destroys a target-relevant distinction.
+14. Preserve every run with code/config/world/evaluator/instrumentation digests, boundary model, rival-family version, pragmatic-profile version, and immutable metric traces.
+15. Treat discovery of any new shortcut, semantic-subsidy path, pragmatic shortcut, or claim-control failure as an evaluator-version event requiring a new control and requalification.

@@ -312,7 +312,7 @@ def source_calibration_qualification_from_dict(
         / qualification.qualification_unit_count
     )
     if abs(qualification.supported_fraction - expected_fraction) > 1e-12:
-        raise ValueError("qualification supported fraction is inconsistent")
+        raise ValueError("qualification integrity failure: supported fraction is inconsistent")
     valid_global_ids = {
         prototype.global_unit_id
         for prototype in model.acoustic_model.prototypes

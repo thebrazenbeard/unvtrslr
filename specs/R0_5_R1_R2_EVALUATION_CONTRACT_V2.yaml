@@ -1,0 +1,417 @@
+schema_version: UNVTRSLR_R0_5_R1_R2_EVALUATION_CONTRACT_V2
+status: PROVISIONAL_SPECIFIED_NOT_IMPLEMENTED
+revision_note: THIRTEEN_HOSTILE_SELF_REVIEW_2_WITH_ONE_M1
+supersedes_for_new_work:
+  - specs/R1R2_EVALUATION_CONTRACT_V1.yaml
+source_base:
+  repo: thebrazenbeard/unvtrslr
+  commit: 657b66617859eb9bcaf472e3c92030e371f2fa4e
+  tree: eca9c7f390153322036d72df2d031200af5d8398
+
+scope:
+  r0_5: identifiability_provenance_and_experiment_integrity_audit
+  r1: minimal_semantic_substrate_competition
+  r2: adversarial_semantic_grounding_and_claim_qualification
+
+r0_5:
+  reference_doc: docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md
+  non_goals:
+    - true_meaning_proof
+    - communicative_intent_proof
+    - universal_semantic_ontology
+    - hypothesis_family_completeness_proof
+    - hidden_machinery_honesty_inference_from_traces_alone
+  required_inputs:
+    - interaction_surface
+    - target_claim_spec
+    - rival_hypothesis_family
+    - admissible_strategy_family
+    - budget
+    - statistical_resolution
+    - mediation_trust_partition
+    - hypothesis_family_provenance
+    - generative_provenance
+    - boundary_model
+  required_outputs:
+    - EMPIRICAL_IDENTIFIABILITY
+    - BRIDGE_ATTRIBUTION
+    - HYPOTHESIS_FAMILY_STATUS
+    - HYPOTHESIS_FAMILY_PROVENANCE
+    - WITNESS_PROVENANCE
+    - GENERATIVE_PROVENANCE_STATUS
+    - PREPROCESSING_PRESERVATION_STATUS
+    - BOUNDARY_MODEL
+    - CLAIM_CEILING
+    - SCOPE
+  optional_outputs:
+    - TARGET_RELATION_STATUS
+  preprocessing_rule:
+    id: NO_DESTRUCTIVE_QUOTIENT
+    requirement: >-
+      Learner-bound transforms may compress, serialize, tokenize, quantize,
+      feature-extract, or sample, but must not collapse learner-accessible
+      distinctions required to discriminate a currently admissible rival unless
+      the loss is declared and the affected claim is downgraded or marked unidentifiable.
+    unknown_status: PREPROCESSING_PRESERVATION_UNKNOWN
+  provenance_path_roles:
+    - DECLARED_WORLD_DYNAMICS
+    - PARTICIPANT_PRODUCED
+    - DECLARED_PHYSICAL_OR_CHANNEL_PROPAGATION
+    - DECLARED_SENSOR_MODEL
+    - LEARNER_PREPROCESSING
+    - INSTRUMENTATION_OR_TELEMETRY
+    - EVALUATOR_OR_ADJUDICATION
+    - UNKNOWN_OR_UNVERIFIED
+  fail_closed_statuses:
+    - GENERATIVE_PROVENANCE_UNVERIFIED
+    - PREPROCESSING_PRESERVATION_UNKNOWN
+    - BRIDGE_ATTRIBUTION_UNRESOLVED
+  hypothesis_family_statuses:
+    - REJECTION_ESCAPE_PRESENT
+    - REJECTION_ESCAPE_ABSENT
+    - STRUCTURED_ALTERNATIVE_STRESS_NOT_ESTABLISHED
+    - STRUCTURED_ALTERNATIVE_STRESS_TESTED
+    - RIVAL_FAMILY_CLOSED_AND_JUSTIFIED
+    - RIVAL_FAMILY_MISSPECIFICATION_DETECTED
+    - BEST_SUPPORTED_AMONG_DECLARED_RIVALS_ONLY
+  boundary_model_statuses:
+    - EXPERIMENTER_DECLARED
+    - LEARNER_DISCOVERED
+    - MIXED
+    - UNRESOLVED
+
+r1_interface:
+  reference_doc: docs/R1_INTERFACE_GENERALIZATION_V2.md
+  universal_required_operations:
+    - ingest_learner_visible_exposure_by_opaque_reference
+    - update_candidate_state
+    - preserve_competing_interpretations
+    - explicit_uncertainty
+    - explicit_provenance
+    - condition_on_declared_exposure_or_interaction_feature
+    - predict_or_constrain_under_admissible_regime
+    - scoped_equivalence_or_non_equivalence
+    - expose_support_and_contradiction
+    - evaluator_query_adapter_without_truth_labels
+    - conservation_ledger_support
+    - UNKNOWN_outcome
+    - NO_FAITHFUL_EQUIVALENT_FOUND_WITHIN_DECLARED_SCOPE_outcome
+  prohibited_unscoped_outcomes:
+    - NO_FAITHFUL_EQUIVALENT
+  capability_manifest_required: true
+  capability_dimensions:
+    - DISCRETE_SIGNAL_CONDITIONING
+    - MESSAGE_BOUNDARY
+    - ACTIVE_INTERVENTION
+    - ACTION_SELECTION
+    - ROLE_REVERSAL
+    - BIDIRECTIONAL_EXCHANGE
+    - GLOBAL_TEMPORAL_ORDERING
+    - DISCRETE_TOKENIZATION
+  capability_statuses:
+    - REQUIRED_BY_FIXTURE
+    - SUPPORTED_OPTIONAL
+    - NOT_APPLICABLE_JUSTIFIED
+    - UNRESOLVED
+  anti_evasion: >-
+    NOT_APPLICABLE_JUSTIFIED is not a successful test result. If a claim materially
+    depends on a capability that is unavailable, unresolved, or omitted, the evaluator
+    must use another claim-discriminating route or lower the claim ceiling.
+  admissible_regime_rule: >-
+    The exact observational/query/perturbation regime must be frozen before candidate
+    hidden evaluation, provenance-bound, available under the declared fixture, and free
+    of learner-visible evaluator truth or semantic labels.
+
+substrates:
+  - id: TPH
+    name: Typed Probabilistic Hypergraph
+    commitment: explicit_structured_relational_hypotheses
+    ontology_prior: high_relative_to_rivals
+    native_grounding: evidence_linked_claims
+  - id: DCA
+    name: Denotational Constraint Algebra
+    commitment: executable_constraints_over_compatible_situations_or_trajectories
+    ontology_prior: medium_relative_to_rivals
+    native_grounding: extensional_denotation_under_context_and_intervention
+  - id: PIS
+    name: Predictive-Intervention State
+    commitment: action_conditioned_predictions_and_signal_induced_predictive_change
+    ontology_prior: low_relative_to_rivals
+    native_grounding: observable_predictive_and_interventional_consequences
+
+common_candidate_contract:
+  inherits: r1_interface.universal_required_operations
+  prohibited_inputs:
+    - evaluator_variable_names
+    - evaluator_semantic_labels
+    - hidden_shared_object_ids
+    - shared_latent_vectors
+    - synchronized_episode_identity_side_channels
+    - other_agent_internal_state
+    - hidden_holdout_configuration
+    - undeclared_privileged_instrumentation
+  fixture_gated_operations:
+    signal_conditioning: DISCRETE_SIGNAL_CONDITIONING
+    action_conditioned_prediction: ACTION_SELECTION
+    active_intervention_prediction: ACTIVE_INTERVENTION
+    role_reversal: ROLE_REVERSAL
+    bidirectional_exchange: BIDIRECTIONAL_EXCHANGE
+
+trust_zones:
+  E0:
+    name: evaluator_hidden_truth
+    learner_access: forbidden
+  E1:
+    name: declared_world_sensor_renderer_and_instrumentation
+    evaluator_ids_stripped: true
+    learner_visible_privileged_telemetry: forbidden_unless_explicitly_in_claimed_surface_and_attributed
+  E2:
+    name: learner_interaction
+    evaluator_truth: forbidden
+  E3:
+    name: blind_semantic_adjudication
+    candidate_training_access: forbidden
+
+harness_sequence:
+  - bind_generator_renderer_sensor_and_instrumentation_artifacts
+  - bind_target_claim_rivals_strategy_and_interaction_surface
+  - bind_capability_and_test_applicability_manifest
+  - deterministic_generator_and_replay
+  - r0_5_identifiability_and_provenance_audit
+  - positive_oracle_controls
+  - required_negative_controls
+  - control_acceptance_matrix_check
+  - candidate_independent_threshold_calibration
+  - freeze_qualification_profile
+  - candidate_hidden_evaluation
+  - claim_discriminating_followup_where_semantic_promotion_requires_it
+  - semantic_promotion_gate
+  - emit_certificate
+
+stable_adversarial_controls:
+  - CTRL_PRIVATE_ALIAS
+  - CTRL_MINIMAL_SEPARABLE
+  - CTRL_BRIDGE_ORACLE
+  - CTRL_RAW_SCENE_ORACLE
+  - CTRL_GLOBAL_STATE_WATERMARK
+  - CTRL_DESTRUCTIVE_QUOTIENT
+  - CTRL_POSTHOC_SEMANTIC_NAMING
+  - CTRL_IID_HOLDOUT_ILLUSION
+  - CTRL_STRUCTURED_RIVAL_OMISSION
+  - CTRL_SEMANTIC_NULL_CONTENT
+  - CTRL_ARBITRARY_SEMANTIC_SURPLUS
+
+legacy_negative_control_set:
+  reference: specs/R1R2_EVALUATION_CONTRACT_V1.yaml
+  ids:
+    - N00_random_communicator
+    - N01_silent_competent_receiver
+    - N02_correlated_noncausal_signaler
+    - N03_episode_id_code
+    - N04_shared_latent_leak
+    - N05_lookup_memorizer
+    - N06_private_pair_codebook
+    - N07_action_plan_code
+    - N08_receiver_policy_index
+    - N09_reward_side_channel
+    - N10_serialization_artifact_code
+    - N11_coordinate_frame_shortcut
+    - N12_message_length_or_timing_leak
+    - N13_forced_translator
+    - N14_english_concept_probe_leak
+    - N15_shared_pretrained_ontology
+    - N16_context_shuffler
+    - N17_correlation_as_causation
+    - N18_overfit_denotation_table
+    - N19_opaque_predictive_task_specialist
+    - N20_sender_only_labeler
+    - N21_receiver_hallucinated_semantics
+    - N22_identity_specific_convention
+    - N23_evaluation_language_mimic
+    - N24_conservation_liar
+
+positive_controls:
+  - P00_evaluator_oracle
+  - P01_grounded_arbitrary_convention_oracle
+  - P02_partial_equivalence_oracle
+  - P03_calibrated_uncertain_oracle
+
+operational_grounding_vector:
+  dimensions:
+    - COMMUNICATION_CAUSALITY
+    - WORLD_GROUNDING
+    - NUISANCE_INVARIANCE
+    - NOVEL_INSTANCE_GENERALIZATION
+    - COMPOSITION
+    - ROLE_SYMMETRY
+    - CROSS_TASK_TRANSFER
+    - PARTNER_TRANSFER
+    - SENSOR_SHIFT_TRANSFER
+    - COUNTERFACTUAL_VALIDITY
+    - NON_EQUIVALENCE_CALIBRATION
+    - UNCERTAINTY_CALIBRATION
+    - PROVENANCE_INTEGRITY
+    - SEMANTIC_CONSERVATION
+    - SHORTCUT_RESISTANCE
+  applicability_required_per_dimension: true
+  applicability_statuses:
+    - REQUIRED_AND_TESTED
+    - REQUIRED_BUT_NOT_TESTED
+    - NOT_APPLICABLE_JUSTIFIED
+    - UNRESOLVED
+  anti_evasion: >-
+    NOT_APPLICABLE_JUSTIFIED cannot be counted as a pass. If a promoted claim depends
+    on a dimension that was not tested, the claim ceiling must reflect that missing evidence.
+
+r2_claim_qualification:
+  reference_doc: docs/R2_SEMANTIC_CLAIM_CONTROLS.md
+  informational_relation_statuses:
+    - INFORMATIONAL_RELATION_SUPPORTED
+    - RECEIVER_USE_SUPPORTED
+    - COMMUNICATIVE_FUNCTION_SUPPORTED_IN_SCOPE
+    - COMMUNICATIVE_FUNCTION_UNRESOLVED
+    - NONCOMMUNICATIVE_CUE_SUPPORTED
+  interpretation_statuses:
+    - CONFIRMATORY_TARGET_CLAIM
+    - EXPLORATORY_POST_HOC_INTERPRETATION
+    - POST_HOC_INTERPRETATION_FROZEN_FOR_FUTURE_TEST
+    - POST_HOC_INTERPRETATION_INDEPENDENTLY_CONFIRMED
+    - OPERATIONAL_RELATION_VERIFIED_SEMANTIC_NAMING_UNRESOLVED
+  evidence_discrimination_statuses:
+    - FRESH_BUT_NONDISCRIMINATING_EVIDENCE
+    - CLAIM_DISCRIMINATING_HOLDOUT
+    - COUNTERFACTUAL_OR_SHIFT_TESTED
+    - SEMANTIC_INTERPRETATION_STILL_CONFOUNDED
+  semantic_delta_statuses:
+    - OPERATIONAL_CORRESPONDENCE_ESTABLISHED
+    - SEMANTIC_DELTA_SPECIFIED
+    - SEMANTIC_DELTA_TESTED
+    - SEMANTIC_DELTA_NOT_ESTABLISHED
+    - SEMANTIC_INTERPRETATION_UNDERDETERMINED_IN_SCOPE
+    - SEMANTIC_LABEL_ADDS_NO_FALSIFIABLE_CONTENT
+  semantic_surplus_obligation:
+    required_for_stronger_semantic_promotion: true
+    requirement: >-
+      A stronger semantic claim must declare at least one predeclared condition
+      under which the lower operational claim may remain true while the stronger
+      semantic claim becomes false.
+    anti_circularity: >-
+      Passing the evaluator does not define semantics. The surplus obligation
+      must be independently justified for the exact claim.
+    anti_arbitrary_burden: >-
+      Additional difficulty alone is not a semantic distinction. If an arbitrary
+      non-semantic operational code can satisfy the proposed surplus for the same
+      underlying reason, the surplus does not earn semantic promotion.
+    statuses:
+      - NOT_APPLICABLE_LOWER_OPERATIONAL_CLAIM
+      - DECLARED_AND_TESTABLE
+      - TESTED_AND_SURVIVED
+      - FAILED
+      - NO_DISTINCT_FALSIFIABLE_BURDEN_IDENTIFIED
+      - ARBITRARY_BURDEN_DOES_NOT_DISCRIMINATE_SEMANTIC_CLAIM
+
+semantic_promotion_gate:
+  target_status: SEMANTIC_CORRESPONDENCE_WITHIN_TESTED_SCOPE
+  all_required:
+    - r0_5_fail_closed_statuses_absent
+    - underlying_operational_relation_verified
+    - interpretation_mode_is_confirmatory_or_independently_confirmed
+    - claim_discriminating_evidence_present
+    - structured_alternative_stress_tested_or_family_closed_and_justified
+    - semantic_delta_status_is_SEMANTIC_DELTA_TESTED
+    - semantic_surplus_obligation_status_is_TESTED_AND_SURVIVED
+    - arbitrary_semantic_surplus_control_passed
+    - required_capability_and_dimension_tests_satisfied_for_exact_claim
+    - surviving_alternative_explanations_do_not_defeat_claim
+    - final_claim_ceiling_allows_semantic_correspondence
+  forbidden_shortcuts:
+    - semantic_surplus_merely_declared_not_tested
+    - fresh_iid_evidence_without_claim_discrimination
+    - null_rival_without_structured_alternative_stress
+    - generic_grounding_status_used_as_semantic_promotion
+    - not_applicable_dimension_counted_as_pass
+    - evaluator_suite_defined_as_semantics_by_fiat
+
+threshold_policy:
+  candidate_hidden_results_may_set_thresholds: false
+  calibration_sources:
+    - chance_or_null_controls
+    - positive_oracles
+    - negative_controls
+    - harness_only_pilot_worlds
+  freeze_before_candidate_hidden_evaluation: true
+  normalized_metric: "(candidate - null) / (oracle - null), direction-adjusted for losses"
+  each_critical_metric_requires:
+    - preregistered_minimum_oracle_headroom
+    - preregistered_margin_over_strongest_applicable_negative_control
+    - preregistered_confidence_interval_method
+    - preregistered_minimum_episode_count
+  aggregate_score_can_override_critical_failure: false
+
+certificate:
+  schema_version: UNVTRSLR_SCOPED_GROUNDING_CERTIFICATE_V2
+  allowed_statuses:
+    - FAIL
+    - HARNESS_INVALID
+    - OPERATIONAL_RELATION_VERIFIED
+    - OPERATIONAL_GROUNDING_WITHIN_TESTED_SCOPE
+    - SEMANTIC_CORRESPONDENCE_WITHIN_TESTED_SCOPE
+    - PARTIALLY_GROUNDED
+    - INDETERMINATE
+  deprecated_ambiguous_statuses:
+    - GROUNDED_WITHIN_TESTED_SCOPE
+  forbidden_statuses:
+    - UNIVERSALLY_GROUNDED
+    - TRUE_MEANING_RECOVERED
+  required_bindings:
+    - candidate_substrate_version
+    - learner_code_digest
+    - evaluator_code_digest
+    - world_generator_digest
+    - renderer_and_sensor_digests
+    - instrumentation_digests
+    - qualification_profile_digest
+    - training_configuration_digest_or_explicit_not_applicable
+    - channel_configuration_digest_or_explicit_not_applicable
+    - interaction_surface_digest
+    - capability_and_test_applicability_manifest_digest
+    - target_claim_spec_digest
+    - rival_hypothesis_family_digest
+    - admissible_strategy_family_digest
+    - hypothesis_freeze_receipt_digest
+    - stable_control_suite_version
+    - stable_control_fixture_manifest_digest
+    - hidden_holdout_generation_rule_digest
+    - seed_or_seed_rule_commitment
+    - hypothesis_family_provenance
+    - witness_provenance
+    - generative_provenance_status
+    - preprocessing_preservation_status
+    - boundary_model
+    - structured_alternative_stress_status
+    - metric_vector_with_confidence_intervals
+    - critical_test_results
+    - surviving_alternative_explanations
+    - scope_limitations
+  semantic_claim_additional_bindings:
+    - semantic_interpretation_mode
+    - semantic_delta_status
+    - semantic_surplus_obligation_digest
+    - semantic_surplus_obligation_status
+    - claim_discriminating_followup_rule_digest
+    - claim_discriminating_evidence_digest
+    - semantic_promotion_gate_result
+
+claims_boundary:
+  arbitrary_symbol_permutation_is_failure: false
+  task_bound_private_shortcut_is_failure: true
+  passing_r0_5_is_semantic_success: false
+  passing_r1_is_semantic_success: false
+  passing_r2_is_metaphysical_proof_of_meaning: false
+  semantic_certificate_requires_explicit_promotion_gate: true
+  null_rival_presence_establishes_family_completeness: false
+  fresh_iid_holdout_is_automatically_claim_discriminating: false
+  target_independent_instrumentation_is_automatically_neutral: false
+  arbitrary_extra_test_burden_establishes_semantics: false
+  not_applicable_capability_counts_as_pass: false
+  unqualified_negative_existential_about_equivalence_is_allowed: false

@@ -330,3 +330,324 @@ Every control run should record:
 - alternative shortcut explanations.
 
 Without that disclosure, cross-experiment “universality” comparisons are meaningless.
+
+---
+
+## Human verbal-language Pass 1 control overlays
+
+These overlays apply to human spoken/verbal controls and to synthetic controls motivated by them. They do not replace the later signed/nonverbal or nonhuman passes.
+
+### HVC-1 — typological/semantic distance matrix
+
+Human-language positive controls should not be dominated by closely related high-resource languages.
+
+Select pairs or small sets that vary materially in:
+
+- morphology and word order;
+- obligatoriness of tense/aspect/modal marking;
+- evidential/source-of-information marking;
+- spatial frame systems;
+- pronoun/participant distinctions;
+- lexical category boundaries;
+- polysemy and lexicalization patterns;
+- resource level and pretraining exposure.
+
+Report what distinctions are obligatorily encoded, optionally encoded, lexicalized differently, or absent as one-to-one lexical equivalents.
+
+**Failure caught:** English-centric translation success presented as general semantic mediation.
+
+### HVC-2 — discovery versus convention-invention split
+
+Run two materially different human conditions:
+
+1. **pre-existing-language recovery:** agents encounter a convention that existed before the experiment and must infer its use without a dictionary;
+2. **novel-convention formation:** participants are allowed to invent a new code during the experiment.
+
+The resulting bridge entries must preserve `DISCOVERED_CORRESPONDENCE` versus `NEGOTIATED_CONVENTION` provenance.
+
+**Failure caught:** a system that invents an effective task code being reported as having decoded a language.
+
+### HVC-3 — iconicity ladder
+
+For matched semantic challenges compare:
+
+- high human-perceived iconicity;
+- low/moderate iconicity;
+- intentionally arbitrary mappings;
+- misleading iconic cues that correlate with a nuisance variable rather than the target distinction.
+
+**Failure caught:** a system that relies on human-motivated resemblance while being credited with arbitrary zero-shared-symbol grounding.
+
+### HVC-4 — repair availability matrix
+
+Compare:
+
+- natural repair available;
+- repair channel available but unlabeled;
+- repair disabled;
+- repair delayed;
+- repair corrupted/noisy;
+- evaluator-tagged `REPAIR` events as a deliberately invalid leakage condition.
+
+Measure not only task success but interactions-to-stable-mapping, calibration, error recovery, and whether conventions remain transferable.
+
+**Failure caught:** repair semantics smuggled through the interface instead of inferred from interaction.
+
+### HVC-5 — joint-attention subsidy controls
+
+Human experiments must declare whether they provide:
+
+- shared gaze target;
+- pointing;
+- highlighted referent;
+- shared scene segmentation;
+- experimenter-directed salience;
+- synchronized object IDs;
+- common display coordinates.
+
+Run matched conditions where at least some of these are removed or made asymmetric.
+
+**Failure caught:** the experimenter performing the referential grounding while the learner receives credit.
+
+### HVC-6 — task/pragmatics scaffold audit
+
+Audit instructions, UI, feedback, timing, and task rules for semantic information.
+
+Deliberately construct a control where a participant can infer the intended meaning primarily from:
+
+- task objective;
+- allowed action set;
+- reward structure;
+- menu position;
+- turn timing;
+- tutorial examples;
+- experimenter behavior.
+
+The semantic evaluator should detect that the scaffold, not the counterpart signal, carries the decisive information.
+
+### HVC-7 — pretrained human-prior matrix
+
+For model-based agents distinguish:
+
+- scratch/scratch;
+- pretrained/scratch;
+- scratch/pretrained;
+- pretrained/pretrained;
+- materially different pretrained model families;
+- synthetic semantic categories absent from public corpora.
+
+Where possible record training-provenance overlap with the human languages or cultural facts used in the control.
+
+**Failure caught:** recovery from memorized linguistic/world priors being reported as bootstrap from the current shared environment.
+
+### HVC-8 — semantic partition mismatch
+
+Use human-language-inspired worlds where source and target category boundaries differ.
+
+Examples should include:
+
+- one source term spanning several target terms;
+- several source terms collapsing into one target category;
+- a grammatically obligatory information-source distinction on one side but not the other;
+- context-dependent lexicalization where a direct dictionary is misleading.
+
+Success requires preservation of partial overlap, paraphrase, uncertainty, or scoped non-equivalence rather than forced one-to-one mapping.
+
+### HVC-9 — third-party acquisition
+
+After a dyad stabilizes a convention, introduce an independently initialized third participant that did not share the dyad's training history.
+
+The third participant may learn from the permitted environment and interaction but receives no hidden codebook.
+
+**Failure caught:** co-trained private coordination that cannot be reconstructed from grounded interaction.
+
+Third-party acquisition is strong anti-shortcut evidence, not by itself proof of uniquely correct semantics.
+
+### HVC-10 — identifiability null
+
+Construct at least one case where the evaluator knows two latent distinctions but the agents' allowed observations/interventions make them exactly indistinguishable.
+
+The expected system result is `UNDERDETERMINED_IN_SCOPE` or `UNIDENTIFIABLE_WITHIN_INTERACTION_SURFACE`, not a forced semantic answer.
+
+**Failure caught:** evaluator truth being laundered into a claim that the learner discovered an empirically inaccessible distinction.
+
+### HVC-11 — turn-structure ablation
+
+Compare ordinary turn-like interaction against continuous, overlapping, asynchronous, or delayed signaling variants.
+
+**Failure caught:** treating human conversational turn-taking as an undeclared universal framing layer.
+
+### HVC-12 — self-description staging
+
+Replace Control 20's binary notion of self-description with a staged comparison:
+
+1. `SELF_DEMONSTRATING_ONLY` — repeated structure/contrast without meta-language;
+2. `CONVENTION_FORMING` — negotiated mappings and repair can emerge;
+3. `RECURSIVELY_SELF_DESCRIBING` — the system attempts to communicate about its own forms/uncertainty after prior grounding;
+4. `PREDECLARED_META_LANGUAGE` — invalid/easier comparator in which meta-semantic functions are supplied.
+
+**Failure caught:** circular claims that a zero-semantics protocol explained itself using concepts that were already presupposed.
+
+## Human verbal control reporting additions
+
+In addition to the general required reporting, record:
+
+- whether the target behavior was pre-existing or negotiated during the experiment;
+- joint-attention/ostension support available;
+- repair affordances and whether they were labeled;
+- iconicity condition;
+- pretrained language/world priors;
+- experiment/task instructions visible to each side;
+- category/ontology partitions supplied by the interface;
+- whether the tested distinction was identifiable from learner-visible evidence at all;
+- whether a third party could reconstruct the convention;
+- whether success depended on specifically human perceptual/pragmatic common ground.
+
+---
+
+## Human signed/nonverbal Pass 2 control overlays
+
+These overlays preserve the distinction between full signed languages, emerging/homesign systems, silent gesture, and nonlinguistic human behavior.
+
+### SNV-1 — raw signed-language control
+
+Supply modality-preserving signed-language data rather than English gloss strings.
+
+Acceptable learner inputs may include raw video, pose/kinematic streams, optical flow, or other representations that preserve the relevant manual/nonmanual timing without semantic labels.
+
+Run an explicitly invalid comparator using English glosses.
+
+**Failure caught:** pre-solving segmentation, lexical identity, simultaneity, and grammar through gloss annotation.
+
+### SNV-2 — simultaneous-channel preservation
+
+Construct meanings whose crucial evidence is distributed simultaneously across handshape/motion plus a nonmanual or second-manual channel.
+
+Compare:
+
+- full multimodal stream;
+- flattened sequential token stream;
+- one articulator removed;
+- synchrony jittered while marginal features remain.
+
+**Failure caught:** architecture silently assuming all language is one-dimensional token sequence.
+
+### SNV-3 — sign/gesture functional ambiguity
+
+Present physically similar point-like or iconic movements with different established functions across contexts: referential, participant marking, direction, command, discourse management, or nonlinguistic gesture.
+
+Do not supply the functional class.
+
+**Failure caught:** mapping human-looking form directly to an evaluator semantic label.
+
+### SNV-4 — shared-space subsidy matrix
+
+Vary whether the parties share:
+
+- coordinate origin;
+- orientation;
+- viewpoint;
+- object segmentation;
+- spatial-locus persistence;
+- scene visibility.
+
+Include a condition where a common UI coordinate system creates an artificial perfect bridge.
+
+**Failure caught:** treating renderer-normalized space as semantics discovered by the learners.
+
+### SNV-5 — visual iconicity ladder
+
+Pair:
+
+- highly iconic/motivated manual forms;
+- arbitrary conventional signs;
+- weak iconicity;
+- misleading resemblance aligned with a nuisance feature.
+
+**Failure caught:** claiming generic grounding when success depends on human visual iconicity.
+
+### SNV-6 — homesign versus community-language regime
+
+Compare:
+
+1. isolated individual/homesign-like production;
+2. dyadic negotiation;
+3. stable multi-user community;
+4. sequential cohort or transmission condition.
+
+Measure which properties appear at each regime rather than treating mature grammar as a prerequisite for semantic success.
+
+**Failure caught:** conflating dyadic convention, individual structured communication, community conventionalization, and language emergence.
+
+### SNV-7 — silent-gesture conventionalization
+
+Start hearing non-signers with no permitted speech/writing and an unfamiliar manual channel.
+
+Track form reduction, convergence, reuse, ambiguity, transfer, and third-party acquisition across repeated interaction.
+
+Include a one-shot pantomime condition.
+
+**Failure caught:** treating initially transparent pantomime as equivalent to a conventionalized language.
+
+### SNV-8 — facial-expression universality trap
+
+Construct a condition in which a facial movement is reliably used by the counterpart for a function that conflicts with an evaluator/pretrained `emotion` interpretation.
+
+Score recovery of demonstrated function, not agreement with a canonical emotion label.
+
+**Failure caught:** hard-coded human facial-expression semantics.
+
+### SNV-9 — linguistic/nonlinguistic face ambiguity
+
+In a signed-language control, allow the face/head/body to carry grammatical or prosodic information in some contexts and affective/paralinguistic information in others.
+
+**Failure caught:** preprocessing all nonmanual activity as emotion/noise or, conversely, as grammar.
+
+### SNV-10 — pointing/gaze label-channel trap
+
+Deliberately provide shared gaze or highlighted loci in one invalid condition and remove/asymmetrize them in the valid condition.
+
+**Failure caught:** experimenter attention cues acting as an undeclared referent label.
+
+### SNV-11 — community dependence
+
+Freeze a dyadic bridge and test it before and after multi-user transmission.
+
+Record whether additional systematicity appears without granting the later community system retroactive credit for what the original dyad knew.
+
+**Failure caught:** laundering community-created structure into evidence that the initial zero-shared-symbol pair discovered it.
+
+### SNV-12 — modality-preserving repair
+
+Allow misunderstanding/repair signals to be distributed across timing, repetition, gaze, facial action, spatial isolation, or manual modification without a dedicated `repair` token.
+
+**Failure caught:** assuming repair must be sequential, lexical, or verbally explicit.
+
+### SNV-13 — tactile channel control
+
+When touch is available, provide raw timing/location/force information without predefined social meaning. Compare cultures/contexts or synthetic roles where the same touch pattern has different functions.
+
+**Failure caught:** treating touch or interpersonal distance as a universal semantic code.
+
+### SNV-14 — mediation provenance / bridge-oracle control
+
+For any spatial, visual, pose, or landmark normalization, record the transform provenance. Include a deliberately invalid mediator that has evaluator truth plus receiver-specific representation access and inserts a perfectly generalizing visual cue.
+
+Expected result: the downstream distinction may be identifiable, but learner bridge attribution must fail and `EVALUATOR_SUBSIDY_DETECTED` must trigger.
+
+**Failure caught:** semantic normalization hidden in computer-vision/coordinate preprocessing rather than learned by the candidate.
+
+## Pass 2 reporting additions
+
+Record:
+
+- whether the source is an established signed language, emerging/community language, homesign, silent gesture, or nonlinguistic behavior;
+- raw modalities and preprocessing transforms;
+- simultaneous channels preserved or removed;
+- spatial frame/viewpoint common ground;
+- manual/nonmanual functional labels withheld from learners;
+- iconicity condition;
+- community size and transmission history;
+- whether a form/function mapping existed before the experiment;
+- mediation trust/provenance for vision, pose, coordinate, and attention transforms;
+- whether success survives a modality-preserving but semantically neutral replacement preprocessing pipeline.

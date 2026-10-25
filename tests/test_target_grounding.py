@@ -327,3 +327,16 @@ def test_non_equivalence_requires_repeated_multi_source_evidence():
     )
 
     assert render_atom(m, "ctx:untranslatable").status == "UNKNOWN_TARGET_RENDERING"
+
+
+def test_scalar_strings_cannot_be_misread_as_target_tokens_or_context_atoms():
+    for tokens, context in (
+        ("red", ["ctx:red"]),
+        (["red"], "ctx:red"),
+    ):
+        try:
+            TargetGroundingEpisode.build("bad", "speaker-1", tokens, context)
+        except ValueError as exc:
+            assert "sequence" in str(exc)
+        else:
+            raise AssertionError("scalar string must not become character tokens")

@@ -154,6 +154,25 @@ def evidence_from_event_frames(
     additional raw acoustic view for cross-recording identity testing.
     """
     frame_rows = list(frames)
+    frame_hop_s = getattr(event_result, "frame_hop_s", None)
+    declared_frame_count = getattr(event_result, "frame_count", None)
+    indexed_support = frame_hop_s is not None or declared_frame_count is not None
+
+    if indexed_support:
+        if frame_hop_s is None or declared_frame_count is None:
+            raise ValueError("event frame grid metadata is incomplete")
+        hop = float(frame_hop_s)
+        if not np.isfinite(hop) or hop <= 0:
+            raise ValueError("event frame hop must be positive and finite")
+        if declared_frame_count != len(frame_rows):
+            raise ValueError("event frame count does not match acoustic frames")
+        if len(frame_rows) > 1:
+            center_times = np.asarray([row.time_s for row in frame_rows], dtype=float)
+            if not np.all(np.isfinite(center_times)) or not np.allclose(
+                np.diff(center_times), hop, atol=1e-9, rtol=1e-6
+            ):
+                raise ValueError("acoustic frame timestamps disagree with event hop")
+
     grouped: dict[
         str,
         list[tuple[float, ...]],
@@ -179,13 +198,33 @@ def evidence_from_event_frames(
 
         event = events[index]
 
-        supporting = [
-            row
-            for row in frame_rows
-            if float(event.start_s)
-            <= float(row.time_s)
-            < float(event.end_s)
-        ]
+        if indexed_support:
+            # Event discovery cuts [a:b] on the original frame array. A
+            # window center may lie outside that span even though its frame
+            # belongs to the event, especially for short events.
+            start = float(event.start_s) / hop
+            end = float(event.end_s) / hop
+            if not np.isfinite(start) or not np.isfinite(end):
+                raise ValueError("event span is not on its declared frame grid")
+            a, b = round(start), round(end)
+            if (
+                abs(start - a) > 1e-6
+                or abs(end - b) > 1e-6
+                or a < 0
+                or b > len(frame_rows)
+                or a >= b
+            ):
+                raise ValueError("event span is not on its declared frame grid")
+            supporting = frame_rows[a:b]
+        else:
+            # Legacy external event results may not carry a frame grid.
+            supporting = [
+                row
+                for row in frame_rows
+                if float(event.start_s)
+                <= float(row.time_s)
+                < float(event.end_s)
+            ]
 
         grouped[
             str(assignment.unit_id)

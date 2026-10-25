@@ -33,6 +33,10 @@ class TargetConstructionEpisode:
         semantic_atoms: Iterable[str],
         target_tokens: Iterable[str],
     ) -> "TargetConstructionEpisode":
+        if isinstance(semantic_atoms, (str, bytes)):
+            raise ValueError("semantic_atoms must be a sequence, not a scalar string")
+        if isinstance(target_tokens, (str, bytes)):
+            raise ValueError("target_tokens must be a sequence, not a scalar string")
         atoms = tuple(str(atom) for atom in semantic_atoms)
         tokens = tuple(str(token) for token in target_tokens)
         if not str(episode_id):

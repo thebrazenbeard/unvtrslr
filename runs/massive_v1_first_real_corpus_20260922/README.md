@@ -18,6 +18,14 @@ Canonical repository: `alexa/massive`.
 
 The execution script computes and records the SHA-256 of the actual downloaded tarball bytes. It does not trust the URL alone as an immutable byte identity.
 
+For repeat runs, the workflow and runner now **reject** any archive other than
+the frozen 39,500,415-byte artifact with SHA-256
+`7df623fd2d300a4d235d6ee5bd396c9a28258d3a0ccb29abdb054506eba153f8`.
+This identity matches the preserved 2026-09-22 execution evidence and an
+independent fresh download from the official source on 2026-10-25. It is a
+reproducibility lock, **not** an upstream-signed authenticity attestation.
+Unexpected source changes require review and a new declared artifact identity.
+
 ## UNVTRSLR lineage
 
 - learned target grounding: PR #17 @ `897362fea8c8ccf6483e8594f581019e4b47a90d`

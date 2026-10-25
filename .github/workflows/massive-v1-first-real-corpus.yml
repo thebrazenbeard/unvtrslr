@@ -39,7 +39,9 @@ jobs:
           curl --fail --location --retry 4 --retry-all-errors \
             "https://amazon-massive-nlu-dataset.s3.amazonaws.com/amazon-massive-dataset-1.0.tar.gz" \
             --output .run-data/amazon-massive-dataset-1.0.tar.gz
-          sha256sum .run-data/amazon-massive-dataset-1.0.tar.gz
+          printf '%s  %s\n' \
+            '7df623fd2d300a4d235d6ee5bd396c9a28258d3a0ccb29abdb054506eba153f8' \
+            '.run-data/amazon-massive-dataset-1.0.tar.gz' | sha256sum --check --strict
 
       - name: Execute preregistered real-corpus packet
         env:

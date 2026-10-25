@@ -28,6 +28,10 @@ class TargetGroundingEpisode:
         target_tokens: Iterable[str],
         context: Iterable[str],
     ) -> "TargetGroundingEpisode":
+        if isinstance(target_tokens, (str, bytes)):
+            raise ValueError("target_tokens must be a sequence, not a scalar string")
+        if isinstance(context, (str, bytes)):
+            raise ValueError("context must be a sequence, not a scalar string")
         tokens = tuple(str(token) for token in target_tokens)
         atoms = frozenset(str(atom) for atom in context)
         if not tokens:

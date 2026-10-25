@@ -33,6 +33,11 @@ class EventDiscoveryResult:
     events: tuple[CandidateEvent, ...]
     units: tuple[UnitAssignment, ...]
     boundary_scores: tuple[float, ...]
+    # Event boundaries are frame-hop indices expressed in seconds, not
+    # timestamps of the centers of acoustic analysis windows. Preserve the
+    # grid so downstream evidence can recover the exact supporting frames.
+    frame_hop_s: float | None = None
+    frame_count: int | None = None
 
 
 def _robust_scale(matrix: np.ndarray) -> np.ndarray:
@@ -120,6 +125,8 @@ def discover_events_from_frames(
         raise ValueError("at least one frame is required")
     if context_radius_frames < 1:
         raise ValueError("context_radius_frames must be >= 1")
+    if not np.isfinite(hop_s) or hop_s <= 0:
+        raise ValueError("hop_s must be positive and finite")
 
     matrix = _frame_matrix(materialized)
     scores = _novelty(matrix, context_radius_frames)
@@ -149,6 +156,8 @@ def discover_events_from_frames(
         events=tuple(events),
         units=tuple(assignments),
         boundary_scores=tuple(float(v) for v in scores),
+        frame_hop_s=float(hop_s),
+        frame_count=len(materialized),
     )
 
 

@@ -15,6 +15,7 @@ from collections import Counter
 from dataclasses import asdict
 from pathlib import Path
 
+from unvtrslr.archive_integrity import verify_archive_identity
 from unvtrslr.multilingual_qualification import (
     EvaluationRecord,
     QualificationThresholds,
@@ -34,6 +35,10 @@ DATASET_URL = (
     "amazon-massive-dataset-1.0.tar.gz"
 )
 DATASET_VERSION = "1.0"
+# Frozen artifact observed in the 2026-09-22 recorded run, cross-checked against
+# a fresh official-source download on 2026-10-25. This is not vendor-signed.
+DATASET_SHA256 = "7df623fd2d300a4d235d6ee5bd396c9a28258d3a0ccb29abdb054506eba153f8"
+DATASET_BYTES = 39500415
 LOCALES = ("en-US", "fr-FR", "de-DE", "sw-KE", "tr-TR")
 HOLDOUT_PER_LOCALE = 200
 MODEL_LINEAGE = {
@@ -175,6 +180,12 @@ def main() -> int:
 
     dataset_tar = Path(args.dataset_tar).resolve()
     outdir = Path(args.out).resolve()
+    # Fail before parsing data, constructing models, or creating output artifacts.
+    verified_dataset_sha256 = verify_archive_identity(
+        dataset_tar,
+        expected_sha256=DATASET_SHA256,
+        expected_bytes=DATASET_BYTES,
+    )
     outdir.mkdir(parents=True, exist_ok=True)
 
     thresholds_obj = json.loads(
@@ -201,7 +212,7 @@ def main() -> int:
         "dataset_name": "MASSIVE",
         "dataset_version": DATASET_VERSION,
         "canonical_url": DATASET_URL,
-        "dataset_sha256": sha256_path(dataset_tar),
+        "dataset_sha256": verified_dataset_sha256,
         "dataset_bytes": dataset_tar.stat().st_size,
         "locales": list(LOCALES),
     }

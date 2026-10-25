@@ -87,6 +87,20 @@ class R1ComparisonTests(unittest.TestCase):
         result = compare_substrates(profile(), [candidate("TPH"), shortcut])
         self.assertEqual(result.nondominated, ("PIS", "TPH"))
 
+    def test_all_failed_candidates_cannot_be_eliminated_solely_for_complexity(self):
+        failure = {"E01": False, "E08": False}
+        result = compare_substrates(profile(), [
+            candidate("TPH", passed=failure), candidate("PIS", passed=failure)
+        ])
+        self.assertEqual(result.dominated_by, {"TPH": (), "PIS": ()})
+        self.assertEqual(result.nondominated, ("PIS", "TPH"))
+
+    def test_screen_discloses_claimed_critical_test_subset_and_unverified_provenance(self):
+        result = compare_substrates(profile(), [candidate("TPH"), candidate("PIS")])
+        self.assertEqual(result.declared_critical_tests, ("E01", "E08"))
+        self.assertEqual(result.provenance_status, "CALLER_ASSERTED_UNVERIFIED")
+        self.assertEqual(result.declared_metric_names, ("transfer_accuracy", "calibration_loss"))
+
     def test_material_regression_in_another_complexity_field_blocks_dominance(self):
         high_memory = candidate("PIS", complexity={"peak_memory_bytes": 1000})
         result = compare_substrates(profile(), [candidate("TPH"), high_memory])
@@ -124,6 +138,18 @@ class R1ComparisonTests(unittest.TestCase):
             compare_substrates(profile(), [candidate("TPH"), candidate("PIS", metrics={
                 "transfer_accuracy": (float("nan"), 0.9), "calibration_loss": (0.1, 0.12)
             })])
+
+    def test_unbounded_integers_fail_closed_instead_of_overflowing(self):
+        huge = 10 ** 1000
+        for value in (huge, -huge):
+            with self.subTest(kind="metric", value_sign=value > 0), self.assertRaisesRegex(ValueError, "metric_intervals"):
+                compare_substrates(profile(), [candidate("TPH"), candidate("PIS", metrics={
+                    "transfer_accuracy": (value, value), "calibration_loss": (0.1, 0.12)
+                })])
+            with self.subTest(kind="cost", value_sign=value > 0), self.assertRaisesRegex(ValueError, "complexity"):
+                compare_substrates(profile(), [candidate("TPH"), candidate("PIS", complexity={
+                    "peak_memory_bytes": value
+                })])
 
     def test_unbalanced_repetitions_cannot_enter_paired_screen(self):
         with self.assertRaisesRegex(ValueError, "independent_run_count must match"):

@@ -6,10 +6,13 @@ import pytest
 
 from unvtrslr.r2_controls import (
     ActionPlanCode,
+    AlternatingReceiverLeak,
     ControlEpisode,
     EpisodeIdCode,
     GroundedConventionOracle,
     ReceiverObservation,
+    SenderObservation,
+    SharedSenderStateLeak,
     SilentCompetentReceiver,
     probe_controls,
 )
@@ -68,6 +71,34 @@ def test_competent_receiver_with_private_cue_has_no_communication_causality():
     assert result.message_ablation_drop == 0.0
     assert result.causal_listening == 0.0
     assert result.status == "CONTROL_REJECTED"
+
+
+def test_shared_sender_state_cannot_masquerade_as_message_causality():
+    agent = SharedSenderStateLeak()
+    assert agent.send(SenderObservation(1, "sample")) == "sign-B"
+    assert agent.receive(None, ReceiverObservation("align", "sample")) == 1
+    result = probe_controls(SharedSenderStateLeak(), cases())
+    assert result.iid_accuracy == 1.0
+    assert result.message_ablation_drop == 0.5
+    assert result.causal_listening == 0.0
+    assert result.status == "CONTROL_REJECTED"
+
+
+def test_receiver_call_order_cannot_masquerade_as_counterfactual_sensitivity():
+    result = probe_controls(AlternatingReceiverLeak(), cases())
+    assert result.iid_accuracy == 1.0
+    assert result.message_ablation_drop == 0.5
+    assert result.causal_listening == 0.0
+    assert result.status == "CONTROL_REJECTED"
+
+
+def test_counterfactual_rejects_identity_clone_with_shared_mutable_state():
+    class IdentityCloneLeak(SharedSenderStateLeak):
+        def __deepcopy__(self, memo: dict[int, object]) -> "IdentityCloneLeak":
+            return self
+
+    with pytest.raises(ValueError, match="independent copies"):
+        probe_controls(IdentityCloneLeak(), cases())
 
 
 def test_harness_rejects_unbalanced_or_duplicate_id_input():

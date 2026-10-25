@@ -1,9 +1,11 @@
 """No corpus may be read or qualified before byte-identity validation."""
 
 import hashlib
+from io import BytesIO
 from pathlib import Path
 import runpy
 import sys
+import tarfile
 from tempfile import TemporaryDirectory
 from unittest import TestCase, mock
 
@@ -11,10 +13,38 @@ from unittest import TestCase, mock
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from unvtrslr import archive_integrity  # noqa: E402
 from unvtrslr.archive_integrity import verify_archive_identity  # noqa: E402
 
 
 class MassiveArchiveIntegrityTests(TestCase):
+    def test_verified_archive_snapshot_survives_path_replacement(self):
+        """Downstream parsing must consume the exact bytes attested by SHA-256."""
+
+        def make_tar(member_name: str) -> bytes:
+            buffer = BytesIO()
+            with tarfile.open(fileobj=buffer, mode="w:gz") as tar:
+                payload = member_name.encode("ascii")
+                member = tarfile.TarInfo(member_name)
+                member.size = len(payload)
+                tar.addfile(member, BytesIO(payload))
+            return buffer.getvalue()
+
+        original = make_tar("original.txt")
+        replacement = make_tar("replacement.txt")
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "corpus.tar.gz"
+            path.write_bytes(original)
+            archive_bytes, digest = archive_integrity.load_verified_archive(
+                path,
+                expected_sha256=hashlib.sha256(original).hexdigest(),
+                expected_bytes=len(original),
+            )
+            self.assertEqual(digest, hashlib.sha256(original).hexdigest())
+            path.write_bytes(replacement)
+            with tarfile.open(fileobj=BytesIO(archive_bytes), mode="r:gz") as tar:
+                self.assertEqual(tar.getnames(), ["original.txt"])
+
     def test_verified_test_artifact(self):
         payload = b"unit-test-corpus"
         with TemporaryDirectory() as tmp:

@@ -13,9 +13,10 @@ import tarfile
 import unicodedata
 from collections import Counter
 from dataclasses import asdict
+from io import BytesIO
 from pathlib import Path
 
-from unvtrslr.archive_integrity import verify_archive_identity
+from unvtrslr.archive_integrity import load_verified_archive
 from unvtrslr.multilingual_qualification import (
     EvaluationRecord,
     QualificationThresholds,
@@ -181,7 +182,7 @@ def main() -> int:
     dataset_tar = Path(args.dataset_tar).resolve()
     outdir = Path(args.out).resolve()
     # Fail before parsing data, constructing models, or creating output artifacts.
-    verified_dataset_sha256 = verify_archive_identity(
+    verified_archive_bytes, verified_dataset_sha256 = load_verified_archive(
         dataset_tar,
         expected_sha256=DATASET_SHA256,
         expected_bytes=DATASET_BYTES,
@@ -213,7 +214,7 @@ def main() -> int:
         "dataset_version": DATASET_VERSION,
         "canonical_url": DATASET_URL,
         "dataset_sha256": verified_dataset_sha256,
-        "dataset_bytes": dataset_tar.stat().st_size,
+        "dataset_bytes": len(verified_archive_bytes),
         "locales": list(LOCALES),
     }
     write_json(outdir / "dataset_provenance.json", provenance)
@@ -223,7 +224,8 @@ def main() -> int:
     construction_stats = {}
     dataset_counts = {}
 
-    with tarfile.open(dataset_tar, "r:gz") as tar:
+    # Parse the exact authenticated snapshot, never a fresh mutable path read.
+    with tarfile.open(fileobj=BytesIO(verified_archive_bytes), mode="r:gz") as tar:
         for locale in LOCALES:
             rows = read_locale_rows(tar, locale)
             partitions = Counter(str(row["partition"]) for row in rows)

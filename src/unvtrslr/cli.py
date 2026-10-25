@@ -27,7 +27,10 @@ def _read_wav(path: str) -> tuple[np.ndarray, int]:
         raise ValueError(f"unsupported PCM sample width: {width}")
 
     if channels > 1:
-        x = x.reshape(-1, channels).mean(axis=1)
+        # Preserve distinct physical channels for the acoustic observation
+        # layer. Averaging here would erase e.g. equal-and-opposite stereo
+        # waves before the extractor can flag or select a channel.
+        x = x.reshape(-1, channels)
     return x, sr
 
 

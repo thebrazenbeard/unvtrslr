@@ -32,8 +32,18 @@ def _digest(value: str, field: str) -> None:
         raise ValueError(f"{field} must be a lowercase SHA-256 hex digest")
 
 
+def _finite_number(value: object) -> bool:
+    """Handle arbitrarily large integers without leaking an OverflowError."""
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    try:
+        return isfinite(value)
+    except OverflowError:
+        return False
+
+
 def _nonnegative(value: float, field: str) -> None:
-    if isinstance(value, bool) or not isinstance(value, (int, float)) or not isfinite(value) or value < 0:
+    if not _finite_number(value) or value < 0:
         raise ValueError(f"{field} must be a finite nonnegative number")
 
 
@@ -138,10 +148,13 @@ class CandidateEvaluation:
 @dataclass(frozen=True)
 class R1ScreeningReport:
     status: str
+    provenance_status: str
     profile_digest: str
     suite_digest: str
     episode_batch_digest: str
     learner_surface_digest: str
+    declared_critical_tests: tuple[str, ...]
+    declared_metric_names: tuple[str, ...]
     dominated_by: Mapping[str, tuple[str, ...]]
     nondominated: tuple[str, ...]
 
@@ -169,7 +182,7 @@ def _validate_candidate(profile: ComparisonProfile, candidate: CandidateEvaluati
         if not isinstance(interval, (tuple, list)) or len(interval) != 2:
             raise ValueError(f"{candidate.substrate_id}: metric_intervals {name} requires [lower, upper]")
         lower, upper = interval
-        if (any(isinstance(x, bool) or not isinstance(x, (int, float)) or not isfinite(x) for x in (lower, upper))
+        if (any(not _finite_number(x) for x in (lower, upper))
                 or lower > upper):
             raise ValueError(f"{candidate.substrate_id}: metric_intervals {name} invalid")
 
@@ -181,6 +194,12 @@ def _validate_candidate(profile: ComparisonProfile, candidate: CandidateEvaluati
 
 
 def _dominates(profile: ComparisonProfile, challenger: CandidateEvaluation, contender: CandidateEvaluation) -> bool:
+    # Vacuous pass coverage is not evidence of semantic non-inferiority: a
+    # cheaper learner that fails every named critical test cannot eliminate
+    # another equally unqualified learner on cost alone.
+    if not any(challenger.critical_test_passes[test] for test in profile.critical_tests):
+        return False
+
     # A challenger may not lose a critical test that the contender passed.
     if any(contender.critical_test_passes[test] and not challenger.critical_test_passes[test]
            for test in profile.critical_tests):
@@ -233,10 +252,13 @@ def compare_substrates(profile: ComparisonProfile, candidates: list[CandidateEva
     nondominated = tuple(sorted(name for name, dominators in dominated_by.items() if not dominators))
     return R1ScreeningReport(
         status="COMPARATIVE_SCREEN_ONLY",
+        provenance_status="CALLER_ASSERTED_UNVERIFIED",
         profile_digest=profile.profile_digest,
         suite_digest=profile.suite_digest,
         episode_batch_digest=profile.episode_batch_digest,
         learner_surface_digest=profile.learner_surface_digest,
+        declared_critical_tests=profile.critical_tests,
+        declared_metric_names=tuple(metric.name for metric in profile.metrics),
         dominated_by=MappingProxyType(dominated_by),
         nondominated=nondominated,
     )

@@ -1,11 +1,17 @@
 """Adversarial fixtures for the bounded R0.5 information-integrity checks."""
 
+from hashlib import sha256
+
+import pytest
+
 from unvtrslr.r05_integrity import (
     ExposurePath,
     MatchedAblation,
     PreservationWitness,
     SemanticClaimEvidence,
+    SourcePayloadPair,
     audit_exposure_paths,
+    audit_executed_preprocessing,
     audit_matched_ablation,
     audit_preprocessing,
     audit_semantic_confirmation,
@@ -158,3 +164,65 @@ def test_posthoc_claim_with_unknown_selection_evidence_cannot_prove_freshness():
 def test_reused_selection_evidence_is_not_fresh():
     evidence = SemanticClaimEvidence(False, False, ("old", "new"), True, ("old",))
     assert audit_semantic_confirmation(evidence).holdout_status == "NO_FRESH_EVIDENCE"
+
+
+def test_executed_transform_exposes_metadata_laundered_destructive_quotient():
+    """Caller-supplied transformed IDs can disagree with executable behavior."""
+    misleading = PreservationWitness("raw-left", "raw-right", "output-A", "output-B", True)
+    assert audit_preprocessing([misleading]).status == "NO_DESTRUCTIVE_QUOTIENT_WITNESSED_IN_SCOPE"
+
+    left, right = b"pitch=high", b"pitch=low"
+    result = audit_executed_preprocessing(
+        [SourcePayloadPair(left, right, True)], lambda raw: raw.split(b"=")[0]
+    )
+    assert result.disposition.status == "PREPROCESSING_DESTRUCTIVE_QUOTIENT_DETECTED"
+    assert result.disposition.counterexample_indices == (0,)
+    assert result.receipts[0].source_left_sha256 == sha256(left).hexdigest()
+    assert result.receipts[0].source_right_sha256 == sha256(right).hexdigest()
+    assert result.receipts[0].output_left_sha256 == sha256(b"pitch").hexdigest()
+    assert result.receipts[0].output_left_sha256 == result.receipts[0].output_right_sha256
+    assert result.receipts[0].replay_stable is True
+
+
+def test_executed_preprocessing_identity_is_only_scoped_narrow_evidence():
+    result = audit_executed_preprocessing(
+        [SourcePayloadPair(b"signal-A", b"signal-B", True)], lambda raw: raw
+    )
+    assert result.disposition.status == "NO_DESTRUCTIVE_QUOTIENT_WITNESSED_IN_SCOPE"
+    assert result.receipts[0].source_left_sha256 == result.receipts[0].output_left_sha256
+    assert result.receipts[0].replay_stable is True
+
+
+def test_executed_preprocessing_unstable_replay_never_claims_preservation():
+    counter = iter(range(4))
+
+    def nondeterministic(_raw: bytes) -> bytes:
+        return bytes([next(counter)])
+
+    result = audit_executed_preprocessing(
+        [SourcePayloadPair(b"A", b"B", True)], nondeterministic
+    )
+    assert result.disposition.status == "PREPROCESSING_REPLAY_UNSTABLE"
+    assert result.disposition.counterexample_indices == (0,)
+    assert result.receipts[0].replay_stable is False
+
+
+def test_executed_preprocessing_empty_or_irrelevant_witnesses_remain_unknown():
+    assert audit_executed_preprocessing([], bytes).disposition.status == (
+        "PREPROCESSING_PRESERVATION_UNKNOWN"
+    )
+    irrelevant = [SourcePayloadPair(b"A", b"B", False)]
+    assert audit_executed_preprocessing(irrelevant, bytes).disposition.status == (
+        "PREPROCESSING_PRESERVATION_UNKNOWN"
+    )
+
+
+def test_executed_preprocessing_rejects_invalid_payloads_and_results():
+    with pytest.raises(ValueError, match="must differ"):
+        audit_executed_preprocessing([SourcePayloadPair(b"A", b"A", True)], bytes)
+    with pytest.raises(TypeError, match="source payload"):
+        audit_executed_preprocessing([SourcePayloadPair("A", b"B", True)], bytes)
+    with pytest.raises(TypeError, match="target_distinguishable"):
+        audit_executed_preprocessing([SourcePayloadPair(b"A", b"B", "false")], bytes)
+    with pytest.raises(TypeError, match="preprocessor output"):
+        audit_executed_preprocessing([SourcePayloadPair(b"A", b"B", True)], lambda _raw: "x")

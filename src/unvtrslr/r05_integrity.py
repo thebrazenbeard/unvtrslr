@@ -12,7 +12,8 @@ learner's features, rewards, prompts, or training examples by these checks.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable
+from hashlib import sha256
+from typing import Callable, Iterable
 
 
 @dataclass(frozen=True)
@@ -63,6 +64,115 @@ def audit_preprocessing(witnesses: Iterable[PreservationWitness]) -> AuditDispos
     if tested_relevant:
         return AuditDisposition("NO_DESTRUCTIVE_QUOTIENT_WITNESSED_IN_SCOPE")
     return AuditDisposition("PREPROCESSING_PRESERVATION_UNKNOWN")
+
+
+@dataclass(frozen=True)
+class SourcePayloadPair:
+    """Raw *supplied* learner-accessible payloads and an external rival contrast.
+
+    A payload should include the complete source history relevant to the claim,
+    not only a selected acoustic frame. This type does not authenticate capture
+    provenance or verify ``target_distinguishable``; both remain external.
+    """
+
+    source_left: bytes
+    source_right: bytes
+    target_distinguishable: bool
+
+
+@dataclass(frozen=True)
+class ExecutedPreprocessingReceipt:
+    """Digests calculated from the actual inputs and a preprocessor's results.
+
+    The digests bind *this execution*, not the deployed preprocessor version,
+    source capture, or any hidden ambient state the callback may consult.
+    """
+
+    source_left_sha256: str
+    source_right_sha256: str
+    output_left_sha256: str
+    output_right_sha256: str
+    replay_stable: bool
+
+
+@dataclass(frozen=True)
+class ExecutedPreprocessingAudit:
+    disposition: AuditDisposition
+    receipts: tuple[ExecutedPreprocessingReceipt, ...]
+
+
+def audit_executed_preprocessing(
+    witnesses: Iterable[SourcePayloadPair],
+    preprocess: Callable[[bytes], bytes],
+) -> ExecutedPreprocessingAudit:
+    """Execute and replay a byte-to-byte transform instead of trusting output IDs.
+
+    A distinction is falsified if independently supplied source payloads differ
+    in a declared target-relevant way yet produce *identical actual bytes*.
+    Replaying each input detects common nondeterminism/state contamination;
+    unstable replay blocks even a narrow non-collision result. Determinism of
+    two replays is not a proof of purity, reproducibility, or source provenance.
+
+    ``preprocess`` must be the actual deployed transform (with a fixed seed if
+    applicable). It receives no target labels from this interface, but may
+    consult external privileged state: that requires separate provenance audit.
+    """
+
+    if not callable(preprocess):
+        raise TypeError("preprocess must be a callable taking and returning bytes")
+
+    receipts: list[ExecutedPreprocessingReceipt] = []
+    destructive_indices: list[int] = []
+    unstable_indices: list[int] = []
+    tested_relevant = False
+    for index, witness in enumerate(witnesses):
+        if not isinstance(witness.source_left, bytes) or not isinstance(
+            witness.source_right, bytes
+        ):
+            raise TypeError("source payloads must be immutable bytes")
+        if not isinstance(witness.target_distinguishable, bool):
+            raise TypeError("target_distinguishable must be a boolean")
+        if witness.target_distinguishable and witness.source_left == witness.source_right:
+            raise ValueError("a target-distinguishing pair must differ at the source")
+
+        left_output = preprocess(witness.source_left)
+        right_output = preprocess(witness.source_right)
+        left_replay = preprocess(witness.source_left)
+        right_replay = preprocess(witness.source_right)
+        if not all(
+            isinstance(output, bytes)
+            for output in (left_output, right_output, left_replay, right_replay)
+        ):
+            raise TypeError("preprocessor output must be immutable bytes")
+
+        replay_stable = left_output == left_replay and right_output == right_replay
+        receipts.append(
+            ExecutedPreprocessingReceipt(
+                sha256(witness.source_left).hexdigest(),
+                sha256(witness.source_right).hexdigest(),
+                sha256(left_output).hexdigest(),
+                sha256(right_output).hexdigest(),
+                replay_stable,
+            )
+        )
+        if not replay_stable:
+            unstable_indices.append(index)
+        if witness.target_distinguishable:
+            tested_relevant = True
+            if left_output == right_output:
+                destructive_indices.append(index)
+
+    if unstable_indices:
+        disposition = AuditDisposition("PREPROCESSING_REPLAY_UNSTABLE", tuple(unstable_indices))
+    elif destructive_indices:
+        disposition = AuditDisposition(
+            "PREPROCESSING_DESTRUCTIVE_QUOTIENT_DETECTED", tuple(destructive_indices)
+        )
+    elif tested_relevant:
+        disposition = AuditDisposition("NO_DESTRUCTIVE_QUOTIENT_WITNESSED_IN_SCOPE")
+    else:
+        disposition = AuditDisposition("PREPROCESSING_PRESERVATION_UNKNOWN")
+    return ExecutedPreprocessingAudit(disposition, tuple(receipts))
 
 
 @dataclass(frozen=True)

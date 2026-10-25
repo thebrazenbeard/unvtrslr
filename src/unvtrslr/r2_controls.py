@@ -12,6 +12,7 @@ must reject/strip undeclared cross-agent IDs and evaluator-side hints.
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -121,6 +122,46 @@ class SilentCompetentReceiver:
         return factor ^ (observation.task == "invert")
 
 
+class SharedSenderStateLeak:
+    """N04: shared process state transports the factor; receiver ignores signs.
+
+    This intentionally unsafe pair models a same-object sender/receiver with a
+    mutable latent channel. Observed sign-factor correlation is incidental.
+    """
+
+    def __init__(self) -> None:
+        self._sender_latent = 0
+
+    def send(self, observation: SenderObservation) -> str:
+        self._sender_latent = observation.factor
+        return ("sign-A", "sign-B")[observation.factor]
+
+    def receive(self, message: str | None, observation: ReceiverObservation) -> int:
+        return self._sender_latent ^ (observation.task == "invert")
+
+
+class AlternatingReceiverLeak:
+    """N04 variant: fake counterfactual sensitivity from receive-call order.
+
+    The first call after any send returns the most recently observed factor;
+    subsequent calls return its inverse. Neither action reads the sign.
+    """
+
+    def __init__(self) -> None:
+        self._sender_latent = 0
+        self._receive_calls = 0
+
+    def send(self, observation: SenderObservation) -> str:
+        self._sender_latent = observation.factor
+        self._receive_calls = 0
+        return ("sign-A", "sign-B")[observation.factor]
+
+    def receive(self, message: str | None, observation: ReceiverObservation) -> int:
+        factor = self._sender_latent ^ (self._receive_calls > 0)
+        self._receive_calls += 1
+        return factor ^ (observation.task == "invert")
+
+
 @dataclass(frozen=True)
 class ControlProbeResult:
     iid_accuracy: float
@@ -146,10 +187,28 @@ def _causal_listening(agent: ControlAgent, episodes: tuple[ControlEpisode, ...])
     flips = 0
     for episode in episodes:
         alternate = next(ep for ep in episodes if ep.factor != episode.factor)
-        # Hold receiver state, task, ID, and private cue constant. Intervene
-        # exclusively on the received message.
-        original = agent.receive(agent.send(_sender_view(episode)), _receiver_view(episode))
-        manipulated = agent.receive(agent.send(_sender_view(alternate)), _receiver_view(episode))
+        # Prepare both signals BEFORE either receiver action. Interleaving
+        # send/receive lets a same-process agent leak sender truth through
+        # mutable object state and fraudulently satisfy this intervention.
+        # Deep-copy the receiver after both sends: either receive-call order
+        # would otherwise masquerade as an effect of the message itself.
+        # This is only toy isolation, NOT a security boundary; real systems
+        # need separated processes and frozen receiver snapshots.
+        original_message = agent.send(_sender_view(episode))
+        alternate_message = agent.send(_sender_view(alternate))
+        receiver_observation = _receiver_view(episode)
+        original_receiver = deepcopy(agent)
+        manipulated_receiver = deepcopy(agent)
+        if (
+            original_receiver is agent
+            or manipulated_receiver is agent
+            or original_receiver is manipulated_receiver
+        ):
+            raise ValueError("counterfactual receivers must be independent copies")
+        original = original_receiver.receive(original_message, receiver_observation)
+        manipulated = manipulated_receiver.receive(alternate_message, receiver_observation)
+        if original not in (0, 1) or manipulated not in (0, 1):
+            raise ValueError("receiver action must be binary")
         flips += original != manipulated
     return flips / len(episodes)
 

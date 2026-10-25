@@ -215,3 +215,7 @@ For an embodied probe, that machinery could interact locally with a recipient an
 `R0_5_R1_R2_DESIGN_BASELINED / REFERENCE_IMPLEMENTATION_CANDIDATES_ACTIVE / REAL_CORPUS_QUALIFICATION_HARNESS_ACTIVE / NO_REAL_CORPUS_PASS`
 
 The repository now contains both the research program and draft executable reference candidates for measurement, event discovery, cross-source acoustic identity, operational grounding, and source-calibrated translation. These are reference implementations under adversarial review, not a proven universal language, universal ontology, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.
+
+## Editor startup source safety
+
+This repository's security branch removes the concealed VS Code folder-open command and the disguised executable asset it invoked. The regression test checks the committed task configuration and asset absence. VS Code's automatic-task permission is a **user-level** setting, not an enforceable repository setting; this source change does not verify any workstation, installed package, or running service.

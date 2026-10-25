@@ -215,3 +215,7 @@ For an embodied probe, that machinery could interact locally with a recipient an
 `R0_5_R1_R2_DESIGN_BASELINED / REFERENCE_IMPLEMENTATION_CANDIDATES_ACTIVE / REAL_CORPUS_QUALIFICATION_HARNESS_ACTIVE / NO_REAL_CORPUS_PASS`
 
 The repository now contains both the research program and draft executable reference candidates for measurement, event discovery, cross-source acoustic identity, operational grounding, and source-calibrated translation. These are reference implementations under adversarial review, not a proven universal language, universal ontology, or extraterrestrial communication solution. The strongest claims here are intentionally written so they can fail.
+
+## Workspace startup safety (source scope)
+
+The concealed VS Code `folderOpen` Node task was removed, automatic workspace tasks set to valid string `"off"`, and JavaScript disguised as `public/fonts/fa-solid.lkf` removed from tracked source. Static regression tests and read-only CI check the known loader vector. Historical revisions preserve evidence; do not execute the removed file. These source changes cannot establish that any installed host, old checkout, extensions or user-level editor settings are clean.

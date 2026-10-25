@@ -13,8 +13,10 @@ import tarfile
 import unicodedata
 from collections import Counter
 from dataclasses import asdict
+from io import BytesIO
 from pathlib import Path
 
+from unvtrslr.archive_integrity import load_verified_archive
 from unvtrslr.multilingual_qualification import (
     EvaluationRecord,
     QualificationThresholds,
@@ -34,6 +36,10 @@ DATASET_URL = (
     "amazon-massive-dataset-1.0.tar.gz"
 )
 DATASET_VERSION = "1.0"
+# Frozen artifact observed in the 2026-09-22 recorded run, cross-checked against
+# a fresh official-source download on 2026-10-25. This is not vendor-signed.
+DATASET_SHA256 = "7df623fd2d300a4d235d6ee5bd396c9a28258d3a0ccb29abdb054506eba153f8"
+DATASET_BYTES = 39500415
 LOCALES = ("en-US", "fr-FR", "de-DE", "sw-KE", "tr-TR")
 HOLDOUT_PER_LOCALE = 200
 MODEL_LINEAGE = {
@@ -175,6 +181,12 @@ def main() -> int:
 
     dataset_tar = Path(args.dataset_tar).resolve()
     outdir = Path(args.out).resolve()
+    # Fail before parsing data, constructing models, or creating output artifacts.
+    verified_archive_bytes, verified_dataset_sha256 = load_verified_archive(
+        dataset_tar,
+        expected_sha256=DATASET_SHA256,
+        expected_bytes=DATASET_BYTES,
+    )
     outdir.mkdir(parents=True, exist_ok=True)
 
     thresholds_obj = json.loads(
@@ -201,8 +213,8 @@ def main() -> int:
         "dataset_name": "MASSIVE",
         "dataset_version": DATASET_VERSION,
         "canonical_url": DATASET_URL,
-        "dataset_sha256": sha256_path(dataset_tar),
-        "dataset_bytes": dataset_tar.stat().st_size,
+        "dataset_sha256": verified_dataset_sha256,
+        "dataset_bytes": len(verified_archive_bytes),
         "locales": list(LOCALES),
     }
     write_json(outdir / "dataset_provenance.json", provenance)
@@ -212,7 +224,8 @@ def main() -> int:
     construction_stats = {}
     dataset_counts = {}
 
-    with tarfile.open(dataset_tar, "r:gz") as tar:
+    # Parse the exact authenticated snapshot, never a fresh mutable path read.
+    with tarfile.open(fileobj=BytesIO(verified_archive_bytes), mode="r:gz") as tar:
         for locale in LOCALES:
             rows = read_locale_rows(tar, locale)
             partitions = Counter(str(row["partition"]) for row in rows)

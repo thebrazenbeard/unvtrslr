@@ -51,6 +51,19 @@ It is an acoustic evidence vector that later source-normalization/registry stage
 
 `evidence_from_event_frames()` binds PR #8 event time spans back to PR #6 frame measurements.
 
+New event discovery results preserve the frame-hop interval and original frame
+count. The adapter uses those fields to select the exact frame-index slice for
+each event. Event boundaries are derived from frame hops, while the acoustic
+frame timestamps represent analysis-window **centers**; treating those two
+clocks as identical can omit valid short events or leak neighboring frames into
+a descriptor. The adapter rejects mismatched frame counts, incompatible center
+spacing, and off-grid event spans rather than silently rebinding them.
+
+Older externally supplied event results without frame-grid metadata retain the
+timestamp-based compatibility path. Their frame ownership is not independently
+qualified by this fix; callers requiring exact provenance should re-discover
+events using the metadata-bearing result.
+
 If an event has no supporting frame evidence, the adapter fails closed instead of synthesizing a descriptor.
 
 Repeated occurrences carrying the same recording-local PR #8 unit ID are aggregated by median into one `LocalUnitEvidence` vector.

@@ -1,6 +1,32 @@
 # R0.5 — Information, Integrity, and Claim-Provenance Audit
 
-Status: `DESIGN_BASELINED / NOT_IMPLEMENTED / NO_SEMANTIC_QUALIFICATION`
+Status: `DESIGN_BASELINED / BOUNDED_NEGATIVE_CONTROLS_IMPLEMENTED / FULL_AUDIT_NOT_IMPLEMENTED / NO_SEMANTIC_QUALIFICATION`
+
+## Executable integrity falsifiers (bounded)
+
+`src/unvtrslr/r05_integrity.py` now contains four evaluator-side checks with
+adversarial fixtures in `tests/test_r05_integrity.py`:
+
+| Check | Required evidence | Adverse result |
+| --- | --- | --- |
+| `audit_preprocessing` (`CTRL_DESTRUCTIVE_QUOTIENT`) | Two distinct source-side learner-accessible histories, a declared target-relevant contrast, and their transformed representations | `PREPROCESSING_DESTRUCTIVE_QUOTIENT_DETECTED` when the transform collapses the contrast |
+| `audit_matched_ablation` (`CTRL_RAW_SCENE_ORACLE`) | Independently supplied paired physical-world and capture-seed digests, evaluator bookkeeping, and learner exposures | `RAW_SCENE_ORACLE_DETECTED` when exposures differ while all declared generative conditions match |
+| `audit_exposure_paths` (`CTRL_GLOBAL_STATE_WATERMARK` and related leaks) | An audited path from simulator/evaluator latent state through transforms to learner exposure | `FORBIDDEN_LEARNER_EXPOSURE_PATH_DETECTED` for privileged, non-world-process injections, regardless of target-label permutation |
+| `audit_semantic_confirmation` (`CTRL_POSTHOC_SEMANTIC_NAMING`, `CTRL_IID_HOLDOUT_ILLUSION`) | Freeze provenance, selection evidence IDs, independent holdout IDs, structured-rival discrimination, and holdout outcome | An exploratory/confounded or unconfirmed disposition unless the required conditions are declared and passed |
+
+The checks deliberately treat *absence of a detected leak* as narrow or unknown,
+not as independent qualification. Data producers can misstate provenance, world
+matching, holdout independence, or validation outcomes; this code neither
+cryptographically authenticates their claims nor verifies an actual generator,
+renderer, candidate model, or causal world. Evidence must be retained elsewhere
+and independently inspected. `SUPPORTED_AMONG_DECLARED_RIVALS_WITHIN_TESTED_SCOPE`
+is a **conditional claim ceiling** for an evaluator-reported successful test,
+not a finding that UNVTRSLR has discovered or translated semantics.
+
+These controls form a first executable falsification slice. A complete R0.5
+harness still needs live provenance tracing, controlled intervention execution,
+identifiability testing over strategy/budget/rival families, evaluator/learner
+partition enforcement, and qualified evidence acquisition.
 
 ## Purpose
 
@@ -334,6 +360,6 @@ A future empirical/harness gate should require that the R0.5 audit correctly cla
 
 Current status:
 
-`R0_5_AUDIT_SPECIFIED / NOT_IMPLEMENTED`
+`R0_5_AUDIT_SPECIFIED / BOUNDED_CONTROL_FALSIFIERS_EXECUTABLE / FULL_AUDIT_NOT_IMPLEMENTED`
 
 R0.5 is an experiment-integrity and identifiability layer. It is not evidence that shared semantics has been achieved.

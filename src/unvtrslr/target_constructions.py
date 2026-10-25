@@ -33,11 +33,15 @@ class TargetConstructionEpisode:
         semantic_atoms: Iterable[str],
         target_tokens: Iterable[str],
     ) -> "TargetConstructionEpisode":
+        if isinstance(semantic_atoms, (str, bytes)):
+            raise ValueError("semantic_atoms must be a sequence, not a scalar string")
+        if isinstance(target_tokens, (str, bytes)):
+            raise ValueError("target_tokens must be a sequence, not a scalar string")
         atoms = tuple(str(atom) for atom in semantic_atoms)
         tokens = tuple(str(token) for token in target_tokens)
-        if not str(episode_id):
+        if episode_id is None or not str(episode_id).strip():
             raise ValueError("episode_id must not be empty")
-        if not str(source_id):
+        if source_id is None or not str(source_id).strip():
             raise ValueError("source_id must not be empty")
         if not atoms:
             raise ValueError("construction episode must contain semantic atoms")
@@ -146,6 +150,10 @@ def fit_target_construction_model(
     rows = list(episodes)
     if not rows:
         raise ValueError("at least one construction episode is required")
+    if any(not isinstance(row.source_id, str) or not row.source_id.strip() for row in rows):
+        raise ValueError("source_id must not be empty in construction episodes")
+    if any(not isinstance(row.episode_id, str) or not row.episode_id.strip() for row in rows):
+        raise ValueError("episode_id must not be empty in construction episodes")
     if not str(target_language_id):
         raise ValueError("target_language_id must not be empty")
     if min_sources < 2:

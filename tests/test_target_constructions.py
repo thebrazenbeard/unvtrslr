@@ -309,3 +309,16 @@ def test_duplicate_episode_ids_fail_closed():
         assert "episode_id" in str(exc)
     else:
         raise AssertionError("duplicate episode IDs should fail closed")
+
+
+def test_scalar_strings_cannot_be_misread_as_token_sequences():
+    for atoms, tokens in (
+        ("ctx:red", ["red"]),
+        (["ctx:red"], "red"),
+    ):
+        try:
+            TargetConstructionEpisode.build("bad", "speaker-1", atoms, tokens)
+        except ValueError as exc:
+            assert "sequence" in str(exc)
+        else:
+            raise AssertionError("scalar string must not become character tokens")

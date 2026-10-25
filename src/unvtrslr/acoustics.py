@@ -26,19 +26,85 @@ class FrameFeatures:
     mfcc: tuple[float, ...]
 
 
-def _mono(samples: np.ndarray | Iterable[float]) -> np.ndarray:
-    x = np.asarray(samples, dtype=np.float64)
-    if x.ndim == 2:
-        x = x.mean(axis=1)
-    if x.ndim != 1:
+def _channels(samples: np.ndarray | Iterable[float]) -> np.ndarray:
+    """Validate input observations, retaining all provided channel samples.
+
+    No physical reference amplitude, ADC full scale, or interchannel phase
+    alignment is inferred from arbitrary numeric sample values.
+    """
+    raw = np.asarray(samples)
+    if np.iscomplexobj(raw):
+        raise ValueError("samples must be real-valued audio, not complex I/Q samples")
+    x = np.asarray(raw, dtype=np.float64)
+    if x.ndim == 1:
+        x = x[:, np.newaxis]
+    elif x.ndim != 2:
         raise ValueError("samples must be mono or shape (n_samples, n_channels)")
-    if x.size == 0:
+    if x.shape[0] == 0:
         raise ValueError("samples must not be empty")
-    x = np.nan_to_num(x, copy=False)
-    peak = float(np.max(np.abs(x)))
-    if peak > 1.0:
-        x = x / peak
+    if x.shape[1] == 0:
+        raise ValueError("samples must have at least one channel")
+    if not np.all(np.isfinite(x)):
+        raise ValueError("samples must contain only finite values")
+    # Energies, autocorrelations and FFT power all square/accumulate values.
+    # Finite float64 input alone is not enough to keep those computations
+    # finite. Fail closed on pathological magnitudes instead of emitting
+    # Infinity/NaN into evidence; this broad bound is numerical, not a claim
+    # about physical calibration or the format's full dynamic range.
+    if np.max(np.abs(x)) > 1e100:
+        raise ValueError("sample amplitude exceeds stable numeric analysis range")
     return x
+
+
+def _channel_rms(channels: np.ndarray) -> np.ndarray:
+    return np.sqrt(np.mean(np.square(channels), axis=0))
+
+
+def _representative_channel_index(channels: np.ndarray) -> int:
+    # Signed channel averaging can erase genuine antiphase observations.
+    # Highest-energy is only a deterministic representative, not a beamformer
+    # or a claim that the remaining channels lack distinct structure.
+    return int(np.argmax(_channel_rms(channels)))
+
+
+def _mono(samples: np.ndarray | Iterable[float]) -> np.ndarray:
+    """Select a representative channel without phase-cancelling downmixing."""
+    channels = _channels(samples)
+    return channels[:, _representative_channel_index(channels)]
+
+
+def _channel_evidence(channels: np.ndarray) -> dict:
+    """Retain basic per-channel magnitudes and downmix-loss diagnostics.
+
+    This summary is lossy: original per-channel samples remain necessary for
+    phase, spatial, timing, provenance, and alternative-channel analyses.
+    """
+    rms = _channel_rms(channels)
+    peaks = np.max(np.abs(channels), axis=0)
+    signed_mean_rms = float(np.sqrt(np.mean(np.square(np.mean(channels, axis=1)))))
+    channel_energy_rms = float(np.sqrt(np.mean(np.square(channels))))
+    return {
+        "channel_count": int(channels.shape[1]),
+        "representative_channel_policy": "MAXIMUM_RAW_RMS_CHANNEL",
+        "representative_channel_index": _representative_channel_index(channels),
+        "measurement_units": "ORIGINAL_INPUT_NUMERIC_UNITS_NOT_CALIBRATED",
+        "per_channel": [
+            {
+                "channel_index": i,
+                "sample_rms": float(rms[i]),
+                "sample_peak": float(peaks[i]),
+            }
+            for i in range(channels.shape[1])
+        ],
+        "signed_mean_mix_rms": signed_mean_rms,
+        "channel_energy_rms": channel_energy_rms,
+        "cancellation_ratio": (
+            float(signed_mean_rms / channel_energy_rms)
+            if channel_energy_rms > _EPS
+            else None
+        ),
+        "claim_limit": "SUMMARY_ONLY_RETAIN_RAW_CHANNELS_FOR_REANALYSIS",
+    }
 
 
 def _frames(x: np.ndarray, frame_size: int, hop: int) -> np.ndarray:
@@ -120,7 +186,12 @@ def extract_frame_features(
     fmin: float = 60.0,
     fmax: float = 500.0,
 ) -> list[FrameFeatures]:
-    """Extract interpretable acoustic channels without assuming linguistic units."""
+    """Extract acoustic frame descriptors from one representative channel.
+
+    For multichannel inputs, the channel with maximum RMS is selected, with
+    first-channel tie breaking. Supply a single channel explicitly to examine
+    any other channel; no multichannel fusion or spatial inference is made.
+    """
     if sample_rate < 2000:
         raise ValueError("sample_rate is too low for speech-like acoustic analysis")
     x = _mono(samples)
@@ -169,6 +240,35 @@ def extract_frame_features(
     return rows
 
 
+def extract_channel_frame_features(
+    samples: np.ndarray | Iterable[float],
+    sample_rate: int,
+    *,
+    frame_ms: float = 40.0,
+    hop_ms: float = 10.0,
+    fmin: float = 60.0,
+    fmax: float = 500.0,
+) -> tuple[list[FrameFeatures], ...]:
+    """Extract frame features for *every* channel, retaining channel order.
+
+    Unlike the representative-channel `extract_frame_features`, this function
+    makes no implicit channel selection. It still compresses frame observations;
+    preserve the original sampled signals for source-level reanalysis.
+    """
+    channels = _channels(samples)
+    return tuple(
+        extract_frame_features(
+            channels[:, i],
+            sample_rate,
+            frame_ms=frame_ms,
+            hop_ms=hop_ms,
+            fmin=fmin,
+            fmax=fmax,
+        )
+        for i in range(channels.shape[1])
+    )
+
+
 def _summary(values: list[float]) -> dict[str, float | None]:
     if not values:
         return {"median": None, "iqr": None, "mean": None, "std": None}
@@ -196,7 +296,11 @@ def _trajectory_stats(values: np.ndarray) -> dict[str, float | None]:
 
 def acoustic_fingerprint(samples: np.ndarray | Iterable[float], sample_rate: int) -> dict:
     """Return a source-relative multidimensional acoustic fingerprint."""
-    rows = extract_frame_features(samples, sample_rate)
+    channels = _channels(samples)
+    input_channel_evidence = _channel_evidence(channels)
+    # Reuse the audited choice for both the frame descriptors and the summary.
+    representative = channels[:, input_channel_evidence["representative_channel_index"]]
+    rows = extract_frame_features(representative, sample_rate)
     f0 = np.asarray([r.f0_hz for r in rows if r.f0_hz is not None], dtype=np.float64)
     f0_semitones = np.asarray([], dtype=np.float64)
     if f0.size:
@@ -232,6 +336,7 @@ def acoustic_fingerprint(samples: np.ndarray | Iterable[float], sample_rate: int
     return {
         "schema": "UNVTRSLR_ACOUSTIC_FINGERPRINT_V1",
         "claim_ceiling": "ACOUSTIC_STRUCTURE_ONLY_NO_SEMANTIC_QUALIFICATION",
+        "input_channel_evidence": input_channel_evidence,
         "frame_count": len(rows),
         "voiced_frame_fraction": float(len(f0) / max(len(rows), 1)),
         "channels": {

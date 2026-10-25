@@ -28,12 +28,24 @@ class TargetGroundingEpisode:
         target_tokens: Iterable[str],
         context: Iterable[str],
     ) -> "TargetGroundingEpisode":
+        if episode_id is None or not str(episode_id).strip():
+            raise ValueError("episode_id must not be empty")
+        if source_id is None or not str(source_id).strip():
+            raise ValueError("source_id must not be empty")
+        if isinstance(target_tokens, (str, bytes)):
+            raise ValueError("target_tokens must be a sequence, not a scalar string")
+        if isinstance(context, (str, bytes)):
+            raise ValueError("context must be a sequence, not a scalar string")
         tokens = tuple(str(token) for token in target_tokens)
         atoms = frozenset(str(atom) for atom in context)
         if not tokens:
             raise ValueError("target grounding episode must contain target tokens")
         if not atoms:
             raise ValueError("target grounding episode must contain context")
+        if any(not token for token in tokens):
+            raise ValueError("target tokens must not be empty")
+        if any(not atom for atom in atoms):
+            raise ValueError("context atoms must not be empty")
         return cls(
             episode_id=str(episode_id),
             source_id=str(source_id),
@@ -57,6 +69,12 @@ class NonEquivalenceObservation:
         atom: str,
         scope_id: str,
     ) -> "NonEquivalenceObservation":
+        if observation_id is None or not str(observation_id).strip():
+            raise ValueError("observation_id must not be empty")
+        if source_id is None or not str(source_id).strip():
+            raise ValueError("source_id must not be empty")
+        if atom is None or not str(atom):
+            raise ValueError("atom must not be empty")
         if not str(scope_id):
             raise ValueError("scope_id must not be empty")
         return cls(
@@ -236,6 +254,10 @@ def fit_target_grounding_model(
     rows = list(episodes)
     if not rows:
         raise ValueError("at least one target grounding episode is required")
+    if any(not isinstance(row.source_id, str) or not row.source_id.strip() for row in rows):
+        raise ValueError("source_id must not be empty in target grounding episodes")
+    if any(not isinstance(row.episode_id, str) or not row.episode_id.strip() for row in rows):
+        raise ValueError("episode_id must not be empty in target grounding episodes")
     if not str(target_language_id):
         raise ValueError("target_language_id must not be empty")
     if min_positive_sources < 2:
@@ -319,6 +341,16 @@ def fit_target_grounding_model(
         )
 
     observations = list(non_equivalence_observations)
+    if any(
+        not isinstance(row.source_id, str) or not row.source_id.strip()
+        for row in observations
+    ):
+        raise ValueError("source_id must not be empty in non-equivalence observations")
+    if any(
+        not isinstance(row.observation_id, str) or not row.observation_id.strip()
+        for row in observations
+    ):
+        raise ValueError("observation_id must not be empty in non-equivalence observations")
     observation_ids = [row.observation_id for row in observations]
     if len(observation_ids) != len(set(observation_ids)):
         raise ValueError("non-equivalence observation_id values must be unique")

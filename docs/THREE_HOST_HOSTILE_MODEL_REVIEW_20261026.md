@@ -71,3 +71,10 @@ receiver. These are opinions on an explicitly summarized claim, not a test of
 the repo on three platforms, not independent model-state attestation, and not
 evidence of semantic learning. No live native Num’ta’reen resonance capture
 was performed; Windows process-tree containment remains unqualified.
+
+**TRACE LIMIT:** The excerpts above were transcribed from Executor process
+output during this coordination turn. Complete HTTP response envelopes,
+per-request timestamps and model-weight digests were not archived; neither
+the text excerpts nor the short Ollama IDs provide a tamper-evident, independently
+replayable inference trace. The Git commit and hosted CI qualify only this
+research note and its surrounding codebase, not the model responses.

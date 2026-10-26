@@ -84,6 +84,33 @@ class GroundedConventionOracle:
         return factor ^ (observation.task == "invert")
 
 
+# Capture the shipped reference method identities before callers can replace
+# methods on the mutable Python class. This is a guardrail against accidental
+# promotion of monkeypatched reference objects, NOT process isolation or a
+# tamper-proof attestation: hostile in-process code can mutate module globals.
+_REFERENCE_SEND = GroundedConventionOracle.send
+_REFERENCE_RECEIVE = GroundedConventionOracle.receive
+
+
+def _is_pristine_reference(agent: ControlAgent) -> bool:
+    if type(agent) is not GroundedConventionOracle:
+        return False
+    cls = type(agent)
+    if (cls.send is not _REFERENCE_SEND
+            or cls.receive is not _REFERENCE_RECEIVE
+            or cls.__getattribute__ is not object.__getattribute__):
+        return False
+    # Python resolves instance attributes before ordinary class methods. An
+    # exact-type instance with a shadowed send/receive is still user code.
+    attrs = object.__getattribute__(agent, "__dict__")
+    if "send" in attrs or "receive" in attrs:
+        return False
+    symbols = attrs.get("symbols")
+    return (type(symbols) is tuple and len(symbols) == 2
+            and all(type(symbol) is str and bool(symbol) for symbol in symbols)
+            and symbols[0] != symbols[1])
+
+
 class ActionPlanCode:
     """N07: signal denotes an align-task *action*, not a transferable factor."""
 
@@ -261,6 +288,7 @@ def probe_controls(agent: ControlAgent, episodes: tuple[ControlEpisode, ...]) ->
     if len({ep.episode_id for ep in episodes}) != len(episodes):
         raise ValueError("baseline episode IDs must be unique")
 
+    pristine_reference_at_start = _is_pristine_reference(agent)
     used_ids = {ep.episode_id for ep in episodes}
     shifted_list: list[ControlEpisode] = []
     for i, ep in enumerate(episodes):
@@ -291,7 +319,7 @@ def probe_controls(agent: ControlAgent, episodes: tuple[ControlEpisode, ...]) ->
     # the finite probes through class globals even with default deepcopy.
     # Keep scores of known negative controls diagnostic, but never call an
     # unknown candidate's apparent perfect result a successful toy control.
-    if passed and type(agent) is not GroundedConventionOracle:
+    if passed and not (pristine_reference_at_start and _is_pristine_reference(agent)):
         listening = None
     return ControlProbeResult(
         iid_accuracy=iid,

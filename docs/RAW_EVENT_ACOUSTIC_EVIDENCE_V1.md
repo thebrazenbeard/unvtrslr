@@ -58,6 +58,9 @@ frame timestamps represent analysis-window **centers**; treating those two
 clocks as identical can omit valid short events or leak neighboring frames into
 a descriptor. The adapter rejects mismatched frame counts, incompatible center
 spacing, and off-grid event spans rather than silently rebinding them.
+Both the raw descriptor adapter and the normalized registry adapter require
+integer event indices; they reject fractional, string, and boolean indices
+instead of truncating/coercing them to a potentially different event.
 
 Older externally supplied event results without frame-grid metadata retain the
 timestamp-based compatibility path. Their frame ownership is not independently

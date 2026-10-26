@@ -150,6 +150,17 @@ def test_event_adapter_aggregates_repeated_local_unit_events():
     assert by_id["u1"].vector == (3.0, 4.0)
 
 
+@pytest.mark.parametrize("bad_index", [0.5, "0", True])
+def test_normalized_event_adapter_rejects_coerced_event_indices(bad_index):
+    result = SimpleNamespace(
+        events=[SimpleNamespace(vector=(1.0, 2.0))],
+        units=[SimpleNamespace(event_index=bad_index, unit_id="u0")],
+    )
+
+    with pytest.raises(ValueError, match="event_index must be an integer"):
+        evidence_from_event_result("recording", "source", result)
+
+
 def test_global_ids_are_registry_local_evidence_ids_not_semantic_labels():
     result = build_unit_registry(
         rows_two_sources(),

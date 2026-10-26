@@ -113,11 +113,17 @@ The current `main` candidate contains executable reference components in additio
 - learned target-language grounding from target-side demonstrations, including explicit ambiguity and scoped non-equivalence;
 - multiword target constructions and target-specific ordering learned directly from grounded sequence demonstrations;
 - a synthetic, frozen-split target-construction holdout screen (`src/unvtrslr/target_holdout.py`) that distinguishes exact-pattern recall, unseen combinations/lengths, and appropriately uncertain abstention without training on held-out examples;
+- an opt-in, process-separated **synthetic R2 channel smoke screen** (`src/unvtrslr/r2_process_probe.py`) that removes shared Python objects and evaluator IDs from sender/receiver messages, tests ablation/counterfactual listening and task inversion, but neither sandboxes programs nor establishes learned/grounded semantics;
 - leakage-audited multilingual held-out qualification across declared real corpora.
 
 The current integrated successor is documented in [`docs/REFERENCE_TRANSLATOR_V2.md`](docs/REFERENCE_TRANSLATOR_V2.md).
 
 The implementation claim remains narrow: these components have synthetic/reference fixtures and explicit fail-closed states. They have **not** established universal translation, uniquely correct semantics, real-corpus qualification, or deployment readiness.
+
+For the process-boundary API and its remaining shared-host/covert-channel risks,
+see [`docs/R2_PROCESS_CHANNEL_SMOKE_V1.md`](docs/R2_PROCESS_CHANNEL_SMOKE_V1.md).
+The separate VN1/VN2/Lappy model-opinion record (not semantic qualification)
+is [`research/THREE_HOST_MODEL_REVIEW_20261026.md`](research/THREE_HOST_MODEL_REVIEW_20261026.md).
 
 The target-construction holdout digest binds caller-supplied examples, references, and fit parameters, but it **does not authenticate** external preregistration or independent sources. Likewise, the R0.5/R1/R2 adversarial smoke tests do not substitute for separate learner/evaluator processes and independently controlled interventions.
 ## Current R1/R2 architecture challenge

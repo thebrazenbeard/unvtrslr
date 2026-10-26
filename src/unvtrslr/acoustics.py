@@ -194,6 +194,13 @@ def extract_frame_features(
     """
     if sample_rate < 2000:
         raise ValueError("sample_rate is too low for speech-like acoustic analysis")
+    for name, value in (("frame_ms", frame_ms), ("hop_ms", hop_ms)):
+        if not math.isfinite(value) or value <= 0:
+            raise ValueError(f"{name} must be positive and finite")
+    if not math.isfinite(fmin) or fmin <= 0:
+        raise ValueError("fmin must be positive and finite")
+    if not math.isfinite(fmax) or fmax <= fmin or fmax > sample_rate / 2:
+        raise ValueError("fmax must be finite, greater than fmin, and at most Nyquist")
     x = _mono(samples)
     frame_size = max(64, int(round(sample_rate * frame_ms / 1000.0)))
     hop = max(1, int(round(sample_rate * hop_ms / 1000.0)))
@@ -322,13 +329,20 @@ def acoustic_fingerprint(samples: np.ndarray | Iterable[float], sample_rate: int
             mfcc_summary.append({"index": i, **_summary(mfcc_matrix[:, i].tolist())})
 
     envelope = 10.0 ** (np.asarray(rms) / 20.0)
+    envelope_constant = bool(np.ptp(envelope) == 0.0)
     envelope = envelope - np.mean(envelope)
     peak_mod_hz = None
-    if envelope.size >= 8:
+    if envelope.size >= 8 and not envelope_constant:
         mod_freqs = np.fft.rfftfreq(envelope.size, d=0.010)
         mod_power = np.abs(np.fft.rfft(envelope)) ** 2
         band = (mod_freqs >= 0.5) & (mod_freqs <= 12.0)
-        if np.any(band):
+        # A zero modulation spectrum has no measured peak. In particular,
+        # argmax(zeros) would turn silence into an arbitrary nonzero frequency.
+        # Check the uncentered envelope too: mean subtraction of a constant
+        # array can leave floating-point roundoff that has a spurious FFT peak.
+        # For nonzero spectra this remains a descriptive maximum, not a
+        # significance test or evidence that the modulation is communicative.
+        if np.any(band) and np.any(mod_power[band] > 0.0):
             band_freqs = mod_freqs[band]
             band_power = mod_power[band]
             peak_mod_hz = float(band_freqs[int(np.argmax(band_power))])

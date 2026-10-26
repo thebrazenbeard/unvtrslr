@@ -20,6 +20,20 @@ For spoken, vocal, musical, bioacoustic, or otherwise frequency-bearing channels
 
 These are measurements, not semantic labels.
 
+The reference `envelope_modulation_peak_hz` is an FFT maximum of the frame-RMS
+envelope, **not** a calibrated rhythm-detection test. It is `null` when the
+measured envelope is constant or no nonzero in-band modulation is measurable;
+otherwise the reported peak may reflect noise, recording artifacts, or nuisance
+variation. In particular, an arbitrary first-bin frequency must not be
+invented for silence. Any communicative-rhythm claim requires frozen null and
+nuisance controls on independent recordings.
+
+The frame extractor rejects nonpositive or nonfinite frame/hop intervals and
+invalid pitch bounds (`0 < fmin < fmax <= sample_rate / 2`). These parameter
+errors must not become silently substituted measurement settings or undefined
+autocorrelation lags; they are configuration failures, not negative acoustic
+observations.
+
 ## Mathematical question
 
 For candidate feature `X`, operational distinction or observed outcome `Y`, and nuisance/context variables `Z`, the core diagnostic is:

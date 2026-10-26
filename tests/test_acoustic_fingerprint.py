@@ -1,6 +1,7 @@
 import math
 
 import numpy as np
+import pytest
 
 from unvtrslr.acoustics import acoustic_fingerprint, extract_frame_features
 from unvtrslr.information import conditional_mutual_information, mutual_information
@@ -94,3 +95,39 @@ def test_conditional_mi_removes_speaker_only_correlation():
 
 def test_constant_channel_has_zero_information():
     assert mutual_information(["same"] * 20, list("AABB" * 5)) == 0.0
+
+
+def test_silence_does_not_report_a_fabricated_modulation_peak():
+    """The FFT argmax of an all-zero modulation spectrum is not a peak."""
+    fingerprint = acoustic_fingerprint(np.zeros(SR, dtype=float), SR)
+
+    assert fingerprint["channels"]["envelope_modulation_peak_hz"] is None
+
+
+def test_known_amplitude_modulation_retains_measured_peak():
+    t = np.arange(SR * 2) / SR
+    amplitude_modulated_tone = (
+        0.45 + 0.3 * np.sin(2 * np.pi * 4.0 * t)
+    ) * np.sin(2 * np.pi * 200.0 * t)
+
+    fingerprint = acoustic_fingerprint(amplitude_modulated_tone, SR)
+
+    assert abs(fingerprint["channels"]["envelope_modulation_peak_hz"] - 4.0) < 0.2
+
+
+@pytest.mark.parametrize(
+    "settings",
+    [
+        {"frame_ms": 0.0},
+        {"hop_ms": -10.0},
+        {"frame_ms": float("nan")},
+        {"hop_ms": float("inf")},
+        {"fmin": 0.0},
+        {"fmin": 500.0, "fmax": 300.0},
+        {"fmax": SR},
+    ],
+)
+def test_invalid_acoustic_analysis_settings_fail_closed(settings):
+    """Do not silently clamp invalid timing or admit unmeasurable pitch bands."""
+    with pytest.raises(ValueError, match="(frame_ms|hop_ms|fmin|fmax)"):
+        extract_frame_features(tone(220.0, seconds=0.1), SR, **settings)

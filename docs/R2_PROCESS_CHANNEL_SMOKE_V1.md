@@ -20,6 +20,13 @@ Commands are passed as argument arrays to subprocesses without a shell, with
 a minimal environment and fresh working directory. They are not downloaded,
 installed, or executed automatically by the package. **Review the adapter
 programs before running them; subprocesses are not a security sandbox.**
+On POSIX, each adapter starts in a dedicated process group. The driver now
+attempts to terminate that group on timeout **and** after normal adapter
+completion, including ordinary descendants that outlive the direct process.
+This is best-effort cleanup, not host containment: independently re-sessioned
+descendants may escape, and filesystem/network/cpu/disk resources are not
+sandboxed. On Windows only the direct child is terminated; descendant cleanup
+via Job Objects has **not** been implemented or qualified.
 
 The screen tests:
 

@@ -17,6 +17,7 @@ import json
 import os
 from pathlib import Path
 from secrets import SystemRandom
+import signal
 import subprocess
 import tempfile
 
@@ -53,32 +54,62 @@ class ProcessChannelScreen:
     claim_ceiling: str = "UNQUALIFIED_SYNTHETIC_CHANNEL_DIAGNOSTIC"
 
 
+def _stop_endpoint(process: subprocess.Popen, *, posix_group: bool) -> None:
+    """Best-effort descendant cleanup, NOT process isolation or a sandbox.
+
+    POSIX children receive their own session/group at startup. Killing that
+    group also stops ordinary descendants even if the initial process exited.
+    Windows Python has no equivalent Job Object ownership here, so the direct
+    child alone is killed and that limitation must remain explicit.
+    """
+    if posix_group:
+        try:
+            os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    elif process.poll() is None:
+        process.kill()
+
+
 def _ask(
     endpoint: ProcessEndpoint, payload: dict, *, timeout_seconds: float, max_reply_bytes: int
 ) -> dict:
     # Minimal child environment and a fresh cwd reduce accidental coupling,
-    # but neither prevents intentional shared-file/network collusion.
+    # but neither prevents intentional shared-file/network collusion. On
+    # POSIX the child starts a fresh process group for timeout cleanup; it
+    # can still escape that group (e.g. setsid) and is NOT sandboxed.
     env = {"PATH": os.environ.get("PATH", os.defpath), "PYTHONIOENCODING": "utf-8"}
+    posix_group = os.name == "posix"
     with tempfile.TemporaryDirectory(prefix="unvtrslr-r2-") as cwd, tempfile.TemporaryFile() as output:
         try:
-            result = subprocess.run(
+            process = subprocess.Popen(
                 endpoint.argv,
-                input=json.dumps(payload, sort_keys=True, separators=(",", ":")) + "\n",
+                stdin=subprocess.PIPE,
                 text=True,
                 encoding="utf-8",
                 stdout=output,
                 stderr=subprocess.DEVNULL,
-                timeout=timeout_seconds,
-                check=False,
                 cwd=Path(cwd),
                 env=env,
                 shell=False,
+                start_new_session=posix_group,
             )
-        except subprocess.TimeoutExpired as exc:
-            raise ValueError("process endpoint timed out") from exc
         except OSError as exc:
             raise ValueError("process endpoint could not start") from exc
-        if result.returncode != 0:
+        try:
+            try:
+                process.communicate(
+                    input=json.dumps(payload, sort_keys=True, separators=(",", ":")) + "\n",
+                    timeout=timeout_seconds,
+                )
+            except subprocess.TimeoutExpired as exc:
+                raise ValueError("process endpoint timed out") from exc
+        finally:
+            # Clean the group on normal exits too: a child can fork and exit
+            # leaving a descendant active without triggering the timeout.
+            _stop_endpoint(process, posix_group=posix_group)
+            process.wait()
+        if process.returncode != 0:
             raise ValueError("process endpoint returned a nonzero exit status")
         # A temporary file avoids unbounded stdout accumulation in RAM. This
         # remains a *post-execution disk* limit, not a process/file quota.

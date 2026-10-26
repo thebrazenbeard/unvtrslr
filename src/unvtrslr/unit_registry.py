@@ -309,11 +309,15 @@ def build_unit_registry(
     # NaN/Inf must never enter robust normalization or cluster distances.
     # These checks protect the promotion gate; source *authenticity* remains
     # the responsibility of a separately controlled capture/evaluator layer.
+    recording_owners: dict[str, str] = {}
     for row in raw_rows:
         for field in ("recording_id", "source_id", "local_unit_id"):
             value = getattr(row, field)
             if not isinstance(value, str) or not value.strip():
                 raise ValueError(f"{field} must be a nonempty identifier")
+        owner = recording_owners.setdefault(row.recording_id, row.source_id)
+        if owner != row.source_id:
+            raise ValueError("recording_id cannot belong to multiple source_id values")
         vector = np.asarray(row.vector, dtype=float)
         if vector.ndim != 1 or not np.all(np.isfinite(vector)):
             raise ValueError("local unit vector must be a finite 1-D numeric sequence")
@@ -333,22 +337,27 @@ def build_unit_registry(
             "all local unit vectors must have "
             "the same non-zero dimension"
         )
-    if min_sources < 2:
+    if isinstance(min_sources, (bool, np.bool_)) or not isinstance(min_sources, (Integral, np.integer)) or min_sources < 2:
         raise ValueError(
             "min_sources must be >= 2 for "
             "cross-source promotion"
         )
-    if min_units_per_source < 2:
+    if isinstance(min_units_per_source, (bool, np.bool_)) or not isinstance(min_units_per_source, (Integral, np.integer)) or min_units_per_source < 2:
         raise ValueError(
             "min_units_per_source must be >= 2"
         )
     if (
-        cluster_distance <= 0
-        or scale_floor <= 0
+        any(
+            isinstance(value, (bool, np.bool_))
+            or not isinstance(value, (int, float, np.integer, np.floating))
+            or not np.isfinite(value)
+            or value <= 0
+            for value in (cluster_distance, scale_floor)
+        )
     ):
         raise ValueError(
             "cluster_distance and scale_floor "
-            "must be > 0"
+            "must be positive finite numeric values"
         )
 
     (
@@ -427,7 +436,13 @@ def build_unit_registry(
                 centroid,
             )
 
-        if source_coverage >= min_sources:
+        # The V1 claim is cross-*recording* recurrence. Distinct caller
+        # source names attached to one recording do not provide a second
+        # recording witness, even if source-relative vectors align.
+        recording_coverage = len(
+            {eligible_rows[i].recording_id for i in cluster}
+        )
+        if source_coverage >= min_sources and recording_coverage >= min_sources:
             global_id = _stable_registry_id(
                 [keys[i] for i in cluster]
             )

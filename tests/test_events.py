@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from unvtrslr.events import discover_candidate_units
 
@@ -47,4 +48,36 @@ def test_global_amplitude_change_does_not_create_structure_by_itself():
 
 def test_claim_ceiling_does_not_call_events_words_or_phonemes():
     result = discover_candidate_units(tone(200, 0.5), SR)
+    assert result.claim_ceiling == "ACOUSTIC_EVENT_HYPOTHESES_ONLY_NO_LINGUISTIC_SEGMENTATION"
+
+
+@pytest.mark.parametrize(
+    "parameter,value",
+    [
+        ("novelty_threshold", -0.1),
+        ("novelty_threshold", 0.0),
+        ("novelty_threshold", float("nan")),
+        ("novelty_threshold", float("inf")),
+        ("min_event_s", -1.0),
+        ("min_event_s", 0.0),
+        ("min_event_s", float("nan")),
+        ("min_event_s", float("inf")),
+        ("novelty_threshold", True),
+        ("cluster_distance", -0.1),
+        ("cluster_distance", 0.0),
+        ("cluster_distance", float("nan")),
+        ("cluster_distance", float("inf")),
+    ],
+)
+def test_invalid_discovery_configuration_fails_before_inventing_silence_units(parameter, value):
+    with pytest.raises(ValueError, match=parameter):
+        discover_candidate_units(np.zeros(SR), SR, **{parameter: value})
+
+
+def test_positive_low_novelty_threshold_keeps_stationary_silence_as_one_timed_event():
+    result = discover_candidate_units(np.zeros(SR), SR, novelty_threshold=0.01)
+    assert len(result.events) == 1
+    assert len(result.units) == 1
+    assert result.events[0].start_s == 0.0
+    assert result.events[0].end_s > 0.0
     assert result.claim_ceiling == "ACOUSTIC_EVENT_HYPOTHESES_ONLY_NO_LINGUISTIC_SEGMENTATION"

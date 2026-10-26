@@ -67,6 +67,25 @@ class ReferenceEvidenceTests(unittest.TestCase):
         self.assertIsNone(result.target_text)
         self.assertEqual(result.alternatives[0]["gloss"], "marker")
 
+    def test_validated_alternatives_are_deeply_immutable_and_unaliased(self):
+        row = fixture()
+        row.update(evidence_class="AUTHOR_LEXICON_GLOSS", target_text=None,
+                   alternatives=[{"kind": "lexeme", "token": "s1", "value": "marker",
+                                  "headword": "s1", "gloss": "marker", "source_line": 1},
+                                 {"kind": "lexical_segmentation", "token": "s2=x",
+                                  "segmentation": [{"headword": "s2", "gloss": "indicator",
+                                                    "source_line": 2}], "value": None,
+                                  "note": "Source-only segmentation"}])
+        parsed = parse_reference_evidence(row)
+        row["alternatives"][0]["gloss"] = "tampered by caller"
+        row["alternatives"][1]["segmentation"][0]["gloss"] = "tampered nested"
+        self.assertEqual(parsed.alternatives[0]["gloss"], "marker")
+        self.assertEqual(parsed.alternatives[1]["segmentation"][0]["gloss"], "indicator")
+        with self.assertRaises(TypeError):
+            parsed.alternatives[0]["gloss"] = "tampered after parse"
+        with self.assertRaises(TypeError):
+            parsed.alternatives[1]["segmentation"][0]["gloss"] = "tampered nested after parse"
+
     def test_unknown_has_no_implicit_answer(self):
         row = fixture()
         row.update(evidence_class="UNKNOWN", target_text=None)

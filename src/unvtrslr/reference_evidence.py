@@ -10,6 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import json
 import re
+from types import MappingProxyType
 from typing import Iterable, Mapping
 
 
@@ -95,6 +96,20 @@ def _strings(value: object, name: str, *, maximum: int) -> tuple[str, ...]:
     return tuple(_string(item, f"{name} item") for item in value)
 
 
+def _freeze_provenance(value: object) -> object:
+    """Detach validated nested evidence from caller-owned mutable JSON data.
+
+    A frozen outer dataclass is insufficient when alternatives contain dicts
+    and lists: post-validation mutation must not rewrite the evidence snapshot.
+    """
+    if isinstance(value, dict):
+        return MappingProxyType({key: _freeze_provenance(member)
+                                 for key, member in value.items()})
+    if isinstance(value, list):
+        return tuple(_freeze_provenance(member) for member in value)
+    return value
+
+
 def _alternatives(value: object) -> tuple[Mapping[str, object], ...]:
     if not isinstance(value, list) or len(value) > 64:
         raise ReferenceEvidenceError("alternatives must be a bounded list of provenance objects")
@@ -124,7 +139,7 @@ def _alternatives(value: object) -> tuple[Mapping[str, object], ...]:
             _string(alternative["value"], "corpus candidate value")
         else:
             raise ReferenceEvidenceError("unsupported alternative provenance fields")
-        checked.append(dict(alternative))
+        checked.append(_freeze_provenance(alternative))
     return tuple(checked)
 
 

@@ -10,6 +10,7 @@ from itertools import repeat
 
 from unvtrslr.reference_evidence import (
     CLAIM_CEILING,
+    MAX_LINE_BYTES,
     MAX_RECORDS,
     ReferenceEvidenceError,
     parse_reference_evidence,
@@ -149,6 +150,83 @@ class ReferenceEvidenceTests(unittest.TestCase):
         row["source_text"] = "x" * 4097
         with self.assertRaises(ReferenceEvidenceError):
             parse_reference_evidence(row)
+
+    def test_json_entrypoints_reject_lone_surrogates_as_reference_errors(self):
+        # Malformed Python str inputs must fail closed just like invalid UTF-8
+        # bytes, not leak a raw UnicodeEncodeError from the byte cap check.
+        for parse in (parse_reference_evidence_json, parse_reference_envelope_json):
+            for value in ("\ud800", "\udfff", "{}\ud800"):
+                with self.subTest(parser=parse.__name__, value=repr(value)):
+                    with self.assertRaisesRegex(ReferenceEvidenceError, "UTF-8"):
+                        parse(value)
+        with self.assertRaisesRegex(ReferenceEvidenceError, "line 2"):
+            read_reference_evidence_jsonl([json.dumps(fixture()), "\ud800"])
+
+    def test_escaped_surrogates_cannot_survive_validated_reference_fields(self):
+        # json.dumps emits ASCII '\\ud800'. Input byte decoding therefore
+        # succeeds; the validator must reject the invalid Unicode scalar
+        # after JSON decoding, including inside nested provenance.
+        bad = chr(0xD800)
+        for path in (
+            ("source_text",), ("target_text",), ("register",), ("taboo",),
+            ("origin", "source_group"), ("origin", "source_document"),
+            ("origin", "record_id"), ("warnings", 0),
+        ):
+            with self.subTest(path=path):
+                row = fixture()
+                if path == ("warnings", 0):
+                    row["warnings"] = [bad]
+                elif len(path) == 1:
+                    row[path[0]] = bad
+                else:
+                    row[path[0]][path[1]] = bad
+                with self.assertRaisesRegex(ReferenceEvidenceError, "Unicode scalar"):
+                    parse_reference_evidence_json(json.dumps(row).encode("ascii"))
+
+        lexeme = {"kind": "lexeme", "token": "s1", "value": "marker",
+                  "headword": "s1", "gloss": "marker", "source_line": 11}
+        for key in ("token", "value", "headword", "gloss", "category", "ipa"):
+            with self.subTest(lexeme=key):
+                row = fixture()
+                row.update(evidence_class="AUTHOR_LEXICON_GLOSS", target_text=None,
+                           alternatives=[dict(lexeme, **{key: bad})])
+                with self.assertRaisesRegex(ReferenceEvidenceError, "Unicode scalar"):
+                    parse_reference_evidence_json(json.dumps(row))
+
+        row = fixture()
+        row.update(evidence_class="AUTHOR_LEXICON_GLOSS", target_text=None,
+                   alternatives=[{"kind": "lexical_segmentation", "token": "s1=x",
+                                  "note": bad, "value": None,
+                                  "segmentation": [{"headword": "s1",
+                                                    "gloss": "marker",
+                                                    "source_line": 11}]}])
+        with self.assertRaisesRegex(ReferenceEvidenceError, "Unicode scalar"):
+            parse_reference_evidence_json(json.dumps(row))
+
+        for envelope in (
+            {"ok": True, "request_id": bad, "record": fixture()},
+            {"ok": False, "request_id": bad,
+             "error": {"code": "INVALID_REQUEST", "message": "synthetic"}},
+            {"ok": False, "request_id": "synthetic",
+             "error": {"code": "INVALID_REQUEST", "message": bad}},
+        ):
+            with self.subTest(envelope=envelope["ok"], request_id=repr(envelope["request_id"])):
+                with self.assertRaisesRegex(ReferenceEvidenceError, "Unicode scalar"):
+                    parse_reference_envelope_json(json.dumps(envelope).encode("ascii"))
+
+    def test_json_entrypoints_keep_valid_unicode_and_existing_byte_bounds(self):
+        good_record = json.dumps(fixture(), ensure_ascii=False)
+        good_envelope = json.dumps({"ok": True, "request_id": "synthetic",
+                                    "record": fixture()}, ensure_ascii=False)
+        self.assertIn("𐐀", parse_reference_evidence_json(good_record).source_text)
+        self.assertIn("𐐀", parse_reference_envelope_json(good_envelope).record.source_text)
+        for parse in (parse_reference_evidence_json, parse_reference_envelope_json):
+            with self.subTest(parser=parse.__name__, case="bad utf8"):
+                with self.assertRaisesRegex(ReferenceEvidenceError, "UTF-8"):
+                    parse(b"\xff")
+            with self.subTest(parser=parse.__name__, case="byte cap"):
+                with self.assertRaisesRegex(ReferenceEvidenceError, "exceeds byte limit"):
+                    parse(" " * (MAX_LINE_BYTES + 1))
 
     def test_reject_absolute_origin_source_repo_and_bad_commit(self):
         row = fixture()

@@ -82,6 +82,11 @@ def _exact_keys(value: object, expected: frozenset[str], name: str) -> Mapping[s
 def _string(value: object, name: str, *, maximum: int = MAX_TEXT_CHARS) -> str:
     if not isinstance(value, str) or not value.strip() or len(value) > maximum:
         raise ReferenceEvidenceError(f"{name} must be a nonempty bounded string")
+    # JSON permits escaped UTF-16 surrogate code units even though they are
+    # not Unicode scalar values and cannot be encoded in strict UTF-8. Every
+    # source/transport/provenance string passes through this validator.
+    if any(0xD800 <= ord(char) <= 0xDFFF for char in value):
+        raise ReferenceEvidenceError(f"{name} must contain Unicode scalar values")
     # The parser does not normalize/strip: every source form is preserved.
     return value
 
@@ -246,7 +251,13 @@ def parse_reference_evidence_json(line: str | bytes) -> ReferenceEvidence:
             line = line.decode("utf-8", errors="strict")
         except UnicodeDecodeError as exc:
             raise ReferenceEvidenceError("reference must be UTF-8") from exc
-    if not isinstance(line, str) or len(line.encode("utf-8")) > MAX_LINE_BYTES:
+    if not isinstance(line, str):
+        raise ReferenceEvidenceError("reference line exceeds byte limit")
+    try:
+        byte_length = len(line.encode("utf-8"))
+    except UnicodeEncodeError as exc:
+        raise ReferenceEvidenceError("reference must be UTF-8") from exc
+    if byte_length > MAX_LINE_BYTES:
         raise ReferenceEvidenceError("reference line exceeds byte limit")
     try:
         obj = json.loads(line, object_pairs_hook=_no_duplicate_keys, parse_constant=_reject_constant)
@@ -302,7 +313,13 @@ def parse_reference_envelope_json(line: str | bytes) -> ReferenceEnvelope:
             line = line.decode("utf-8", errors="strict")
         except UnicodeDecodeError as exc:
             raise ReferenceEvidenceError("reference envelope must be UTF-8") from exc
-    if not isinstance(line, str) or len(line.encode("utf-8")) > MAX_LINE_BYTES:
+    if not isinstance(line, str):
+        raise ReferenceEvidenceError("reference envelope line exceeds byte limit")
+    try:
+        byte_length = len(line.encode("utf-8"))
+    except UnicodeEncodeError as exc:
+        raise ReferenceEvidenceError("reference envelope must be UTF-8") from exc
+    if byte_length > MAX_LINE_BYTES:
         raise ReferenceEvidenceError("reference envelope line exceeds byte limit")
     try:
         obj = json.loads(line, object_pairs_hook=_no_duplicate_keys, parse_constant=_reject_constant)

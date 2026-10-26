@@ -122,6 +122,8 @@ The implementation claim remains narrow: these components have synthetic/referen
 
 For the process-boundary API and its remaining shared-host/covert-channel risks,
 see [`docs/R2_PROCESS_CHANNEL_SMOKE_V1.md`](docs/R2_PROCESS_CHANNEL_SMOKE_V1.md).
+The separate VN1/VN2/Lappy model-opinion record (not semantic qualification)
+is [`research/THREE_HOST_MODEL_REVIEW_20261026.md`](research/THREE_HOST_MODEL_REVIEW_20261026.md).
 
 The target-construction holdout digest binds caller-supplied examples, references, and fit parameters, but it **does not authenticate** external preregistration or independent sources. Likewise, the R0.5/R1/R2 adversarial smoke tests do not substitute for separate learner/evaluator processes and independently controlled interventions.
 ## Current R1/R2 architecture challenge

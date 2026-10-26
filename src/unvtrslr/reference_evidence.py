@@ -174,7 +174,7 @@ def parse_reference_evidence(value: object) -> ReferenceEvidence:
         raise ReferenceEvidenceError("author-supplied references cannot claim grounded qualification")
     origin = _exact_keys(entry["origin"], _ORIGIN_KEYS, "origin")
     repo = _string(origin["repo"], "origin repo", maximum=256)
-    if not _REPO.fullmatch(repo):
+    if not _REPO.fullmatch(repo) or any(part in (".", "..") for part in repo.split("/")):
         raise ReferenceEvidenceError("origin repo must be owner/name")
     commit = _string(origin["commit"], "origin commit", maximum=40)
     if not _COMMIT.fullmatch(commit):

@@ -9,12 +9,53 @@ import re
 import sys
 
 import pytest
+import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ACTION = re.compile(r"^\s*(?:-\s*)?uses:\s*(\S+)", re.MULTILINE)
 GIT_SHA = re.compile(r"^[0-9a-f]{40}$")
-STEP_START = re.compile(r"^(?P<indent> *)-\s+[A-Za-z_-]+\s*:")
+
+
+class _UniqueKeysLoader(yaml.SafeLoader):
+    """Reject duplicate keys rather than accepting parser-specific overrides."""
+
+
+def _load_unique_mapping(loader: _UniqueKeysLoader, node: yaml.MappingNode) -> dict:
+    loader.flatten_mapping(node)
+    result = {}
+    for key_node, value_node in node.value:
+        key = loader.construct_object(key_node, deep=True)
+        assert key not in result, f"duplicate workflow YAML key: {key}"
+        result[key] = loader.construct_object(value_node, deep=True)
+    return result
+
+
+_UniqueKeysLoader.add_constructor(
+    yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG, _load_unique_mapping,
+)
+
+
+def _action_mappings(node: object):
+    """Find actions in all YAML shapes, including flow steps and job-level uses."""
+    if isinstance(node, dict):
+        if "uses" in node:
+            yield node
+        for value in node.values():
+            yield from _action_mappings(value)
+    elif isinstance(node, list):
+        for value in node:
+            yield from _action_mappings(value)
+
+
+def _workflow_actions(workflow: Path) -> list[dict]:
+    try:
+        source = yaml.load(workflow.read_text(encoding="utf-8"), Loader=_UniqueKeysLoader)
+    except yaml.YAMLError as exc:
+        pytest.fail(f"{workflow.name}: invalid workflow YAML: {exc}")
+    assert isinstance(source, dict), f"{workflow.name}: expected workflow mapping"
+    actions = list(_action_mappings(source))
+    assert actions, f"{workflow.name}: no action references found"
+    return actions
 
 
 def _workflows() -> list[Path]:
@@ -22,71 +63,20 @@ def _workflows() -> list[Path]:
     return sorted(set(directory.glob("*.yml")) | set(directory.glob("*.yaml")))
 
 
-def _checkout_steps(source: str) -> list[list[str]]:
-    """Extract steps containing a checkout action without a YAML dependency.
-
-    This deliberately conservative lexical check is not a complete YAML
-    interpreter; an unfamiliar checkout shape must fail closed rather than
-    using an unrelated step's credential setting as authorization.
-    """
-    lines = source.splitlines()
-    steps = []
-    for action_index, line in enumerate(lines):
-        match = ACTION.match(line)
-        if not match or not match.group(1).startswith("actions/checkout@"):
-            continue
-        action_indent = len(line) - len(line.lstrip(" "))
-        first = None
-        step_indent = None
-        for index in range(action_index, -1, -1):
-            start = STEP_START.match(lines[index])
-            if start and len(start.group("indent")) <= action_indent:
-                first = index
-                step_indent = len(start.group("indent"))
-                break
-        if first is None or step_indent is None:
-            steps.append([])
-            continue
-        last = len(lines)
-        for index in range(action_index + 1, len(lines)):
-            stripped = lines[index].strip()
-            if not stripped or stripped.startswith("#"):
-                continue
-            indent = len(lines[index]) - len(lines[index].lstrip(" "))
-            if indent <= step_indent:
-                last = index
-                break
-        steps.append(lines[first:last])
-    return steps
-
-
-def _disables_persisted_credentials(step: list[str]) -> bool:
-    with_indent = None
-    with_count = 0
-    settings = []
-    for line in step:
-        stripped = line.strip()
-        indent = len(line) - len(line.lstrip(" "))
-        if stripped == "with:" or stripped.startswith("with: #"):
-            with_count += 1
-            with_indent = indent
-        elif with_indent is not None and indent > with_indent and stripped.startswith("persist-credentials:"):
-            value = stripped.partition(":")[2].split("#", 1)[0].strip()
-            settings.append(value)
-    # Multiple declarations are ambiguous across YAML parsers. Accept one
-    # explicit false only; earlier false followed by true must not bypass it.
-    return with_count == 1 and len(settings) == 1 and settings[0] in (
-        "false", "'false'", '"false"'
-    )
+def _disables_persisted_credentials(step: dict) -> bool:
+    settings = step.get("with")
+    if not isinstance(settings, dict) or "persist-credentials" not in settings:
+        return False
+    return settings["persist-credentials"] is False or settings["persist-credentials"] == "false"
 
 
 def test_all_workflow_action_references_are_immutable_full_commit_shas():
     workflows = _workflows()
     assert workflows, "the repository must retain a CI workflow"
     for workflow in workflows:
-        uses = ACTION.findall(workflow.read_text(encoding="utf-8"))
-        assert uses, f"{workflow.name}: no action references found"
-        for action in uses:
+        for step in _workflow_actions(workflow):
+            action = step["uses"]
+            assert isinstance(action, str), f"{workflow.name}: action must be a string"
             assert "@" in action, f"{workflow.name}: action missing a pinned ref: {action}"
             revision = action.rsplit("@", 1)[-1]
             assert GIT_SHA.fullmatch(revision), (
@@ -96,8 +86,11 @@ def test_all_workflow_action_references_are_immutable_full_commit_shas():
 
 def test_all_checkout_workflows_disable_persisted_token():
     for workflow in _workflows():
-        source = workflow.read_text(encoding="utf-8")
-        for index, step in enumerate(_checkout_steps(source), start=1):
+        checkouts = [
+            step for step in _workflow_actions(workflow)
+            if isinstance(step["uses"], str) and step["uses"].startswith("actions/checkout@")
+        ]
+        for index, step in enumerate(checkouts, start=1):
             assert _disables_persisted_credentials(step), (
                 f"{workflow.name}: checkout #{index} must explicitly disable persisted credentials"
             )
@@ -144,5 +137,71 @@ def test_duplicate_checkout_credentials_cannot_hide_true_value(tmp_path, monkeyp
         encoding="utf-8",
     )
     monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    with pytest.raises(AssertionError, match="duplicate|checkout"):
+        test_all_checkout_workflows_disable_persisted_token()
+
+
+def test_inline_yaml_action_mapping_cannot_hide_mutable_reference(tmp_path, monkeypatch):
+    workflows = tmp_path / ".github" / "workflows"
+    workflows.mkdir(parents=True)
+    pinned = "11bd71901bbe5b1630ceea73d27597364c9af683"
+    (workflows / "flow.yml").write_text(
+        f"steps:\n"
+        f"  - uses: actions/checkout@{pinned}\n"
+        f"    with:\n"
+        f"      persist-credentials: false\n"
+        f"  - {{uses: actions/setup-python@v5}}\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    with pytest.raises(AssertionError, match="mutable"):
+        test_all_workflow_action_references_are_immutable_full_commit_shas()
+
+
+def test_inline_yaml_checkout_mapping_cannot_hide_token_persistence(tmp_path, monkeypatch):
+    workflows = tmp_path / ".github" / "workflows"
+    workflows.mkdir(parents=True)
+    pinned = "11bd71901bbe5b1630ceea73d27597364c9af683"
+    (workflows / "flow.yaml").write_text(
+        f"steps:\n"
+        f"  - uses: actions/checkout@{pinned}\n"
+        f"    with:\n"
+        f"      persist-credentials: false\n"
+        f"  - {{uses: actions/checkout@{pinned}, with: {{persist-credentials: true}}}}\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
     with pytest.raises(AssertionError, match="checkout"):
         test_all_checkout_workflows_disable_persisted_token()
+
+
+def test_yaml_space_before_uses_colon_does_not_hide_mutable_action(tmp_path, monkeypatch):
+    workflows = tmp_path / ".github" / "workflows"
+    workflows.mkdir(parents=True)
+    pinned = "11bd71901bbe5b1630ceea73d27597364c9af683"
+    (workflows / "spaced.yml").write_text(
+        f"steps:\n"
+        f"  - uses: actions/checkout@{pinned}\n"
+        f"    with: {{persist-credentials: false}}\n"
+        f"  - uses : actions/setup-python@v5\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    with pytest.raises(AssertionError, match="mutable"):
+        test_all_workflow_action_references_are_immutable_full_commit_shas()
+
+
+def test_duplicate_yaml_action_keys_rejected_before_scoring(tmp_path, monkeypatch):
+    workflows = tmp_path / ".github" / "workflows"
+    workflows.mkdir(parents=True)
+    pinned = "11bd71901bbe5b1630ceea73d27597364c9af683"
+    (workflows / "duplicate.yml").write_text(
+        f"steps:\n"
+        f"  - uses: actions/setup-python@v5\n"
+        f"    uses: actions/checkout@{pinned}\n"
+        f"    with: {{persist-credentials: false}}\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(sys.modules[__name__], "ROOT", tmp_path)
+    with pytest.raises(AssertionError, match="duplicate"):
+        test_all_workflow_action_references_are_immutable_full_commit_shas()

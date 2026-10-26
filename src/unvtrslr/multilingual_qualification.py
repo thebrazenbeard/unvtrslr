@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+from collections.abc import Mapping, Set
 from typing import Iterable, Sequence
 
 
@@ -16,6 +17,33 @@ _VALID_REGIMES = {
 _QUALIFICATION_CLAIM_CEILING = (
     "MULTILINGUAL_HELDOUT_BEHAVIOR_WITHIN_DECLARED_CORPORA_AND_SPLITS"
 )
+_SUCCESS_STATUSES = frozenset({
+    "OK",
+    "TARGET_CONSTRUCTION_SUPPORTED",
+    "MULTIPLE_TARGET_CONSTRUCTIONS_SUPPORTED",
+})
+
+
+def _token_sequences(value: Iterable[Iterable[str]], name: str) -> tuple[tuple[str, ...], ...]:
+    """Reject malformed evidence instead of coercing it into a matching token list."""
+    if isinstance(value, (str, bytes, Mapping, Set)):
+        raise ValueError(f"{name} must contain token sequences, not scalar text")
+    try:
+        rows = tuple(value)
+    except TypeError as exc:
+        raise ValueError(f"{name} must contain token sequences") from exc
+    sequences: list[tuple[str, ...]] = []
+    for row in rows:
+        if isinstance(row, (str, bytes, Mapping, Set)):
+            raise ValueError(f"{name} must contain token sequences, not scalar text")
+        try:
+            tokens = tuple(row)
+        except TypeError as exc:
+            raise ValueError(f"{name} must contain token sequences") from exc
+        if not tokens or any(not isinstance(token, str) or not token.strip() for token in tokens):
+            raise ValueError(f"{name} tokens must be nonempty strings")
+        sequences.append(tokens)
+    return tuple(sorted(set(sequences)))
 
 
 @dataclass(frozen=True)
@@ -98,19 +126,10 @@ class EvaluationRecord:
         if empty:
             raise ValueError(f"evaluation fields must not be empty: {empty}")
 
-        refs = tuple(tuple(str(token) for token in row) for row in references)
-        cands = tuple(tuple(str(token) for token in row) for row in candidates)
-        if not refs or any(not row for row in refs):
+        refs = _token_sequences(references, "reference")
+        cands = _token_sequences(candidates, "candidate")
+        if not refs:
             raise ValueError("evaluation record requires nonempty reference sequences")
-        if any(any(not token for token in row) for row in refs):
-            raise ValueError("reference tokens must not be empty")
-        if any(not row for row in cands):
-            raise ValueError("candidate sequences must not be empty")
-        if any(any(not token for token in row) for row in cands):
-            raise ValueError("candidate tokens must not be empty")
-
-        refs = tuple(sorted(set(refs)))
-        cands = tuple(sorted(set(cands)))
         return cls(
             corpus_id=str(corpus_id),
             corpus_version=str(corpus_version),
@@ -157,6 +176,7 @@ class SliceMetrics:
     corpus_id: str
     corpus_version: str
     language_id: str
+    target_language_id: str
     record_count: int
     coverage: float
     exact_match: float
@@ -218,6 +238,14 @@ def _best_similarity(record: EvaluationRecord) -> float:
 def _exact_match(record: EvaluationRecord) -> bool:
     refs = set(record.references)
     return any(candidate in refs for candidate in record.candidates)
+
+
+def _status_matches_candidates(row: EvaluationRecord) -> bool:
+    if row.system_status == "TARGET_CONSTRUCTION_SUPPORTED":
+        return len(row.candidates) == 1
+    if row.system_status == "MULTIPLE_TARGET_CONSTRUCTIONS_SUPPORTED":
+        return len(row.candidates) > 1
+    return row.system_status == "OK"
 
 
 def _validate_unique_records(
@@ -307,7 +335,11 @@ def audit_holdout_split(
             violations.append(
                 f"source leakage: {len(overlap)} corpus/source IDs overlap"
             )
-        if any(row.source_id is None for row in eval_rows):
+        if any(row.source_id is None or not row.source_id.strip() for row in train):
+            violations.append(
+                "source holdout requested but training contains missing source IDs"
+            )
+        if any(row.source_id is None or not row.source_id.strip() for row in eval_rows):
             violations.append(
                 "source holdout requested but evaluation contains missing source IDs"
             )
@@ -339,15 +371,19 @@ def _slice_metrics(
     rows: Sequence[EvaluationRecord],
 ) -> SliceMetrics:
     count = len(rows)
-    covered = sum(bool(row.candidates) for row in rows)
-    exact = sum(_exact_match(row) for row in rows)
-    similarity = sum(_best_similarity(row) for row in rows)
-    ambiguous = sum(len(row.candidates) > 1 for row in rows)
+    # A non-success status cannot be overridden merely by copying a reference
+    # into its candidate field. Preserve abstentions as uncovered observations.
+    successful = [row for row in rows if _status_matches_candidates(row)]
+    covered = sum(bool(row.candidates) for row in successful)
+    exact = sum(_exact_match(row) for row in successful)
+    similarity = sum(_best_similarity(row) for row in successful)
+    ambiguous = sum(len(row.candidates) > 1 for row in successful)
     first = rows[0]
     return SliceMetrics(
         corpus_id=first.corpus_id,
         corpus_version=first.corpus_version,
         language_id=first.language_id,
+        target_language_id=first.target_language_id,
         record_count=count,
         coverage=covered / count,
         exact_match=exact / count,
@@ -372,10 +408,10 @@ def evaluate_multilingual_holdout(
         regime=regime,
     )
 
-    grouped: dict[tuple[str, str, str], list[EvaluationRecord]] = {}
+    grouped: dict[tuple[str, str, str, str], list[EvaluationRecord]] = {}
     for row in eval_rows:
         grouped.setdefault(
-            (row.corpus_id, row.corpus_version, row.language_id),
+            (row.corpus_id, row.corpus_version, row.language_id, row.target_language_id),
             [],
         ).append(row)
 
@@ -387,6 +423,24 @@ def evaluate_multilingual_holdout(
     language_count = len({row.language_id for row in eval_rows})
 
     failures: list[str] = []
+    inconsistent_status = [
+        row for row in eval_rows if row.candidates and row.system_status not in _SUCCESS_STATUSES
+    ]
+    if inconsistent_status:
+        failures.append(
+            f"non-success status with candidates: {len(inconsistent_status)} evaluation records"
+        )
+    inconsistent_cardinality = [
+        row for row in eval_rows
+        if row.system_status in _SUCCESS_STATUSES and not _status_matches_candidates(row)
+    ]
+    if inconsistent_cardinality:
+        failures.append(
+            "status/candidate cardinality mismatch: "
+            f"{len(inconsistent_cardinality)} evaluation records"
+        )
+    if not any(row.candidates and _status_matches_candidates(row) for row in eval_rows):
+        failures.append("no eligible predictions: at least one scored output is required")
     if corpus_count < thresholds.min_corpora:
         failures.append(
             f"corpus_count={corpus_count} < min_corpora={thresholds.min_corpora}"
@@ -399,7 +453,7 @@ def evaluate_multilingual_holdout(
     for metrics in slices:
         prefix = (
             f"{metrics.corpus_id}@{metrics.corpus_version}/"
-            f"{metrics.language_id}"
+            f"{metrics.language_id}->{metrics.target_language_id}"
         )
         if metrics.record_count < thresholds.min_records_per_slice:
             failures.append(

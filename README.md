@@ -112,11 +112,14 @@ The current `main` candidate contains executable reference components in additio
 - order-sensitive AB-vs-BA operational relations over frozen global acoustic units;
 - learned target-language grounding from target-side demonstrations, including explicit ambiguity and scoped non-equivalence;
 - multiword target constructions and target-specific ordering learned directly from grounded sequence demonstrations;
+- a synthetic, frozen-split target-construction holdout screen (`src/unvtrslr/target_holdout.py`) that distinguishes exact-pattern recall, unseen combinations/lengths, and appropriately uncertain abstention without training on held-out examples;
 - leakage-audited multilingual held-out qualification across declared real corpora.
 
 The current integrated successor is documented in [`docs/REFERENCE_TRANSLATOR_V2.md`](docs/REFERENCE_TRANSLATOR_V2.md).
 
 The implementation claim remains narrow: these components have synthetic/reference fixtures and explicit fail-closed states. They have **not** established universal translation, uniquely correct semantics, real-corpus qualification, or deployment readiness.
+
+The target-construction holdout digest binds caller-supplied examples, references, and fit parameters, but it **does not authenticate** external preregistration or independent sources. Likewise, the R0.5/R1/R2 adversarial smoke tests do not substitute for separate learner/evaluator processes and independently controlled interventions.
 ## Current R1/R2 architecture challenge
 
 The project has three deliberately competing minimal semantic substrates:

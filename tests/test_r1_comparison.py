@@ -1,6 +1,7 @@
 """The R1 screening gate must not manufacture a substrate winner."""
 
 import unittest
+from dataclasses import replace
 
 from unvtrslr.r1_comparison import (
     CandidateEvaluation,
@@ -94,6 +95,40 @@ class R1ComparisonTests(unittest.TestCase):
         ])
         self.assertEqual(result.dominated_by, {"TPH": (), "PIS": ()})
         self.assertEqual(result.nondominated, ("PIS", "TPH"))
+
+    def test_tolerated_cost_regressions_can_form_three_candidate_dominance_cycle(self):
+        # Margins are symmetric and nontransitive: each cheaper system is
+        # allowed two nonmaterial losses, so pairwise elimination cycles.
+        dims = (
+            "serialized_representation_bytes",
+            "peak_memory_bytes",
+            "adapter_complexity",
+        )
+        loosened = replace(
+            profile(),
+            complexity=tuple(
+                replace(spec, materiality_margin=2.0) if spec.name in dims else spec
+                for spec in profile().complexity
+            ),
+        )
+        results = compare_substrates(loosened, [
+            candidate("TPH", complexity=dict(zip(dims, (0, 2, 4)))),
+            candidate("DCA", complexity=dict(zip(dims, (4, 0, 2)))),
+            candidate("PIS", complexity=dict(zip(dims, (2, 4, 0)))),
+        ])
+        self.assertEqual(results.dominated_by, {
+            "TPH": ("PIS",), "DCA": ("TPH",), "PIS": ("DCA",)
+        })
+        self.assertEqual(results.nondominated, ())  # mathematically no root
+        self.assertEqual(results.status, "INTRANSITIVE_DOMINANCE_HOLD")
+        self.assertEqual(results.dominance_cycles, (("DCA", "PIS", "TPH"),))
+        self.assertEqual(results.retained_candidates, ("DCA", "PIS", "TPH"))
+
+    def test_acyclic_ordinary_screen_retains_only_its_true_nondominated_candidate(self):
+        results = compare_substrates(profile(), [candidate("TPH"), candidate("PIS")])
+        self.assertEqual(results.status, "COMPARATIVE_SCREEN_ONLY")
+        self.assertEqual(results.dominance_cycles, ())
+        self.assertEqual(results.retained_candidates, results.nondominated)
 
     def test_screen_discloses_claimed_critical_test_subset_and_unverified_provenance(self):
         result = compare_substrates(profile(), [candidate("TPH"), candidate("PIS")])

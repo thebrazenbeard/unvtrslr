@@ -29,7 +29,18 @@ The ID exists only to identify the local hypothesis whose vector is being tested
 
 ## Source contrast
 
-A source must expose at least two distinct local units before it is eligible for cross-source normalization.
+A source must expose at least two distinct local units **and a measured feature
+contrast** before it is eligible for cross-source normalization. Merely giving
+two identical or nearly identical vectors different local-unit IDs does not
+create independent acoustic distinctions. The maximum within-source spread in
+at least one feature dimension must exceed the explicit `scale_floor` in that
+feature's input units. This is a conservative numerical effect-size screen,
+not a perceptual, linguistic, or semantic distinction test.
+
+Blank/whitespace-only recording, source, or local-unit identifiers and
+nonfinite feature vectors are rejected before normalization. Textual IDs are
+still caller assertions: the registry cannot prove that two different source
+strings originate from physically independent systems.
 
 A source with only one observed unit receives:
 

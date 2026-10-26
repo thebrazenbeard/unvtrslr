@@ -194,13 +194,60 @@ def test_executed_preprocessing_identity_is_only_scoped_narrow_evidence():
 
 
 def test_executed_preprocessing_unstable_replay_never_claims_preservation():
-    counter = iter(range(4))
+    counter = iter(range(8))
 
     def nondeterministic(_raw: bytes) -> bytes:
         return bytes([next(counter)])
 
     result = audit_executed_preprocessing(
         [SourcePayloadPair(b"A", b"B", True)], nondeterministic
+    )
+    assert result.disposition.status == "PREPROCESSING_REPLAY_UNSTABLE"
+    assert result.disposition.counterexample_indices == (0,)
+    assert result.receipts[0].replay_stable is False
+
+
+def test_executed_preprocessing_detects_call_order_only_false_preservation():
+    """An alternating callback cannot masquerade as two distinguished outputs.
+
+    With left/right/left/right invocation, an input-ignorant two-state clock
+    gives apparently stable different outputs and the old gate incorrectly
+    claims no witnessed destructive quotient. Reverse the replay order to
+    expose this scheduling confound before recording narrow preservation.
+    """
+    calls = 0
+
+    def alternating(_raw: bytes) -> bytes:
+        nonlocal calls
+        calls += 1
+        return b"even" if calls % 2 == 0 else b"odd"
+
+    result = audit_executed_preprocessing(
+        [SourcePayloadPair(b"meaning-A", b"meaning-B", True)], alternating
+    )
+    assert result.disposition.status == "PREPROCESSING_REPLAY_UNSTABLE"
+    assert result.disposition.counterexample_indices == (0,)
+    assert result.receipts[0].replay_stable is False
+
+
+def test_executed_preprocessing_detects_four_period_call_order_spoofing():
+    """Reversed replay alone is fooled by A,B,B,A cycling outputs.
+
+    The callback ignores its input completely. L,R,R,L produces stable
+    distinct apparent outputs, yet another same-input replay in a different
+    invocation position proves the outputs are schedule-conditioned.
+    """
+    cycle = (b"A", b"B", b"B", b"A")
+    calls = 0
+
+    def four_period(_raw: bytes) -> bytes:
+        nonlocal calls
+        output = cycle[calls % len(cycle)]
+        calls += 1
+        return output
+
+    result = audit_executed_preprocessing(
+        [SourcePayloadPair(b"source-left", b"source-right", True)], four_period
     )
     assert result.disposition.status == "PREPROCESSING_REPLAY_UNSTABLE"
     assert result.disposition.counterexample_indices == (0,)

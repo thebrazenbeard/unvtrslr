@@ -109,9 +109,11 @@ def audit_executed_preprocessing(
 
     A distinction is falsified if independently supplied source payloads differ
     in a declared target-relevant way yet produce *identical actual bytes*.
-    Replaying each input detects common nondeterminism/state contamination;
-    unstable replay blocks even a narrow non-collision result. Determinism of
-    two replays is not a proof of purity, reproducibility, or source provenance.
+    Replaying in reverse order and then in consecutive same-input blocks
+    detects common two- and four-period call-order confounds that a single
+    repeated pair can hide. Unstable replay blocks even a narrow non-collision
+    result. Finite replays NEVER establish purity, reproducibility, or source
+    provenance against an adaptive or adversarial stateful callback.
 
     ``preprocess`` must be the actual deployed transform (with a fixed seed if
     applicable). It receives no target labels from this interface, but may
@@ -137,15 +139,35 @@ def audit_executed_preprocessing(
 
         left_output = preprocess(witness.source_left)
         right_output = preprocess(witness.source_right)
-        left_replay = preprocess(witness.source_left)
+        # The fixed L,R,R,L,L,L,R,R schedule counterbalances inputs and also
+        # repeats each input consecutively. A two-period input-ignorant clock
+        # fools L,R,L,R; a four-period A,B,B,A clock fools L,R,R,L. Neither
+        # can survive the extra same-input probes. This is only a bounded
+        # negative control, not a proof against tailored periodic schedules.
         right_replay = preprocess(witness.source_right)
+        left_replay = preprocess(witness.source_left)
+        left_stutter_first = preprocess(witness.source_left)
+        left_stutter_second = preprocess(witness.source_left)
+        right_stutter_first = preprocess(witness.source_right)
+        right_stutter_second = preprocess(witness.source_right)
         if not all(
             isinstance(output, bytes)
-            for output in (left_output, right_output, left_replay, right_replay)
+            for output in (
+                left_output, right_output, right_replay, left_replay,
+                left_stutter_first, left_stutter_second,
+                right_stutter_first, right_stutter_second,
+            )
         ):
             raise TypeError("preprocessor output must be immutable bytes")
 
-        replay_stable = left_output == left_replay and right_output == right_replay
+        replay_stable = (
+            all(value == left_output for value in (
+                left_replay, left_stutter_first, left_stutter_second,
+            ))
+            and all(value == right_output for value in (
+                right_replay, right_stutter_first, right_stutter_second,
+            ))
+        )
         receipts.append(
             ExecutedPreprocessingReceipt(
                 sha256(witness.source_left).hexdigest(),

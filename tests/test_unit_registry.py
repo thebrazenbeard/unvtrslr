@@ -1,5 +1,7 @@
 from types import SimpleNamespace
 
+import pytest
+
 from unvtrslr.unit_registry import (
     LocalUnitEvidence,
     build_unit_registry,
@@ -163,3 +165,57 @@ def test_global_ids_are_registry_local_evidence_ids_not_semantic_labels():
         or a.global_unit_id.startswith("g_")
         for a in result.assignments
     )
+
+
+def test_two_distinct_unit_ids_with_identical_measurements_are_not_source_contrast():
+    """Source diversity is not established by arbitrary local-unit labels."""
+    rows = [
+        LocalUnitEvidence("r1", "source-1", "u0", (0.0, 0.0)),
+        LocalUnitEvidence("r1", "source-1", "u1", (0.0, 0.0)),
+        LocalUnitEvidence("r2", "source-2", "u0", (10.0, 20.0)),
+        LocalUnitEvidence("r2", "source-2", "u1", (10.0, 20.0)),
+    ]
+
+    result = build_unit_registry(rows)
+
+    assert result.eligible_source_count == 0
+    assert result.excluded_source_count == 2
+    assert all(a.global_unit_id is None for a in result.assignments)
+    assert {a.status for a in result.assignments} == {"INSUFFICIENT_SOURCE_CONTRAST"}
+
+
+def test_subscale_nuisance_jitter_does_not_fabricate_independent_source_contrast():
+    rows = [
+        LocalUnitEvidence("r1", "source-1", "u0", (0.0, 0.0)),
+        LocalUnitEvidence("r1", "source-1", "u1", (1e-8, -1e-8)),
+        LocalUnitEvidence("r2", "source-2", "u0", (0.0, 0.0)),
+        LocalUnitEvidence("r2", "source-2", "u1", (3.0, 3.0)),
+    ]
+
+    result = build_unit_registry(rows, scale_floor=0.25)
+
+    assert result.eligible_source_count == 1
+    assert result.excluded_source_count == 1
+    assert all(a.global_unit_id is None for a in result.assignments)
+    assert all(a.status == "INSUFFICIENT_SOURCE_CONTRAST"
+               for a in result.assignments if a.source_id == "source-1")
+
+
+@pytest.mark.parametrize("invalid_id", ["", " ", "\t"])
+def test_unnamed_source_cannot_supply_independent_cross_source_coverage(invalid_id):
+    rows = [
+        LocalUnitEvidence("r1", "source-1", "u0", (0.0,)),
+        LocalUnitEvidence("r1", "source-1", "u1", (1.0,)),
+        LocalUnitEvidence("r2", invalid_id, "u0", (0.0,)),
+        LocalUnitEvidence("r2", invalid_id, "u1", (1.0,)),
+    ]
+    with pytest.raises(ValueError, match="source_id"):
+        build_unit_registry(rows)
+
+
+@pytest.mark.parametrize("bad", [float("nan"), float("inf"), -float("inf")])
+def test_nonfinite_source_vectors_are_rejected_before_normalization(bad):
+    rows = rows_two_sources()
+    rows[0] = LocalUnitEvidence("r1", "s1", "u0", (bad, 0.0))
+    with pytest.raises(ValueError, match="finite"):
+        build_unit_registry(rows)

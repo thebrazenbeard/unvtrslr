@@ -156,7 +156,13 @@ class R1ScreeningReport:
     declared_critical_tests: tuple[str, ...]
     declared_metric_names: tuple[str, ...]
     dominated_by: Mapping[str, tuple[str, ...]]
+    # Strict graph roots; these can be empty if tolerance-relaxed pairwise
+    # comparisons have a cycle, even when no candidate may be eliminated.
     nondominated: tuple[str, ...]
+    # Preserve whole top strongly connected components in a cycle; unlike
+    # nondominated, this is the safe set to advance to later controls.
+    retained_candidates: tuple[str, ...]
+    dominance_cycles: tuple[tuple[str, ...], ...]
 
 
 def _validate_candidate(profile: ComparisonProfile, candidate: CandidateEvaluation) -> None:
@@ -226,6 +232,43 @@ def _dominates(profile: ComparisonProfile, challenger: CandidateEvaluation, cont
     return strictly_simpler
 
 
+def _cycle_aware_retention(
+    dominated_by: Mapping[str, tuple[str, ...]],
+) -> tuple[tuple[str, ...], tuple[tuple[str, ...], ...]]:
+    """Retain undominated SCCs when relaxed pairwise costs are nontransitive.
+
+    `dominated_by` points to direct dominators. It is not guaranteed to be a
+    partial order: nonmaterial losses may accumulate into A > B > C > A.
+    This graph has at most three nodes, but compute reachability explicitly
+    so no input order or edge orientation can manufacture a survivor.
+    """
+    reach: dict[str, set[str]] = {}
+    for name in dominated_by:
+        seen: set[str] = set()
+        pending = list(dominated_by[name])
+        while pending:
+            current = pending.pop()
+            if current in seen:
+                continue
+            seen.add(current)
+            pending.extend(dominated_by[current])
+        reach[name] = seen
+
+    def same_component(left: str, right: str) -> bool:
+        return left == right or left in reach[right] and right in reach[left]
+
+    groups = {
+        tuple(sorted(other for other in dominated_by if same_component(name, other)))
+        for name in dominated_by
+    }
+    cycles = tuple(sorted(group for group in groups if len(group) > 1))
+    retained = tuple(sorted(
+        name for name, direct_dominators in dominated_by.items()
+        if all(same_component(name, other) for other in direct_dominators)
+    ))
+    return retained, cycles
+
+
 def compare_substrates(profile: ComparisonProfile, candidates: list[CandidateEvaluation]) -> R1ScreeningReport:
     """Return a conservative pairwise Pareto screen, never a qualification.
 
@@ -250,8 +293,9 @@ def compare_substrates(profile: ComparisonProfile, candidates: list[CandidateEva
         for contender in candidates
     }
     nondominated = tuple(sorted(name for name, dominators in dominated_by.items() if not dominators))
+    retained_candidates, dominance_cycles = _cycle_aware_retention(dominated_by)
     return R1ScreeningReport(
-        status="COMPARATIVE_SCREEN_ONLY",
+        status=("INTRANSITIVE_DOMINANCE_HOLD" if dominance_cycles else "COMPARATIVE_SCREEN_ONLY"),
         provenance_status="CALLER_ASSERTED_UNVERIFIED",
         profile_digest=profile.profile_digest,
         suite_digest=profile.suite_digest,
@@ -261,4 +305,6 @@ def compare_substrates(profile: ComparisonProfile, candidates: list[CandidateEva
         declared_metric_names=tuple(metric.name for metric in profile.metrics),
         dominated_by=MappingProxyType(dominated_by),
         nondominated=nondominated,
+        retained_candidates=retained_candidates,
+        dominance_cycles=dominance_cycles,
     )

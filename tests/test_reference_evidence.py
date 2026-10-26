@@ -160,6 +160,19 @@ class ReferenceEvidenceTests(unittest.TestCase):
         with self.assertRaises(ReferenceEvidenceError):
             parse_reference_evidence(row)
 
+    def test_origin_repo_rejects_dot_path_components(self):
+        for repo in ("../unsafe", "owner/..", "./repo", "owner/."):
+            with self.subTest(repo=repo):
+                row = fixture()
+                row["origin"]["repo"] = repo
+                with self.assertRaisesRegex(ReferenceEvidenceError, "origin repo must be owner/name"):
+                    parse_reference_evidence(row)
+        for repo in ("owner-name/repo.name", "owner_name/repo-name"):
+            with self.subTest(repo=repo):
+                row = fixture()
+                row["origin"]["repo"] = repo
+                self.assertEqual(parse_reference_evidence(row).origin_repo, repo)
+
     def test_jsonl_records_are_bounded_source_authored_objects(self):
         row = json.dumps(fixture(), ensure_ascii=False)
         parsed = read_reference_evidence_jsonl(["\n", row + "\n"])

@@ -56,6 +56,22 @@ because the holdout is class balanced, **not** because the model has learned
 an invariant relationship. The test would catch any claim that 100% ordinary
 accuracy establishes robust acoustic semantics.
 
+Two additional hostile controls prevent a misleading *relative* claim:
+
+- Both classes can carry the **same 400-Hz peak** yet differ only in the sign
+  of the first sample (opposite tone phase). The oracle-supervised nearest-
+  frequency baseline scores **50%**, but a fixed, **untrained** first-sample
+  sign rule scores **100%** on the same holdout. Thus merely outperforming the
+  published frequency baseline cannot demonstrate that a convention was
+  learned, or even that any training occurred.
+- The existing 400/600-Hz test's exact **same** holdout waveforms score
+  **100%** with their original opaque class labels and **0%** when those labels
+  are permuted. Recording-level acoustic evidence cannot by itself establish
+  which arbitrary symbol-to-meaning assignment the author/evaluator intended.
+
+These are repeatable **negative controls**, not independent recordings, a
+human language translation benchmark, or evidence for an isolated model.
+
 Run the focused suite:
 
 ```bash

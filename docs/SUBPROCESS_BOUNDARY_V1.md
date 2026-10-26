@@ -65,6 +65,15 @@ see the parent's `_SealedTrial` frame; private test environment variables
 are not inherited. It exercises timeouts, bounded stdout, strict JSON and
 full sender → receiver synthetic counterfactual screening.
 
+On POSIX, each worker now starts in its own session and the parent sends a
+best-effort process-group kill after the direct child finishes or times out,
+**before** waiting on the stdout reader. A regression proves that a normal
+grandchild inheriting the worker's stdout is stopped instead of lingering
+after the adapter returns. The group cleanup is not a resource quota or
+security boundary: descendants can create new sessions, and Windows has no
+equivalent descendant containment in this adapter. The adapter may still
+leave detached or deliberately escaping subprocesses running.
+
 This closes **one specific in-process stack-inspection channel**. It does
 **not** establish sealed holdout security or isolated learning. A worker
 running under the same operating-system principal can still read shared

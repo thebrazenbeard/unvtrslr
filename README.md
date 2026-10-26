@@ -180,6 +180,7 @@ A passing result may eventually receive `GROUNDED_WITHIN_TESTED_SCOPE`; there is
 - [`docs/LEARNED_TARGET_GROUNDING_V1.md`](docs/LEARNED_TARGET_GROUNDING_V1.md) — target-language realization learned from grounded demonstrations rather than a hand-authored atom-to-word codebook.
 - [`docs/MULTIWORD_TARGET_CONSTRUCTIONS_V1.md`](docs/MULTIWORD_TARGET_CONSTRUCTIONS_V1.md) — multiword realization and target-side ordering learned from grounded semantic-sequence demonstrations without a hand-authored grammar.
 - [`docs/MULTILINGUAL_HELDOUT_QUALIFICATION_V1.md`](docs/MULTILINGUAL_HELDOUT_QUALIFICATION_V1.md) — leakage-declared real multilingual evaluation regimes, metrics, and qualification contract.
+- [`docs/TRAIN_ONLY_RATIO_PROBE_V1.md`](docs/TRAIN_ONLY_RATIO_PROBE_V1.md) — supervised frozen two-tone ratio learner, held-out pitch invariance, arbitrary-label permutation falsifier, and explicit semantic-claim ceiling.
 - [`research/MULTILINGUAL_CORPUS_MANIFEST_V1.json`](research/MULTILINGUAL_CORPUS_MANIFEST_V1.json) — pinned corpus roles, versions, strengths, and limitations.
 
 ## The key experimental standard

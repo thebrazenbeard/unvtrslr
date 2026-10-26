@@ -15,6 +15,7 @@ from dataclasses import dataclass
 import json
 import math
 import os
+import signal
 import subprocess
 import sys
 import tempfile
@@ -72,6 +73,19 @@ def _unique_json_object(pairs: list[tuple[str, object]]) -> dict:
     return result
 
 
+def _stop_worker_descendants(child: subprocess.Popen) -> None:
+    """Best-effort cleanup of ordinary POSIX descendants in our worker session.
+
+    This is process hygiene, not a sandbox. A descendant can escape its process
+    group with setsid(2), and Windows workers are not covered by this mechanism.
+    """
+    if os.name == "posix":
+        try:
+            os.killpg(child.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+
+
 def _run_worker(argv: tuple[str, ...], timeout_seconds: float, request: Mapping[str, object]) -> dict:
     wire = json.dumps(request, ensure_ascii=True, sort_keys=True, separators=(",", ":")).encode("ascii")
     if len(wire) > _MAX_REQUEST_BYTES:
@@ -89,6 +103,9 @@ def _run_worker(argv: tuple[str, ...], timeout_seconds: float, request: Mapping[
                 cwd=cwd,
                 env=_worker_env(),
                 shell=False,
+                # Isolate a dedicated process group so normal grandchildren can
+                # be stopped even after the direct worker has exited.
+                start_new_session=(os.name == "posix"),
             )
         except OSError as exc:
             raise ValueError("worker executable could not be started") from exc
@@ -131,6 +148,12 @@ def _run_worker(argv: tuple[str, ...], timeout_seconds: float, request: Mapping[
             child.wait()
             raise TimeoutError("worker timeout exceeded") from exc
         finally:
+            # This must run *before* joining readers: a completed worker may
+            # leave descendants holding inherited stdout/stderr pipe FDs open.
+            _stop_worker_descendants(child)
+            if child.poll() is None:
+                child.kill()
+                child.wait()
             writer.join(timeout=1)
             reader.join(timeout=1)
             if child.stdin is not None:

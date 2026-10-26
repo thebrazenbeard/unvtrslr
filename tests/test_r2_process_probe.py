@@ -70,6 +70,13 @@ else:
     elif mode == "recv-invalid":
         print(json.dumps({"action": True}))
         sys.exit()
+    elif mode == "recv-seek-back":
+        # Trusted test fixture simulates a hostile endpoint using stdout's
+        # seekable temporary-file descriptor to conceal oversized output.
+        os.write(1, b'{"action":0}' + b" " * 8192)
+        os.lseek(1, 0, os.SEEK_SET)
+        os.write(1, b'{"action":0}')
+        sys.exit()
     else:
         factor = 1 if input_data["message"] == "◈" else 0
     print(json.dumps({"action": factor ^ (input_data["task"] == "invert")}))
@@ -155,6 +162,16 @@ def test_fail_closed_on_timeout_and_invalid_binary_response(executable, episodes
         )
     with pytest.raises(ValueError, match="binary integer"):
         screen_process_channel(executable("send"), executable("recv-invalid"), episodes)
+
+
+def test_rewound_stdout_cannot_hide_oversized_endpoint_reply(executable):
+    with pytest.raises(ValueError, match="exceeded reply size limit"):
+        _ask(
+            executable("recv-seek-back"),
+            {"message": "◇", "task": "align"},
+            timeout_seconds=1,
+            max_reply_bytes=64,
+        )
 
 
 @pytest.mark.skipif(os.name != "posix", reason="POSIX process-group containment only")

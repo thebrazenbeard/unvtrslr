@@ -111,9 +111,11 @@ def _ask(
             process.wait()
         if process.returncode != 0:
             raise ValueError("process endpoint returned a nonzero exit status")
-        # A temporary file avoids unbounded stdout accumulation in RAM. This
-        # remains a *post-execution disk* limit, not a process/file quota.
-        if output.tell() > max_reply_bytes:
+        # A temporary file avoids unbounded stdout accumulation in RAM. Check
+        # its actual size: an endpoint may seek its inherited stdout backwards
+        # and leave the shared file offset below its emitted byte count.
+        # This is still only a *post-execution disk* check, not a write quota.
+        if os.fstat(output.fileno()).st_size > max_reply_bytes:
             raise ValueError("process endpoint exceeded reply size limit")
         output.seek(0)
         raw = output.read(max_reply_bytes + 1)

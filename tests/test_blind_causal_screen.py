@@ -125,6 +125,48 @@ def test_exact_training_audio_cannot_be_replayed_as_heldout_generalization():
         freeze_evaluation(train, holdout)
 
 
+def test_near_duplicate_waveforms_can_fake_holdout_transfer_without_qualification():
+    # Exact-byte separation is insufficient: an arbitrarily tiny amplitude
+    # perturbation gives fresh bytes while preserving a trivial nuisance cue.
+    # This is an explicitly ADMITTED negative control, not a claimed fix.
+    train = (
+        PrivateTrial("train-low", "train-recording", observation(0.1), 0),
+        PrivateTrial("train-high", "train-recording", observation(0.9), 1),
+    )
+    holdout = tuple(
+        PrivateTrial(f"held-{i}", "claimed-independent-recording",
+                     observation(amplitude), action)
+        for i, (amplitude, action) in enumerate((
+            (0.10001, 0), (0.90001, 1),
+            (0.10002, 0), (0.90002, 1),
+        ))
+    )
+    assert {r.observation_payload["float64_le_b64"] for r in train}.isdisjoint(
+        {r.observation_payload["float64_le_b64"] for r in holdout}
+    )
+    plan = freeze_evaluation(train, holdout, nonce=b"near-duplicates!!")
+
+    def nuisance_threshold_sender(view):
+        (amplitude,) = struct.unpack(
+            "<d", base64.b64decode(view["float64_le_b64"])
+        )
+        return b"high" if amplitude > 0.5 else b"low"
+
+    def nuisance_receiver(view):
+        return int(view.message == b"high")
+
+    result = screen_frozen_holdout(plan, nuisance_threshold_sender,
+                                   nuisance_receiver)
+    assert result.original_accuracy == 1.0
+    assert result.absent_accuracy == 0.5
+    assert result.shuffled_accuracy == 0.0
+    assert result.replay_consistent is True
+    assert result.message_shuffle_changes_payload is True
+    assert result.state_isolation_verified is False
+    assert result.causal_listening_qualified is False
+    assert result.claim_ceiling == "IN_PROCESS_SYNTHETIC_COUNTERFACTUAL_UNQUALIFIED"
+
+
 def test_strict_adapter_outputs_and_stateful_replay_detection():
     plan = freeze_evaluation(*trials())
     with pytest.raises(ValueError, match="sender message"):

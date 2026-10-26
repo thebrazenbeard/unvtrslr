@@ -24,6 +24,16 @@ holdout, even under fresh trial IDs or group labels. That blocks literal
 lookup/replay but not transformed near-duplicates or memorized codebooks;
 those still demand independently authenticated captures and nuisance-shift
 controls.
+A hostile regression constructs distinct train/holdout waveform bytes using
+amplitudes `0.1/0.9` versus `0.10001/0.90001` and reports perfect original
+accuracy, poor absent/shuffled controls and consistent replay from an ordinary
+amplitude-threshold sender. The group names differ, but that is merely an
+author claim about provenance, not evidence of independent recording.
+`freeze_evaluation` intentionally **does not** reject near-duplicates by an
+arbitrary distance threshold: legitimately repeated acoustic distinctions
+may also be similar. The result remains `COUNTERFACTUAL_UNQUALIFIED`; positive
+generalization needs independent capture lineage, nuisance-conditioned split
+controls, and stronger causal interventions.
 The private manifest commitment is salted; neither it nor the private trial
 objects should be disclosed before holdout evaluation. Input dictionaries are
 validated and copied into immutable serialized records at freeze time.

@@ -229,3 +229,8 @@ The repository now contains both the research program and draft executable refer
 ## Workspace startup safety (source scope)
 
 The concealed VS Code `folderOpen` Node task was removed, automatic workspace tasks set to valid string `"off"`, and JavaScript disguised as `public/fonts/fa-solid.lkf` removed from tracked source. Static regression tests and read-only CI check the known loader vector. Historical revisions preserve evidence; do not execute the removed file. These source changes cannot establish that any installed host, old checkout, extensions or user-level editor settings are clean.
+
+
+## Optional audio.cpp human-ASR diagnostic
+
+An opt-in, fail-closed CLI transport for trusted Nemotron/Parakeet GGUF ASR lives in `src/unvtrslr/audio_cpp_adapter.py`; see [its qualification limits](docs/AUDIO_CPP_OPTIONAL_DIAGNOSTIC.md). It preserves original WAV bytes, returns untrusted raw ASR output, and **does not** infer Num’ta’reen semantics, acoustic grounding, or live model performance.

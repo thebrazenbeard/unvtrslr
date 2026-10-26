@@ -1,9 +1,12 @@
 """Cross-process acoustic transport smoke controls, never grounding claims."""
 
 import base64
+import os
+import signal
 import struct
 import sys
 import textwrap
+import time
 
 import pytest
 
@@ -138,3 +141,45 @@ def test_command_and_timeout_validation():
         SubprocessBlindSender(("python", "-c", "print(1)"))
     with pytest.raises(ValueError, match="timeout"):
         SubprocessBlindSender((sys.executable,), timeout_seconds=float("inf"))
+
+
+@pytest.mark.skipif(os.name != "posix", reason="POSIX process-group containment only")
+def test_worker_descendant_with_inherited_pipe_is_cleaned_up(tmp_path):
+    """A completed worker may leave a grandchild holding the response pipe open."""
+    pid_file = tmp_path / "grandchild.pid"
+    worker = _worker("""
+        import base64, json, pathlib, subprocess, sys
+        grandchild = subprocess.Popen(
+            [sys.executable, '-I', '-c', 'import time; time.sleep(8)'],
+            stdin=subprocess.DEVNULL, stdout=sys.stdout, stderr=subprocess.DEVNULL,
+        )
+        pathlib.Path(sys.argv[1]).write_text(str(grandchild.pid), encoding='ascii')
+        print(json.dumps({'schema': 'UNVTRSLR_SUBPROCESS_SENDER_RESPONSE_V1',
+                          'message_b64': base64.b64encode(b'A').decode('ascii')}), flush=True)
+    """) + (str(pid_file),)
+    grandchild_pid = None
+    try:
+        assert SubprocessBlindSender(worker, timeout_seconds=3)(_observation(0.1)) == b"A"
+        grandchild_pid = int(pid_file.read_text(encoding="ascii"))
+        for _ in range(40):
+            try:
+                os.kill(grandchild_pid, 0)
+            except ProcessLookupError:
+                break
+            # On Linux orphaned zombies may persist until their init reaps them.
+            stat_path = f"/proc/{grandchild_pid}/stat"
+            if os.path.exists(stat_path):
+                with open(stat_path, encoding="ascii") as status:
+                    if status.read().split()[2] == "Z":
+                        break
+            time.sleep(0.05)
+        else:
+            pytest.fail("worker descendant survived after adapter returned")
+    finally:
+        if grandchild_pid is None and pid_file.exists():
+            grandchild_pid = int(pid_file.read_text(encoding="ascii"))
+        if grandchild_pid is not None:
+            try:
+                os.kill(grandchild_pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass

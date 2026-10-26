@@ -96,11 +96,24 @@ Each held-out row records:
 - zero or more system candidate sequences;
 - system status.
 
+Reference and candidate values must be lists of nonempty string-token sequences;
+scalar text, mappings, unordered collections, and non-string token coercion
+are rejected. Accepted successful system statuses are `OK`,
+`TARGET_CONSTRUCTION_SUPPORTED`, and
+`MULTIPLE_TARGET_CONSTRUCTIONS_SUPPORTED`. A candidate with any other status
+is a contradiction, is not credited as a prediction, and blocks qualification.
+The singular and multiple renderer statuses must also have exactly one or
+more than one candidate, respectively; mismatches block qualification.
+In particular, omitting a status defaults to `UNSPECIFIED` and **cannot pass
+qualification** with a candidate; callers must provide the actual status.
+Unresolved records without candidates remain uncovered and are governed by
+the declared coverage threshold.
+
 Multiple candidates are allowed because upstream UNVTRSLR layers may legitimately preserve multiple target constructions.
 
 ## Scoring
 
-V1 reports per `corpus/version/language` slice:
+V1 reports per `corpus/version/source-language/target-language` slice:
 
 - record count;
 - coverage rate;
@@ -110,7 +123,8 @@ V1 reports per `corpus/version/language` slice:
 
 Macro averages are computed over slices, not individual records.
 
-This prevents a large high-resource slice from hiding a small failing low-resource slice.
+This prevents a large high-resource slice—or a successful translation target—
+from hiding a smaller failing language pair.
 
 Qualification also requires **every slice** to clear the declared thresholds.
 
@@ -127,6 +141,11 @@ The evaluator must supply:
 - minimum exact match;
 - minimum token similarity;
 - maximum ambiguity rate.
+
+Even if an evaluator deliberately sets all score minima to zero, at least
+one status-consistent predicted candidate must exist. A zero-output batch
+cannot count as successful observed multilingual behavior. This is a minimal
+integrity gate, not a scientific minimum accuracy requirement.
 
 A report reaches:
 
@@ -149,6 +168,7 @@ Depending on regime it additionally checks:
 - corpus/source overlap;
 - corpus/content overlap;
 - missing source identity when source holdout is claimed;
+- missing source identity in **training** as well as evaluation for any source holdout;
 - missing parallel-content control for `PARALLEL_LANGUAGE_TRANSFER`.
 
 These checks are metadata-level controls. They do **not** prove absence of paraphrase leakage, duplicated audio under different IDs, speaker pseudonyms, translation-memory contamination, or pretrained-model exposure.

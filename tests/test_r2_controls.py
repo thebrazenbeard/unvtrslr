@@ -97,8 +97,147 @@ def test_counterfactual_rejects_identity_clone_with_shared_mutable_state():
         def __deepcopy__(self, memo: dict[int, object]) -> "IdentityCloneLeak":
             return self
 
-    with pytest.raises(ValueError, match="independent copies"):
-        probe_controls(IdentityCloneLeak(), cases())
+    result = probe_controls(IdentityCloneLeak(), cases())
+    assert result.causal_listening is None
+    assert result.status == "COUNTERFACTUAL_UNQUALIFIED"
+
+
+def test_counterfactual_rejects_nonexchangeable_snapshot_faking_message_effect():
+    class CloneOrdinalLeak:
+        """No message is ever read; clone creation order fakes interventions."""
+
+        def __init__(self):
+            self._sender_latent = 0
+            self._clone_count = 0
+            self._snapshot_output = None
+
+        def send(self, observation: SenderObservation) -> str:
+            self._sender_latent = observation.factor
+            return ("observed-A", "observed-B")[observation.factor]
+
+        def receive(self, message: str | None, observation: ReceiverObservation) -> int:
+            del message
+            factor = (
+                self._sender_latent
+                if self._snapshot_output is None
+                else self._snapshot_output
+            )
+            return factor ^ (observation.task == "invert")
+
+        def __deepcopy__(self, memo):
+            del memo
+            self._clone_count += 1
+            clone = type(self)()
+            clone._snapshot_output = self._clone_count % 2
+            return clone
+
+    result = probe_controls(CloneOrdinalLeak(), cases())
+    assert result.iid_accuracy == 1.0
+    assert result.message_ablation_drop == 0.5
+    assert result.causal_listening is None
+    assert result.status == "COUNTERFACTUAL_UNQUALIFIED"
+
+
+def test_counterfactual_rejects_class_shared_receive_call_counter():
+    class ClassWideCounterLeak:
+        """Default deepcopy still shares process-level class state."""
+
+        _original = None
+        _receiver_calls = 0
+
+        def __init__(self):
+            self._factor = 0
+            type(self)._original = self
+
+        def send(self, observation: SenderObservation) -> str:
+            self._factor = observation.factor
+            return ("sign-A", "sign-B")[observation.factor]
+
+        def receive(self, message: str | None, observation: ReceiverObservation) -> int:
+            del message
+            if self is type(self)._original:
+                factor = self._factor
+            else:
+                factor = type(self)._receiver_calls % 2
+                type(self)._receiver_calls += 1
+            return factor ^ (observation.task == "invert")
+
+    result = probe_controls(ClassWideCounterLeak(), cases())
+    assert result.iid_accuracy == 1.0
+    assert result.message_ablation_drop == 0.5
+    assert result.causal_listening is None
+    assert result.status == "COUNTERFACTUAL_UNQUALIFIED"
+
+
+def test_four_slot_clone_side_effect_is_harness_invalid_not_message_evidence():
+    class FourSlotLeak:
+        """Copy hooks can mimic the entire fixed sham/intervention schedule."""
+
+        def __init__(self):
+            self.latent = 0
+            self.counter = 0
+            self.fixed = None
+
+        def send(self, observation: SenderObservation) -> str:
+            self.latent = observation.factor
+            return ("A", "B")[observation.factor]
+
+        def receive(self, message: str | None, observation: ReceiverObservation) -> int:
+            del message
+            return (self.latent if self.fixed is None else self.fixed) ^ (observation.task == "invert")
+
+        def __deepcopy__(self, memo):
+            del memo
+            self.counter += 1
+            clone = type(self)()
+            clone.fixed = (0, 1, 1, 0)[(self.counter - 1) % 4]
+            return clone
+
+    episodes = tuple(ControlEpisode(i % 2, f"case-{i}") for i in range(4))
+    # Previous four-sham schedule returned TOY_CONTROLS_PASSED although the
+    # receiver ignored every message. A private deepcopy hook is not a
+    # trustworthy mechanism for freezing a receiver's state.
+    result = probe_controls(FourSlotLeak(), episodes)
+    assert result.iid_accuracy == 1.0
+    assert result.message_ablation_drop == 0.5
+    assert result.causal_listening is None
+    assert result.status == "COUNTERFACTUAL_UNQUALIFIED"
+
+
+def test_global_clock_leak_without_copy_hooks_cannot_qualify_unknown_agent():
+    class GlobalClockLeak:
+        """Default deepcopy leaves a shared class clock; messages are ignored."""
+
+        _owner = None
+        _receiver_calls = 0
+
+        def __init__(self):
+            self._latent = 0
+            type(self)._owner = self
+
+        def send(self, observation: SenderObservation) -> str:
+            self._latent = observation.factor
+            return ("sign-A", "sign-B")[observation.factor]
+
+        def receive(self, message: str | None, observation: ReceiverObservation) -> int:
+            del message
+            if self is type(self)._owner:
+                factor = self._latent
+            else:
+                factor = (0, 1, 1, 0)[type(self)._receiver_calls % 4]
+                type(self)._receiver_calls += 1
+            return factor ^ (observation.task == "invert")
+
+    episodes = tuple(ControlEpisode(i % 2, f"case-{i}") for i in range(4))
+    result = probe_controls(GlobalClockLeak(), episodes)
+    assert result.iid_accuracy == 1.0
+    assert result.message_ablation_drop == 0.5
+    assert result.episode_id_shift_accuracy == 1.0
+    assert result.cross_task_accuracy == 1.0
+    # All apparent metric success on an arbitrary candidate class cannot be
+    # promoted by a finite in-process schedule, even without custom hooks.
+    assert result.causal_listening is None
+    assert result.status == "COUNTERFACTUAL_UNQUALIFIED"
 
 
 def test_harness_rejects_unbalanced_or_duplicate_id_input():

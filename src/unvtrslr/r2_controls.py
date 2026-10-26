@@ -166,7 +166,7 @@ class AlternatingReceiverLeak:
 class ControlProbeResult:
     iid_accuracy: float
     message_ablation_drop: float
-    causal_listening: float
+    causal_listening: float | None
     episode_id_shift_accuracy: float
     cross_task_accuracy: float
     status: str
@@ -183,32 +183,60 @@ def _accuracy(agent: ControlAgent, episodes: tuple[ControlEpisode, ...], *, abla
     return correct / len(episodes)
 
 
-def _causal_listening(agent: ControlAgent, episodes: tuple[ControlEpisode, ...]) -> float:
+_COPY_STATE_HOOKS = frozenset({
+    "__copy__", "__deepcopy__", "__reduce__", "__reduce_ex__",
+    "__getstate__", "__setstate__", "__getnewargs__", "__getnewargs_ex__",
+})
+
+
+def _has_custom_copy_hooks(agent: ControlAgent) -> bool:
+    # The evaluator cannot audit how candidate-controlled object hooks
+    # manufacture counterfactual receiver state. Inherited hooks count too.
+    return any(
+        hook in vars(cls)
+        for cls in type(agent).__mro__ if cls is not object
+        for hook in _COPY_STATE_HOOKS
+    )
+
+
+def _causal_listening(agent: ControlAgent, episodes: tuple[ControlEpisode, ...]) -> float | None:
+    # UNKNOWN, not zero, when a receiver snapshot cannot be trusted. A
+    # sufficiently adversarial class/global state can still defeat all finite
+    # in-process schedules: this is a reference toy probe, not qualification.
+    if _has_custom_copy_hooks(agent):
+        return None
     flips = 0
     for episode in episodes:
         alternate = next(ep for ep in episodes if ep.factor != episode.factor)
         # Prepare both signals BEFORE either receiver action. Interleaving
         # send/receive lets a same-process agent leak sender truth through
         # mutable object state and fraudulently satisfy this intervention.
-        # Deep-copy the receiver after both sends: either receive-call order
-        # would otherwise masquerade as an effect of the message itself.
+        # Deep-copy the receiver after both sends. Four independent snapshots
+        # are probed in counterbalanced message order so that same-message
+        # sham interventions expose copy-order or receiver-call side effects.
         # This is only toy isolation, NOT a security boundary; real systems
         # need separated processes and frozen receiver snapshots.
         original_message = agent.send(_sender_view(episode))
         alternate_message = agent.send(_sender_view(alternate))
         receiver_observation = _receiver_view(episode)
-        original_receiver = deepcopy(agent)
-        manipulated_receiver = deepcopy(agent)
-        if (
-            original_receiver is agent
-            or manipulated_receiver is agent
-            or original_receiver is manipulated_receiver
-        ):
-            raise ValueError("counterfactual receivers must be independent copies")
-        original = original_receiver.receive(original_message, receiver_observation)
-        manipulated = manipulated_receiver.receive(alternate_message, receiver_observation)
-        if original not in (0, 1) or manipulated not in (0, 1):
+        receivers = []
+        for _ in range(4):
+            receiver = deepcopy(agent)
+            if receiver is agent or any(receiver is prior for prior in receivers):
+                return None
+            receivers.append(receiver)
+        original = receivers[0].receive(original_message, receiver_observation)
+        manipulated = receivers[1].receive(alternate_message, receiver_observation)
+        manipulated_sham = receivers[2].receive(alternate_message, receiver_observation)
+        original_sham = receivers[3].receive(original_message, receiver_observation)
+        if any(action not in (0, 1) for action in (
+            original, manipulated, manipulated_sham, original_sham
+        )):
             raise ValueError("receiver action must be binary")
+        if original != original_sham or manipulated != manipulated_sham:
+            # Non-exchangeable receiver snapshots cannot support a message-
+            # specific causal interpretation even if a pair happened to flip.
+            return None
         flips += original != manipulated
     return flips / len(episodes)
 
@@ -218,7 +246,11 @@ def probe_controls(agent: ControlAgent, episodes: tuple[ControlEpisode, ...]) ->
 
     Balanced factors and unique IDs prevent a constant policy or repeated ID
     from trivially satisfying the probes. Thresholds are exact for this toy
-    case and are not calibrated/frozen R2 certificate thresholds.
+    case and are not calibrated/frozen R2 certificate thresholds. In particular,
+    an arbitrary candidate class can use ambient globals to impersonate any
+    finite in-process counterfactual schedule. Only the exact shipped positive
+    reference oracle may receive TOY_CONTROLS_PASSED; candidate evaluations
+    require a separately isolated, frozen-replay harness.
     """
     if not episodes or len(episodes) % 2:
         raise ValueError("a nonempty even number of episodes is required")
@@ -254,11 +286,21 @@ def probe_controls(agent: ControlAgent, episodes: tuple[ControlEpisode, ...]) ->
         and shift == 1.0
         and transfer == 1.0
     )
+    # This is the trust boundary, not one more probe to game. A positive toy
+    # reference is library-owned; arbitrary candidate code can spoof all of
+    # the finite probes through class globals even with default deepcopy.
+    # Keep scores of known negative controls diagnostic, but never call an
+    # unknown candidate's apparent perfect result a successful toy control.
+    if passed and type(agent) is not GroundedConventionOracle:
+        listening = None
     return ControlProbeResult(
         iid_accuracy=iid,
         message_ablation_drop=iid - ablated,
         causal_listening=listening,
         episode_id_shift_accuracy=shift,
         cross_task_accuracy=transfer,
-        status="TOY_CONTROLS_PASSED" if passed else "CONTROL_REJECTED",
+        status=(
+            "COUNTERFACTUAL_UNQUALIFIED" if listening is None
+            else "TOY_CONTROLS_PASSED" if passed else "CONTROL_REJECTED"
+        ),
     )

@@ -146,6 +146,14 @@ def _normalize_by_source(
             continue
 
         matrix = np.vstack([r.vector for r in rows])
+        spread = np.ptp(matrix, axis=0)
+        # Distinct *names* are not independent acoustic observations. In
+        # particular, duplicate measurements or sub-floor numerical jitter
+        # must not make a source eligible to support cross-source recurrence.
+        # This is an explicitly conservative native-feature effect-size gate,
+        # not a test of linguistic or semantic distinction.
+        if not np.any(spread > scale_floor):
+            continue
         median = np.median(matrix, axis=0)
         mad = (
             1.4826
@@ -154,7 +162,6 @@ def _normalize_by_source(
                 axis=0,
             )
         )
-        spread = np.ptp(matrix, axis=0)
         scale = np.maximum(
             mad,
             np.maximum(
@@ -289,11 +296,27 @@ def build_unit_registry(
     source-normalized feature space. It intentionally refuses to treat a
     recording-local ID as globally meaningful merely because the string matches.
     """
-    rows = _aggregate(list(evidence))
-    if not rows:
+    raw_rows = list(evidence)
+    if not raw_rows:
         raise ValueError(
             "at least one local unit is required"
         )
+    # A blank source ID must never become a second independent observer, and
+    # NaN/Inf must never enter robust normalization or cluster distances.
+    # These checks protect the promotion gate; source *authenticity* remains
+    # the responsibility of a separately controlled capture/evaluator layer.
+    for row in raw_rows:
+        for field in ("recording_id", "source_id", "local_unit_id"):
+            value = getattr(row, field)
+            if not isinstance(value, str) or not value.strip():
+                raise ValueError(f"{field} must be a nonempty identifier")
+        vector = np.asarray(row.vector, dtype=float)
+        if vector.ndim != 1 or not np.all(np.isfinite(vector)):
+            raise ValueError("local unit vector must be a finite 1-D numeric sequence")
+        if vector.size and np.max(np.abs(vector)) > 1e100:
+            raise ValueError("local unit vector exceeds stable numeric range")
+
+    rows = _aggregate(raw_rows)
 
     dimensions = {
         len(row.vector) for row in rows

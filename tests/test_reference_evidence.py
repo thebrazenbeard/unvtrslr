@@ -262,13 +262,14 @@ class ReferenceEvidenceTests(unittest.TestCase):
             read_reference_evidence_jsonl([json.dumps(fixture()), "not-json"])
 
     def test_excessively_nested_json_is_a_bounded_validation_error(self):
-        # Under the byte cap but beyond the decoder's recursion budget.
-        # A malformed external reference must never crash the validator.
+        # Under the byte cap but beyond usual JSON recursion budgets.
+        # Newer decoders may parse it, then reject its invalid V1 schema.
+        # Either way the validator must fail closed with its bounded error.
         deeply_nested = "[" * 12000 + "0" + "]" * 12000
         self.assertLess(len(deeply_nested.encode("utf-8")), 65536)
-        with self.assertRaisesRegex(ReferenceEvidenceError, "invalid reference JSON"):
+        with self.assertRaises(ReferenceEvidenceError):
             parse_reference_evidence_json(deeply_nested)
-        with self.assertRaisesRegex(ReferenceEvidenceError, "invalid reference envelope JSON"):
+        with self.assertRaises(ReferenceEvidenceError):
             parse_reference_envelope_json(deeply_nested)
 
         env = os.environ.copy()
@@ -277,13 +278,15 @@ class ReferenceEvidenceTests(unittest.TestCase):
             [sys.executable, "-m", "unvtrslr.reference_evidence_cli"],
             input=deeply_nested + "\n",
             text=True,
+            encoding="utf-8",
             capture_output=True,
             env=env,
+            timeout=10,
             check=False,
         )
         self.assertEqual(result.returncode, 2)
         self.assertEqual(result.stdout, "")
-        self.assertIn("invalid reference envelope JSON", result.stderr)
+        self.assertIn("JSONL line 1:", result.stderr)
         self.assertNotIn("Traceback", result.stderr)
 
     def test_reference_jsonl_has_aggregate_record_limit(self):
@@ -311,8 +314,10 @@ class ReferenceEvidenceTests(unittest.TestCase):
             input=json.dumps({"ok": True, "request_id": "one", "record": fixture()},
                              ensure_ascii=False) + "\n",
             text=True,
+            encoding="utf-8",
             capture_output=True,
             env=env,
+            timeout=10,
             check=False,
         )
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -330,7 +335,8 @@ class ReferenceEvidenceTests(unittest.TestCase):
             [sys.executable, "-m", "unvtrslr.reference_evidence_cli"],
             input=json.dumps({"ok": False, "request_id": None,
                               "error": {"code": "BAD_REQUEST", "message": "private failure detail"}}) + "\n",
-            text=True, capture_output=True, env=env, check=False,
+            text=True, encoding="utf-8", capture_output=True,
+            env=env, timeout=10, check=False,
         )
         self.assertEqual(result.returncode, 1)
         self.assertEqual(json.loads(result.stdout)["error_envelopes"], 1)

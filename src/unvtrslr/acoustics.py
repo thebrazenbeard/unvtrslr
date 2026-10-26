@@ -24,6 +24,12 @@ class FrameFeatures:
     spectral_slope_db_octave: float
     h1_h2_db: float | None
     mfcc: tuple[float, ...]
+    # False means spectral floats/MFCCs are compatibility placeholders, not
+    # measurements. Timing/intensity retain the original frame observation.
+    spectral_valid: bool = True
+    # Exact zero has no finite logarithmic intensity. Its numeric -120 dB
+    # placeholder is invalid; consumers should use this evidence mask.
+    intensity_valid: bool = True
 
 
 def _channels(samples: np.ndarray | Iterable[float]) -> np.ndarray:
@@ -57,7 +63,11 @@ def _channels(samples: np.ndarray | Iterable[float]) -> np.ndarray:
 
 
 def _channel_rms(channels: np.ndarray) -> np.ndarray:
-    return np.sqrt(np.mean(np.square(channels), axis=0))
+    # Rescale before squaring: direct x*x would underflow for small valid
+    # numeric samples (or overflow before _channels applies its input bound).
+    peaks = np.max(np.abs(channels), axis=0)
+    normalized = channels / np.where(peaks > 0.0, peaks, 1.0)
+    return peaks * np.sqrt(np.mean(np.square(normalized), axis=0))
 
 
 def _representative_channel_index(channels: np.ndarray) -> int:
@@ -81,8 +91,8 @@ def _channel_evidence(channels: np.ndarray) -> dict:
     """
     rms = _channel_rms(channels)
     peaks = np.max(np.abs(channels), axis=0)
-    signed_mean_rms = float(np.sqrt(np.mean(np.square(np.mean(channels, axis=1)))))
-    channel_energy_rms = float(np.sqrt(np.mean(np.square(channels))))
+    signed_mean_rms = float(_channel_rms(np.mean(channels, axis=1)[:, np.newaxis])[0])
+    channel_energy_rms = float(_channel_rms(channels.reshape(-1, 1))[0])
     return {
         "channel_count": int(channels.shape[1]),
         "representative_channel_policy": "MAXIMUM_RAW_RMS_CHANNEL",
@@ -100,7 +110,7 @@ def _channel_evidence(channels: np.ndarray) -> dict:
         "channel_energy_rms": channel_energy_rms,
         "cancellation_ratio": (
             float(signed_mean_rms / channel_energy_rms)
-            if channel_energy_rms > _EPS
+            if channel_energy_rms > 0.0
             else None
         ),
         "claim_limit": "SUMMARY_ONLY_RETAIN_RAW_CHANNELS_FOR_REANALYSIS",
@@ -116,6 +126,13 @@ def _frames(x: np.ndarray, frame_size: int, hop: int) -> np.ndarray:
 
 def _estimate_f0(frame: np.ndarray, sr: int, fmin: float, fmax: float) -> tuple[float | None, float]:
     centered = frame - frame.mean()
+    peak = float(np.max(np.abs(centered)))
+    reference = float(np.max(np.abs(frame)))
+    if peak <= 32.0 * np.finfo(np.float64).eps * reference:
+        return None, 0.0
+    # Periodicity is a scale-relative measurement. A fixed absolute-energy
+    # gate silently erases identical low-amplitude contours in raw units.
+    centered = centered / peak
     energy = float(np.dot(centered, centered))
     if energy < 1e-9:
         return None, 0.0
@@ -209,26 +226,53 @@ def extract_frame_features(
 
     for i, frame in enumerate(_frames(x, frame_size, hop)):
         f0, periodicity = _estimate_f0(frame, sample_rate, fmin, fmax)
-        rms = math.sqrt(float(np.mean(frame * frame)) + _EPS)
-        rms_db = 20.0 * math.log10(max(rms, _EPS))
-        spectrum = np.fft.rfft((frame - frame.mean()) * window)
-        mag = np.abs(spectrum) + _EPS
-        power = mag * mag
-        freqs = np.fft.rfftfreq(frame_size, d=1.0 / sample_rate)
-        total = float(np.sum(power))
-        centroid = float(np.sum(freqs * power) / max(total, _EPS))
-        bandwidth = float(np.sqrt(np.sum(((freqs - centroid) ** 2) * power) / max(total, _EPS)))
-        flatness = float(np.exp(np.mean(np.log(power + _EPS))) / max(np.mean(power), _EPS))
-        cdf = np.cumsum(power)
-        roll_idx = int(np.searchsorted(cdf, 0.85 * cdf[-1]))
-        rolloff = float(freqs[min(roll_idx, len(freqs) - 1)])
-        slope = _spectral_slope(freqs, mag)
+        raw_peak = float(np.max(np.abs(frame)))
+        intensity_valid = raw_peak > 0.0
+        if intensity_valid:
+            # The logarithm is additive, so unit-scaled squaring retains
+            # nonzero magnitudes far below float64's direct-square range.
+            scaled_rms = math.sqrt(float(np.mean(np.square(frame / raw_peak))))
+            rms_db = 20.0 * (math.log10(raw_peak) + math.log10(scaled_rms))
+        else:
+            # Retain existing finite float contract for event consumers but
+            # do not present this number as a measured intensity.
+            rms_db = -120.0
+        centered = frame - frame.mean()
+        # An all-zero or constant-DC frame has no observable AC spectrum.
+        # Use the amplitude-relative roundoff floor, not a fixed sound-level
+        # threshold: these input numbers have no physical amplitude units.
+        numerical_floor = 32.0 * np.finfo(np.float64).eps * float(np.max(np.abs(frame)))
+        spectral_valid = bool(np.max(np.abs(centered)) > numerical_floor)
         h1_h2 = None
-        if f0 is not None:
-            h1 = _harmonic_amplitude(freqs, mag, f0)
-            h2 = _harmonic_amplitude(freqs, mag, 2.0 * f0)
-            if h1 > _EPS and h2 > _EPS:
-                h1_h2 = float(20.0 * np.log10(h1 / h2))
+        if spectral_valid:
+            # Shape descriptors are source-relative, not acoustic level
+            # meters. Normalize BEFORE FFT so arbitrary input scale does not
+            # turn a very quiet tonal signal into a fabricated flat spectrum.
+            normalized = centered / float(np.max(np.abs(centered)))
+            spectrum = np.fft.rfft(normalized * window)
+            mag = np.abs(spectrum)
+            power = mag * mag
+            freqs = np.fft.rfftfreq(frame_size, d=1.0 / sample_rate)
+            total = float(np.sum(power))
+            centroid = float(np.sum(freqs * power) / total)
+            bandwidth = float(np.sqrt(np.sum(((freqs - centroid) ** 2) * power) / total))
+            relative_floor = max(float(np.max(power)) * 1e-12, np.finfo(np.float64).tiny)
+            flatness = float(np.exp(np.mean(np.log(np.maximum(power, relative_floor)))) / max(np.mean(power), relative_floor))
+            cdf = np.cumsum(power)
+            roll_idx = int(np.searchsorted(cdf, 0.85 * cdf[-1]))
+            rolloff = float(freqs[min(roll_idx, len(freqs) - 1)])
+            slope = _spectral_slope(freqs, mag)
+            coefficients = _mfcc(power, freqs, sample_rate)
+            if f0 is not None:
+                h1 = _harmonic_amplitude(freqs, mag, f0)
+                h2 = _harmonic_amplitude(freqs, mag, 2.0 * f0)
+                if h1 > _EPS and h2 > _EPS:
+                    h1_h2 = float(20.0 * np.log10(h1 / h2))
+        else:
+            # Preserve the numeric field contract for event consumers. These
+            # zeros are explicitly invalid placeholders, NOT measured values.
+            centroid = bandwidth = flatness = rolloff = slope = 0.0
+            coefficients = (0.0,) * 13
         rows.append(
             FrameFeatures(
                 time_s=(i * hop + frame_size / 2) / sample_rate,
@@ -241,7 +285,9 @@ def extract_frame_features(
                 spectral_rolloff_hz=rolloff,
                 spectral_slope_db_octave=slope,
                 h1_h2_db=h1_h2,
-                mfcc=_mfcc(power, freqs, sample_rate),
+                mfcc=coefficients,
+                spectral_valid=spectral_valid,
+                intensity_valid=intensity_valid,
             )
         )
     return rows
@@ -314,21 +360,27 @@ def acoustic_fingerprint(samples: np.ndarray | Iterable[float], sample_rate: int
         anchor = float(np.median(f0))
         f0_semitones = 12.0 * np.log2(f0 / anchor)
 
-    rms = [r.rms_db for r in rows]
-    centroid = [r.spectral_centroid_hz for r in rows]
-    bandwidth = [r.spectral_bandwidth_hz for r in rows]
-    flatness = [r.spectral_flatness for r in rows]
-    rolloff = [r.spectral_rolloff_hz for r in rows]
-    slope = [r.spectral_slope_db_octave for r in rows]
+    rms = [r.rms_db for r in rows if r.intensity_valid]
+    spectral_rows = [r for r in rows if r.spectral_valid]
+    centroid = [r.spectral_centroid_hz for r in spectral_rows]
+    bandwidth = [r.spectral_bandwidth_hz for r in spectral_rows]
+    flatness = [r.spectral_flatness for r in spectral_rows]
+    rolloff = [r.spectral_rolloff_hz for r in spectral_rows]
+    slope = [r.spectral_slope_db_octave for r in spectral_rows]
     h1h2 = [r.h1_h2_db for r in rows if r.h1_h2_db is not None]
     periodicity = [r.periodicity for r in rows]
-    mfcc_matrix = np.asarray([r.mfcc for r in rows], dtype=np.float64)
+    mfcc_matrix = np.asarray([r.mfcc for r in spectral_rows], dtype=np.float64)
     mfcc_summary = []
     if mfcc_matrix.size:
         for i in range(mfcc_matrix.shape[1]):
             mfcc_summary.append({"index": i, **_summary(mfcc_matrix[:, i].tolist())})
+    else:
+        mfcc_summary = [{"index": i, **_summary([])} for i in range(13)]
 
-    envelope = 10.0 ** (np.asarray(rms) / 20.0)
+    envelope = np.asarray([
+        10.0 ** (r.rms_db / 20.0) if r.intensity_valid else 0.0
+        for r in rows
+    ])
     envelope_constant = bool(np.ptp(envelope) == 0.0)
     envelope = envelope - np.mean(envelope)
     peak_mod_hz = None
@@ -352,6 +404,8 @@ def acoustic_fingerprint(samples: np.ndarray | Iterable[float], sample_rate: int
         "claim_ceiling": "ACOUSTIC_STRUCTURE_ONLY_NO_SEMANTIC_QUALIFICATION",
         "input_channel_evidence": input_channel_evidence,
         "frame_count": len(rows),
+        "spectral_valid_frame_fraction": float(len(spectral_rows) / max(len(rows), 1)),
+        "intensity_valid_frame_fraction": float(len(rms) / max(len(rows), 1)),
         "voiced_frame_fraction": float(len(f0) / max(len(rows), 1)),
         "channels": {
             "pitch_raw_hz": _summary(f0.tolist()),

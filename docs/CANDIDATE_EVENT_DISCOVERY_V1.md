@@ -28,6 +28,12 @@ A boundary must:
 - survive competition with stronger nearby peaks.
 
 These are engineering hypotheses, not a definition of communication boundaries.
+The novelty threshold, minimum event duration, and recurrence distance must
+be finite positive configuration values. Zero, NaN, or infinity cannot be
+silently interpreted as evidence for a large number of events or as negative
+evidence for recurrence. An acoustically stationary or silent recording may
+still be retained as a single timed observation; that is not a claim of
+signalhood, communicative withholding, or a lexical unit.
 
 ## Recurrence
 

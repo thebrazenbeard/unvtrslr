@@ -34,6 +34,23 @@ errors must not become silently substituted measurement settings or undefined
 autocorrelation lags; they are configuration failures, not negative acoustic
 observations.
 
+For zero or constant-DC frames, no AC spectrum is measured. Frame rows retain
+time and intensity but mark `spectral_valid=False`; their numeric spectral and
+MFCC fields are **compatibility placeholders**, not observations. Fingerprint
+spectral and MFCC summaries omit those frames, returning null summary values
+when no valid frames exist, and report `spectral_valid_frame_fraction`.
+Nonconstant frames are scaled relative to their own AC peak *before* computing
+shape descriptors or periodicity. This avoids absolute numerical floors
+turning very quiet copies of the same signal into spurious flat spectra.
+RMS/decibel measurements and representative-channel energy comparisons also
+use scaled arithmetic so very small finite samples do not silently collapse
+into a fixed intensity floor or a false zero-energy channel tie. An exactly
+zero waveform has no meaningful finite decibel level and remains a separate
+numerical case; the output still does not establish audible detectability.
+Neither relative scaling nor `spectral_valid` supplies a calibrated acoustic
+noise floor: raw amplitudes have no physical units, and instrument noise,
+quantization, and recording conditions still require independent controls.
+
 ## Mathematical question
 
 For candidate feature `X`, operational distinction or observed outcome `Y`, and nuisance/context variables `Z`, the core diagnostic is:

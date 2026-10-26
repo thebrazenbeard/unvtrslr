@@ -1,15 +1,17 @@
 """Known, trusted toy scripts exercise the process boundary—not a sandbox."""
 
+import os
 import sys
+import time
 
 import pytest
 
 from unvtrslr.r2_controls import ControlEpisode
-from unvtrslr.r2_process_probe import ProcessEndpoint, screen_process_channel
+from unvtrslr.r2_process_probe import ProcessEndpoint, _ask, screen_process_channel
 
 
 SCRIPT = '''
-import json, os, pathlib, sys, time
+import json, os, pathlib, subprocess, sys, time
 mode = sys.argv[1]
 input_data = json.load(sys.stdin)
 if mode.startswith("send"):
@@ -49,6 +51,21 @@ else:
         factor = int(os.getenv("UNVTRSLR_SENDER_FACTOR", "0"))
     elif mode == "recv-sleep":
         time.sleep(1)
+        factor = 0
+    elif mode == "recv-descendant":
+        shared = pathlib.Path(sys.argv[2])
+        child = subprocess.Popen(
+            [sys.executable, "-c", "import pathlib,sys,time; time.sleep(0.45); pathlib.Path(sys.argv[1]).write_text('escaped')", str(shared)],
+            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
+        time.sleep(1)
+        factor = 0
+    elif mode == "recv-return-with-descendant":
+        shared = pathlib.Path(sys.argv[2])
+        subprocess.Popen(
+            [sys.executable, "-c", "import pathlib,sys,time; time.sleep(0.45); pathlib.Path(sys.argv[1]).write_text('escaped')", str(shared)],
+            stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
         factor = 0
     elif mode == "recv-invalid":
         print(json.dumps({"action": True}))
@@ -138,6 +155,28 @@ def test_fail_closed_on_timeout_and_invalid_binary_response(executable, episodes
         )
     with pytest.raises(ValueError, match="binary integer"):
         screen_process_channel(executable("send"), executable("recv-invalid"), episodes)
+
+
+@pytest.mark.skipif(os.name != "posix", reason="POSIX process-group containment only")
+def test_timeout_kills_endpoint_descendants_before_they_can_emit(tmp_path, executable, episodes):
+    escaped_output = tmp_path / "late_descendant_output.txt"
+    receiver = ProcessEndpoint((*executable("recv-descendant").argv, str(escaped_output)))
+    with pytest.raises(ValueError, match="timed out"):
+        screen_process_channel(executable("send"), receiver, episodes, timeout_seconds=0.15)
+    # A bounded, benign child would write this file if the parent-only timeout
+    # left it running. The original code reliably failed this test on POSIX.
+    time.sleep(0.65)
+    assert not escaped_output.exists(), "endpoint spawned process survived the timeout"
+
+
+@pytest.mark.skipif(os.name != "posix", reason="POSIX process-group containment only")
+def test_successful_endpoint_also_cleans_up_background_descendants(tmp_path, executable):
+    escaped_output = tmp_path / "late_success_descendant.txt"
+    receiver = ProcessEndpoint((*executable("recv-return-with-descendant").argv, str(escaped_output)))
+    response = _ask(receiver, {"message": "◇", "task": "align"}, timeout_seconds=1, max_reply_bytes=4096)
+    assert response == {"action": 0}
+    time.sleep(0.65)
+    assert not escaped_output.exists(), "successful endpoint left background process running"
 
 
 def test_rejects_invalid_episode_batch_and_endpoint_commands(executable, episodes):

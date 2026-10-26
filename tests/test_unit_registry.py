@@ -47,6 +47,38 @@ def test_cross_source_relative_states_receive_shared_registry_ids():
     )
 
 
+def test_same_recording_with_two_claimed_sources_is_not_cross_recording_support():
+    # Source names are caller assertions; a single recording must not count
+    # twice as independent *recording* evidence even if names differ.
+    rows = [
+        LocalUnitEvidence("one-recording", r.source_id, r.local_unit_id, r.vector)
+        for r in rows_two_sources()
+    ]
+    with pytest.raises(ValueError, match="recording_id.*source_id"):
+        build_unit_registry(rows, cluster_distance=0.25)
+
+
+def test_reused_recording_id_cannot_count_as_third_source_witness():
+    rows = [
+        LocalUnitEvidence(rec, source, unit, (v,))
+        for rec, source, a, b in (
+            ("r1", "s1", -1.0, 1.0),
+            ("r2", "s2", 90.0, 110.0),
+            ("r1", "s3", 1000.0, 1200.0),
+        )
+        for unit, v in (("u0", a), ("u1", b))
+    ]
+    with pytest.raises(ValueError, match="recording_id.*source_id"):
+        build_unit_registry(rows, min_sources=3, cluster_distance=0.25)
+
+
+@pytest.mark.parametrize("name", ["min_sources", "min_units_per_source"])
+@pytest.mark.parametrize("invalid", [float("nan"), float("inf"), 2.5, True])
+def test_registry_rejects_invalid_minimum_count_configuration(name, invalid):
+    with pytest.raises(ValueError, match=name):
+        build_unit_registry(rows_two_sources(), **{name: invalid})
+
+
 def test_input_order_does_not_change_assignments():
     a = build_unit_registry(
         rows_two_sources(),
@@ -230,3 +262,10 @@ def test_nonfinite_source_vectors_are_rejected_before_normalization(bad):
     rows[0] = LocalUnitEvidence("r1", "s1", "u0", (bad, 0.0))
     with pytest.raises(ValueError, match="finite"):
         build_unit_registry(rows)
+
+
+@pytest.mark.parametrize("parameter", ["cluster_distance", "scale_floor"])
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), -float("inf")])
+def test_nonfinite_registry_calibration_must_not_masquerade_as_negative_evidence(parameter, value):
+    with pytest.raises(ValueError, match="cluster_distance and scale_floor"):
+        build_unit_registry(rows_two_sources(), **{parameter: value})

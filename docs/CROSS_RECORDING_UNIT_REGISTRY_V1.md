@@ -40,7 +40,17 @@ not a perceptual, linguistic, or semantic distinction test.
 Blank/whitespace-only recording, source, or local-unit identifiers and
 nonfinite feature vectors are rejected before normalization. Textual IDs are
 still caller assertions: the registry cannot prove that two different source
-strings originate from physically independent systems.
+strings originate from physically independent systems. A recording ID may
+appear on multiple local-unit rows for one source, but the registry rejects
+a recording ID attributed to multiple source IDs. This is a conservative
+input contract, not evidence that the IDs were independently authenticated.
+
+`cluster_distance` and `scale_floor` must be positive finite numeric values;
+NaN, infinity, booleans, or invalid scales are configuration errors, not
+negative recurrence evidence.
+`min_sources` and `min_units_per_source` must be integer counts of at least
+two; nonfinite/fractional counts and booleans are rejected rather than
+turned into conclusions about source recurrence.
 
 A source with only one observed unit receives:
 
@@ -67,7 +77,10 @@ Eligible vectors are clustered with deterministic complete-link clustering.
 
 Complete-link was chosen because every pair of members in a cluster must remain within the configured threshold. A chain of weak nearest-neighbor links is therefore not enough to collapse distant acoustic states into one unit.
 
-A cluster receives a global registry ID only when it spans the configured minimum number of independent sources.
+A cluster receives a global registry ID only when it spans the configured
+minimum number of distinct asserted sources **and at least that many distinct
+recording IDs**. Even then, the source and recording identifiers are supplied
+metadata rather than independently authenticated captures.
 
 Otherwise its members remain:
 

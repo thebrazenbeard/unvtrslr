@@ -127,6 +127,23 @@ def discover_events_from_frames(
         raise ValueError("context_radius_frames must be >= 1")
     if not np.isfinite(hop_s) or hop_s <= 0:
         raise ValueError("hop_s must be positive and finite")
+    for name, value in (
+        ("novelty_threshold", novelty_threshold),
+        ("min_event_s", min_event_s),
+        ("cluster_distance", cluster_distance),
+    ):
+        # A zero/negative novelty threshold can declare every stationary frame
+        # a boundary; NaN/Infinity can silently suppress all comparisons or
+        # poison clustering. These are configuration errors, not evidence.
+        try:
+            valid = (
+                not isinstance(value, (bool, np.bool_))
+                and bool(np.isfinite(value) and value > 0)
+            )
+        except (TypeError, ValueError):
+            valid = False
+        if not valid:
+            raise ValueError(f"{name} must be positive and finite")
 
     matrix = _frame_matrix(materialized)
     scores = _novelty(matrix, context_radius_frames)

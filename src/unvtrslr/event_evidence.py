@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from math import log
+from numbers import Integral
 from typing import Iterable
 
 import numpy as np
@@ -183,9 +184,10 @@ def evidence_from_event_frames(
     )
 
     for assignment in event_result.units:
-        index = int(
-            assignment.event_index
-        )
+        raw_index = assignment.event_index
+        if isinstance(raw_index, bool) or not isinstance(raw_index, Integral):
+            raise ValueError("event_index must be an integer")
+        index = int(raw_index)
 
         if (
             index < 0

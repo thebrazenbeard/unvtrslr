@@ -60,6 +60,14 @@ def _checked_rows(
             raise ValueError(f"{label} episode_id must not be empty")
         if not isinstance(row.source_id, str) or not row.source_id.strip():
             raise ValueError(f"{label} source_id must not be empty")
+        # A direct dataclass constructor can bypass TargetConstructionEpisode
+        # annotations. Rebuilding it via .build() would stringify arbitrary
+        # objects and erase the distinction between a raw witness and its
+        # textual representation before either hashing or fitting.
+        if any(not isinstance(atom, str) for atom in row.semantic_atoms):
+            raise ValueError(f"{label} semantic atom must be a string")
+        if any(not isinstance(token, str) for token in row.target_tokens):
+            raise ValueError(f"{label} target token must be a string")
         checked.append(
             TargetConstructionEpisode.build(
                 row.episode_id, row.source_id, row.semantic_atoms, row.target_tokens
@@ -80,8 +88,14 @@ def _canonical_scope(
         raise ValueError("target_language_id must not be empty")
     if min_sources < 2 or min_positive_per_source < 1:
         raise ValueError("replication thresholds must be positive and min_sources >= 2")
-    namespace = sorted({str(atom) for atom in semantic_atoms})
-    upstream = sorted({str(model) for model in upstream_model_ids})
+    raw_namespace = tuple(semantic_atoms)
+    raw_upstream = tuple(upstream_model_ids)
+    if any(not isinstance(atom, str) for atom in raw_namespace):
+        raise ValueError("semantic atom identifier must be a string")
+    if any(not isinstance(model, str) for model in raw_upstream):
+        raise ValueError("upstream model ID must be a string")
+    namespace = sorted(set(raw_namespace))
+    upstream = sorted(set(raw_upstream))
     if not namespace or any(not atom for atom in namespace):
         raise ValueError("semantic namespace must contain nonempty atoms")
     if not upstream or any(not model for model in upstream):

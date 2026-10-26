@@ -1,0 +1,6 @@
+# Local Python test and editable-install artifacts (never research evidence).
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+*.egg-info/

@@ -4,6 +4,7 @@ from collections import defaultdict
 from dataclasses import asdict, dataclass
 from hashlib import sha256
 from math import sqrt
+from numbers import Integral
 from typing import Iterable, Sequence
 
 import numpy as np
@@ -55,7 +56,10 @@ def evidence_from_event_result(
     grouped: dict[str, list[np.ndarray]] = defaultdict(list)
 
     for assignment in assignments:
-        index = int(assignment.event_index)
+        raw_index = assignment.event_index
+        if isinstance(raw_index, bool) or not isinstance(raw_index, Integral):
+            raise ValueError("event_index must be an integer")
+        index = int(raw_index)
         if index < 0 or index >= len(events):
             raise ValueError("unit assignment event_index is out of range")
         grouped[str(assignment.unit_id)].append(

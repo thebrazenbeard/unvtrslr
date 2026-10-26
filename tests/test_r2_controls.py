@@ -240,6 +240,63 @@ def test_global_clock_leak_without_copy_hooks_cannot_qualify_unknown_agent():
     assert result.status == "COUNTERFACTUAL_UNQUALIFIED"
 
 
+def test_positive_oracle_instance_method_shadowing_cannot_inherit_trust():
+    """The exact type check alone accepts user-installed callable overrides."""
+    oracle = GroundedConventionOracle()
+    original_send = oracle.send
+    original_receive = oracle.receive
+    oracle.send = lambda observation: original_send(observation)
+    oracle.receive = lambda message, observation: original_receive(message, observation)
+
+    result = probe_controls(oracle, cases())
+    assert result.iid_accuracy == 1.0
+    assert result.message_ablation_drop == 0.5
+    assert result.status == "COUNTERFACTUAL_UNQUALIFIED"
+    assert result.causal_listening is None
+
+
+def test_positive_oracle_class_method_monkeypatch_cannot_inherit_trust():
+    """An exact instance class may have replaced library method definitions."""
+    original_send = GroundedConventionOracle.send
+
+    def forged_send(self, observation):
+        return original_send(self, observation)
+
+    try:
+        GroundedConventionOracle.send = forged_send
+        result = probe_controls(GroundedConventionOracle(), cases())
+    finally:
+        GroundedConventionOracle.send = original_send
+
+    assert result.iid_accuracy == 1.0
+    assert result.status == "COUNTERFACTUAL_UNQUALIFIED"
+    assert result.causal_listening is None
+
+
+def test_positive_oracle_mutable_symbol_table_is_unqualified():
+    # The constructor annotation alone does not enforce immutable symbols.
+    oracle = GroundedConventionOracle(["A", "B"])  # type: ignore[arg-type]
+    result = probe_controls(oracle, cases())
+    assert result.iid_accuracy == 1.0
+    assert result.status == "COUNTERFACTUAL_UNQUALIFIED"
+    assert result.causal_listening is None
+
+
+def test_positive_oracle_monkeypatched_attribute_resolution_is_unqualified():
+    original_getattribute = GroundedConventionOracle.__getattribute__
+
+    def forged_getattribute(self, name):
+        return original_getattribute(self, name)
+
+    try:
+        GroundedConventionOracle.__getattribute__ = forged_getattribute
+        result = probe_controls(GroundedConventionOracle(), cases())
+    finally:
+        GroundedConventionOracle.__getattribute__ = original_getattribute
+    assert result.iid_accuracy == 1.0
+    assert result.status == "COUNTERFACTUAL_UNQUALIFIED"
+
+
 def test_harness_rejects_unbalanced_or_duplicate_id_input():
     with pytest.raises(ValueError, match="balanced"):
         probe_controls(GroundedConventionOracle(), (ControlEpisode(0, "a"), ControlEpisode(0, "b")))

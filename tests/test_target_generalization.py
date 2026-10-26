@@ -132,3 +132,31 @@ def test_holdout_direct_dataclass_bypass_rejected_before_fitting():
     tampered = (replace(hold[0], source_id="  "), *hold[1:])
     with pytest.raises(ValueError, match="source_id"):
         target_holdout_split_sha256(train, tampered, **KW)
+
+
+@pytest.mark.parametrize(
+    "replacement, error",
+    [
+        ({"semantic_atoms": (17, "shape:square")}, "semantic atom must be a string"),
+        ({"target_tokens": (17, "square")}, "target token must be a string"),
+    ],
+)
+def test_holdout_rejects_type_erasing_witness_coercion(replacement, error):
+    """An integer 17 is not the same witnessed symbol as the text '17'."""
+    train, hold = training(), heldout()
+    forged = (replace(train[0], **replacement), *train[1:])
+    with pytest.raises(ValueError, match=error):
+        target_holdout_split_sha256(forged, hold, **KW)
+
+
+@pytest.mark.parametrize(
+    "scope_change, error",
+    [
+        ({"semantic_atoms": (17, "shape:square")}, "semantic atom.*string"),
+        ({"upstream_model_ids": (17, "target-grounder-1")}, "upstream model ID.*string"),
+    ],
+)
+def test_holdout_scope_rejects_type_erasing_identifier_coercion(scope_change, error):
+    scope = {**KW, **scope_change}
+    with pytest.raises(ValueError, match=error):
+        target_holdout_split_sha256(training(), heldout(), **scope)

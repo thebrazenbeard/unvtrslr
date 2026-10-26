@@ -230,6 +230,15 @@ def test_missing_supporting_frames_fails_closed():
         )
 
 
+@pytest.mark.parametrize("bad_index", [0.5, "0", True])
+def test_event_evidence_rejects_fractional_string_and_boolean_event_indices(bad_index):
+    result = one_event_result()
+    result.units[0].event_index = bad_index
+
+    with pytest.raises(ValueError, match="event_index must be an integer"):
+        evidence_from_event_frames("r", "s", [frame(0.1, 200.0)], result)
+
+
 def test_discovered_event_support_uses_frame_indices_not_center_timestamps():
     # 40 ms analysis windows have centers 20 ms after their start. Event
     # boundaries instead use hop indices; a short first event is valid.

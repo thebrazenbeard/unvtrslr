@@ -9,7 +9,7 @@ import tarfile
 from sacrebleu.metrics import BLEU, CHRF
 from unvtrslr.archive_integrity import load_verified_archive
 from runs.massive_v1_first_real_corpus_20260922.blind_text import (
-    TARGET_LOCALES, make_parallel_pairs, score_predictions
+    TARGET_LOCALES, make_parallel_pairs, score_predictions, load_external_predictions
 )
 from runs.massive_v1_first_real_corpus_20260922.run import (
     DATASET_BYTES, DATASET_SHA256, read_locale_rows, stable_holdout_key
@@ -38,7 +38,7 @@ def main() -> None:
         by_id = {x["id"]: x for x in aligned}
         holdout = [by_id[i] for i in ids]
         predfile = a.predictions_dir / f"predictions_en_to_{locale}.jsonl"
-        predictions = [json.loads(line) for line in predfile.read_text(encoding="utf-8").splitlines()]
+        predictions = load_external_predictions(predfile, expected_count=len(holdout))
         native_score = score_predictions(holdout, predictions)
         out_by_id = {p["id"]: p for p in predictions}
         hypotheses = [out_by_id[rid]["text"] or "" for rid in ids]

@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import statistics
 import time
+from runs.massive_v1_first_real_corpus_20260922.argos_install_locked import validate_lock
 
 def strict_object(pairs):
     out = {}
@@ -48,6 +49,42 @@ def sha(path: Path) -> str:
     with path.open("rb") as f:
         return hashlib.file_digest(f, "sha256").hexdigest()
 
+def validate_complete_predictions(rows: list[dict], expected_ids: list[str]) -> None:
+    """A benchmark run must not silently pass when any item failed."""
+    if (len(rows) != len(expected_ids)
+            or len(set(expected_ids)) != len(expected_ids)
+            or [row.get("id") for row in rows] != expected_ids):
+        raise ValueError("incomplete or reordered benchmark predictions")
+    for row in rows:
+        if type(row) is not dict or set(row) != {"id", "status", "text"}:
+            raise ValueError("invalid benchmark prediction schema")
+        if row["status"] != "OK" or type(row["text"]) is not str or not row["text"].strip():
+            raise ValueError("incomplete benchmark inference; record diagnostics and fail")
+
+
+def validate_worker_input_directory(requests_dir: Path, predictions_dir: Path, models_dir: Path) -> None:
+    """Detect accidental answer-file co-location; not an OS sandbox."""
+    src = requests_dir.resolve(strict=True)
+    models = models_dir.resolve(strict=True)
+    output = predictions_dir.resolve(strict=False)
+    if not src.is_dir() or not models.is_dir():
+        raise ValueError("request/model directories missing")
+    if (src == output or src.is_relative_to(output) or output.is_relative_to(src)
+            or src == models or src.is_relative_to(models)
+            or models.is_relative_to(src) or output == models
+            or output.is_relative_to(models) or models.is_relative_to(output)):
+        raise ValueError("input/model/output path overlap")
+    expected = {f"requests_en_to_{locale}.jsonl" for locale in
+                ("fr-FR", "de-DE", "sw-KE", "tr-TR")}
+    actual = {entry.name for entry in src.iterdir()}
+    if actual != expected:
+        raise ValueError("not a request-only inference directory")
+    if any(entry.is_symlink() or not entry.is_file() for entry in src.iterdir()):
+        raise ValueError("request-only directory contains unsafe link or entry")
+    if predictions_dir.exists() and any(predictions_dir.iterdir()):
+        raise ValueError("nonempty prediction destination risks stale benchmark outputs")
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--requests-dir", type=Path, required=True)
@@ -56,11 +93,13 @@ def main() -> None:
     p.add_argument("--lock", type=Path, required=True)
     p.add_argument("--limit", type=int, default=200)
     a = p.parse_args()
+    validate_worker_input_directory(a.requests_dir, a.predictions_dir, a.model_dir)
     if not 1 <= a.limit <= 200:
         raise ValueError("bad limit")
     if importlib.metadata.version("argostranslate") != "1.11.0":
         raise ValueError("unqualified Argos engine")
     lock = json.loads(a.lock.read_text(encoding="utf-8"))
+    validate_lock(lock)
     for spec in lock["models"]:
         package_path = a.model_dir / f'en_{spec["target"]}.argosmodel'
         if package_path.stat().st_size != spec["bytes"] or sha(package_path) != spec["sha256"]:
@@ -103,12 +142,11 @@ def main() -> None:
             predictions.append(pred)
         wall = time.perf_counter() - started
         cpu = time.process_time() - cpu_started
+        validate_complete_predictions(predictions, [row["id"] for row in rows])
         predpath = a.predictions_dir / f"predictions_en_to_{locale}.jsonl"
         with predpath.open("w", encoding="utf-8", newline="\n") as out:
             for rec in predictions:
                 out.write(json.dumps(rec, ensure_ascii=False, allow_nan=False) + "\n")
-        if not any(r["status"] == "OK" for r in predictions):
-            raise RuntimeError(f"zero successful translations: {target}")
         mem = proc.memory_info()
         perf = {"target": target, "records": len(rows), "ok": sum(r["status"] == "OK" for r in predictions),
                 "cold_first_s": latencies[0], "warm_p50_s": statistics.median(latencies[1:]) if len(latencies)>1 else None,

@@ -1,0 +1,13 @@
+{
+  "claim_ceiling": "NEGATIVE_CONTROLS_ONLY_NO_SCAN_MODEL_MEASURED",
+  "current_positional_learner": "NOT_APPLICABLE_TO_VARIABLE_LENGTH_ACTION_SEQUENCES",
+  "dataset_repo": "brendenlake/SCAN",
+  "exact_phrasebook_coverage": 0.0,
+  "git_head": "c4b756cbc010d75c912f16c42c8f15dc6b7e6c8f",
+  "schema": "UNV_SCAN_ADDPRIM_JUMP_NEGATIVE_CONTROL_V1",
+  "source_copy_exact_match": 0.0,
+  "test_records": 7706,
+  "test_sha256": "14ea0560537282a343141d324a278ee4d7337a1744f740dc811307ab6f162450",
+  "train_records": 14670,
+  "train_sha256": "15c82c6bd4222a1f44d28aea6e56f23a52002c9a8b05f77497544114055a62b7"
+}

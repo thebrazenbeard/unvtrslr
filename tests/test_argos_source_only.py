@@ -71,3 +71,15 @@ def test_model_symlink_rejected_even_with_pinned_hash(tmp_path):
     digest = hashlib.sha256(archive.read_bytes()).hexdigest()
     with pytest.raises(ValueError, match="symlink"):
         validate_model(archive, {"target":"sw","package_version":"1.11","bytes":archive.stat().st_size,"sha256":digest})
+
+def test_source_only_module_import_does_not_require_psutil(monkeypatch):
+    import builtins
+    import importlib
+    from runs.massive_v1_first_real_corpus_20260922 import argos_source_only
+    original = builtins.__import__
+    def blocked(name, *args, **kwargs):
+        if name == "psutil":
+            raise ImportError("simulated minimal Python CI env")
+        return original(name, *args, **kwargs)
+    monkeypatch.setattr(builtins, "__import__", blocked)
+    importlib.reload(argos_source_only)

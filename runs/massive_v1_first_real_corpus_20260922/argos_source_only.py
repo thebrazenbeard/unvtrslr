@@ -9,7 +9,6 @@ import os
 from pathlib import Path
 import statistics
 import time
-import psutil
 
 def strict_object(pairs):
     out = {}
@@ -66,6 +65,7 @@ def main() -> None:
         package_path = a.model_dir / f'en_{spec["target"]}.argosmodel'
         if package_path.stat().st_size != spec["bytes"] or sha(package_path) != spec["sha256"]:
             raise ValueError(f'model archive changed: {spec["target"]}')
+    import psutil  # inference-only resource metrics; unit imports need no Argos extras
     startup_begin = time.perf_counter()
     import argostranslate.translate as tr
     installed = {x.code: x for x in tr.get_installed_languages()}

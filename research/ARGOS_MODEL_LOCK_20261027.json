@@ -1,0 +1,43 @@
+{
+  "schema": "UNV_ARGOS_MODEL_LOCK_V1",
+  "engine_package": "argostranslate==1.11.0",
+  "engine_wheel_sha256": "a89b42d82f40843900338f9ac60d4c82fda590b6898247f5d0c15d46731ca7df",
+  "argos_git_tag_ref_sha": "7a13fbc509f28c5987d032ad7708b709dd0ddd7e",
+  "model_index_git_main_observed": "ff90de60728f7c1338ff6b75974e4c89b2442d22",
+  "source_corpus_sha256": "7df623fd2d300a4d235d6ee5bd396c9a28258d3a0ccb29abdb054506eba153f8",
+  "download_caveat": "sha256 files observed on Lappy after independent download; vendor signatures not established",
+  "models": [
+    {
+      "target": "fr",
+      "package_version": "1.9",
+      "argos_version": "1.9.0",
+      "bytes": 65472327,
+      "sha256": "3a65ed83364f4e7b06e30f9dd823db1934899ed3ce839e63f46dc7b09dc797b4",
+      "url": "https://argos-net.com/v1/translate-en_fr-1_9.argosmodel"
+    },
+    {
+      "target": "de",
+      "package_version": "1.3",
+      "argos_version": "1.9.0",
+      "bytes": 150508297,
+      "sha256": "6cd847f0c06c9c66013e6b0932e07fd54a6d90894659c02bf6c5247b72fb25b1",
+      "url": "https://argos-net.com/v1/translate-en_de-1_3.argosmodel"
+    },
+    {
+      "target": "sw",
+      "package_version": "1.11",
+      "argos_version": "1.5",
+      "bytes": 75782172,
+      "sha256": "994bf9e19f00dd1566ad59e95879a7ea24de19f7b4fc89ab0dcce860580353f2",
+      "url": "https://argos-net.com/v1/translate-en_sw-1_11.argosmodel"
+    },
+    {
+      "target": "tr",
+      "package_version": "1.5",
+      "argos_version": "1.5",
+      "bytes": 124742526,
+      "sha256": "2d553a00880a0c21dea5b1c375535659e6bf18c9bf2ce9847c2a2fd2ff50316a",
+      "url": "https://argos-net.com/v1/translate-en_tr-1_5.argosmodel"
+    }
+  ]
+}

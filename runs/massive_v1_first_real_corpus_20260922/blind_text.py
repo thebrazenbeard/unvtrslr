@@ -189,6 +189,40 @@ def score_predictions(pairs: list[dict], predictions: list[dict]) -> dict:
     }
 
 
+def _external_json_object(pairs: list[tuple[str, object]]) -> dict:
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate JSON key in external prediction")
+        result[key] = value
+    return result
+
+
+def load_external_predictions(path: Path, *, expected_count: int = 200) -> list[dict]:
+    """Bound untrusted JSONL size, structure and count before scoring."""
+    if type(expected_count) is not int or not 1 <= expected_count <= 200:
+        raise ValueError("bad expected record count")
+    if not path.is_file() or path.stat().st_size > 4_000_000:
+        raise ValueError("oversized or missing predictions file")
+    predictions = []
+    with path.open("r", encoding="utf-8") as handle:
+        for line in handle:
+            if len(line.encode("utf-8")) > 32768 or not line.strip():
+                raise ValueError("oversized or blank prediction line")
+            if len(predictions) >= expected_count:
+                raise ValueError("too many prediction records")
+            row = json.loads(
+                line, object_pairs_hook=_external_json_object,
+                parse_constant=lambda _value: (_ for _ in ()).throw(
+                    ValueError("nonfinite JSON prediction")
+                ),
+            )
+            predictions.append(row)
+    if len(predictions) != expected_count:
+        raise ValueError("incomplete prediction records")
+    return predictions
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset-tar", required=True)
@@ -235,8 +269,7 @@ def main() -> int:
                             "engine": "TRAIN_ONLY_EXACT_PHRASEBOOK_CONTROL", **result})
         if args.predictions_dir:
             prediction_file = Path(args.predictions_dir) / f"predictions_en_to_{target}.jsonl"
-            with prediction_file.open("r", encoding="utf-8") as handle:
-                predictions = [json.loads(line) for line in handle if line.strip()]
+            predictions = load_external_predictions(prediction_file, expected_count=len(holdout))
             external = score_predictions(holdout, predictions)
             results.append({"target_locale": target, "engine": "EXTERNALLY_SUPPLIED_NOT_ATTESTED", **external})
     write_json(output / "blind_text_report.json", {

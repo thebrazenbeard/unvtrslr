@@ -69,9 +69,51 @@ def fit(rows):
             "positions":npos,"fields":list(fields),"hypotheses":hypotheses,
             "claim_ceiling":"SUPERVISED_FIXED_LENGTH_POSITIONAL_COMPOSITION_SYNTHETIC_ONLY"}
 
+def validate_model(model):
+    """Reject structural alteration; this does not authenticate who fitted it."""
+    required = {"schema","train_sha256","train_rows","positions",
+                "fields","hypotheses","claim_ceiling"}
+    if type(model) is not dict or set(model) != required or model.get("schema") != SCHEMA:
+        raise ValueError("unrecognized fitted model schema")
+    if model["claim_ceiling"] != "SUPERVISED_FIXED_LENGTH_POSITIONAL_COMPOSITION_SYNTHETIC_ONLY":
+        raise ValueError("model claim ceiling altered")
+    if type(model["train_rows"]) is not int or not 4 <= model["train_rows"] <= MAX_RECORDS:
+        raise ValueError("bad model train count")
+    digest = model["train_sha256"]
+    if type(digest) is not str or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
+        raise ValueError("bad model digest")
+    n = model["positions"]
+    if type(n) is not int or not 1 <= n <= 16:
+        raise ValueError("bad model dimensions")
+    fields = model["fields"]
+    if (type(fields) is not list or not 1 <= len(fields) <= 12
+            or any(type(x) is not str or not x or len(x) > 48 for x in fields)
+            or fields != sorted(set(fields))):
+        raise ValueError("bad model fields")
+    hypotheses = model["hypotheses"]
+    if type(hypotheses) is not dict or not set(hypotheses).issubset(set(fields)):
+        raise ValueError("bad model hypotheses")
+    for field,hyp in hypotheses.items():
+        if type(hyp) is not dict or set(hyp) != {"position","mapping","train_loo_accuracy"}:
+            raise ValueError("malformed model hypothesis")
+        position = hyp["position"]
+        if type(position) is not int or not 0 <= position < n:
+            raise ValueError("model position out of bounds")
+        accuracy = hyp["train_loo_accuracy"]
+        if type(accuracy) not in (float,int) or not .85 <= accuracy <= 1.0:
+            raise ValueError("invalid model support")
+        mapping = hyp["mapping"]
+        if type(mapping) is not dict or not 1 <= len(mapping) <= MAX_RECORDS:
+            raise ValueError("invalid model mapping")
+        if any(type(term) is not str or not term or len(term) > 64
+               or any(ch.isspace() for ch in term) or type(value) is not str
+               or not value or len(value) > 64 for term,value in mapping.items()):
+            raise ValueError("malformed model symbols")
+    return model
+
+
 def predict(model, source):
-    if type(model) is not dict or model.get("schema") != SCHEMA:
-        raise ValueError("invalid model")
+    validate_model(model)
     words = tokens(source)
     if len(words) != model["positions"]:
         return {"status":"ABSTAIN","meaning":None,"unresolved":model["fields"]}
@@ -126,7 +168,10 @@ def main():
     if args.mode == "fit":
         save_new(args.model_out,fit(load_jsonl(args.training,{"id","source_text","meaning"})))
     else:
+        if not args.model.is_file() or args.model.stat().st_size > 2_000_000:
+            raise ValueError("missing or oversized fitted model")
         model = json.loads(args.model.read_text(encoding="utf-8"))
+        validate_model(model)
         rows = load_jsonl(args.requests,{"id","source_text"})
         if any(type(r["id"]) is not str or not r["id"] for r in rows):
             raise ValueError("invalid request ID")

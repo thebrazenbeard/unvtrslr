@@ -73,3 +73,23 @@ def test_reject_malformed_training():
 def test_synthetic_scope_is_explicit():
     model=fit(sample()[0])
     assert model["claim_ceiling"]=="SUPERVISED_FIXED_LENGTH_POSITIONAL_COMPOSITION_SYNTHETIC_ONLY"
+
+def test_model_structure_tampering_fails_closed():
+    from copy import deepcopy
+    train,test=sample()
+    model=fit(train)
+    for mutate in ("extra","position","schema","digest","claims"):
+        forged=deepcopy(model)
+        if mutate=="extra": forged["reference_payload"]="leak"
+        elif mutate=="position": forged["hypotheses"]["actor"]["position"]=999
+        elif mutate=="schema": forged["schema"]="OTHER"
+        elif mutate=="digest": forged["train_sha256"]="not-a-digest"
+        else: forged["claim_ceiling"]="SEMANTICALLY_QUALIFIED"
+        with pytest.raises(ValueError):
+            predict(forged,test[0]["source_text"])
+
+def test_bad_model_shape_rejected_even_with_expected_schema():
+    model=fit(sample()[0])
+    model["hypotheses"]["actor"]["mapping"]={}
+    with pytest.raises(ValueError,match="mapping"):
+        predict(model,sample()[1][0]["source_text"])

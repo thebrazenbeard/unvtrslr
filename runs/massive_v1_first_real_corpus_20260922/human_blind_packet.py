@@ -14,6 +14,12 @@ PREDICTION_SHA={
  "sw":"49ccda3669c77a28311e942fbef57f7b29ab665a4836cabdd1ba2283926f1c43",
  "tr":"977c16f2e12a2cb4a8b43b6893d9f083508948da208544d2a2384462e22e5654",
 }
+REQUEST_SHA={
+ "fr":"cbfee45ff36a3ab6ce388d1b2bd00d78b8aacdc50c28a844413a55419cd3d624",
+ "de":"ab76b3058b404c4614da948acbe71544473fae63779eb90ed5eef2e6ae027f7d",
+ "sw":"4566367ae545b453a089f36133ed0a11fb8a553bdd698bec11bdb7ab76a9200e",
+ "tr":"0dc5b3cca6a93b780a922a5f0cab3de10f650f479bd837b1f62cf67e33de45b6",
+}
 SAMPLE_SEED="UNV_BILINGUAL_QA_SHA_SAMPLE_V1"
 
 def sha(path):
@@ -77,7 +83,10 @@ def main():
     if public.exists() or private.exists(): raise ValueError("refuse overwrite")
     reviewer,manifest=[],[]
     for target,locale in LOCALES.items():
-        requests=read_requests(args.requests_dir/f"requests_en_to_{locale}.jsonl",target,200)
+        requests_path=args.requests_dir/f"requests_en_to_{locale}.jsonl"
+        if sha(requests_path)!=REQUEST_SHA[target]:
+            raise ValueError("frozen MASSIVE request digest mismatch")
+        requests=read_requests(requests_path,target,200)
         path=args.predictions_dir/f"predictions_en_to_{locale}.jsonl"
         if sha(path)!=PREDICTION_SHA[target]:
             raise ValueError("Argos frozen prediction digest mismatch")

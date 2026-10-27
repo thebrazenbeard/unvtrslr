@@ -1,0 +1,109 @@
+{
+  "claim_ceiling": "SUPERVISED_FIXED_LENGTH_POSITIONAL_COMPOSITION_SYNTHETIC_ONLY",
+  "isolation": "separate process; OS filesystem permissions NOT restricted",
+  "origin": "private-synthetic; not source-attested Numtareen",
+  "result": {
+    "curves": [
+      {
+        "coverage": 0.0,
+        "exact_accuracy": 0.0,
+        "learned_positions": {
+          "action": 1,
+          "actor": 0,
+          "patient": 2,
+          "polarity": 4
+        },
+        "records": 96,
+        "train": 8
+      },
+      {
+        "coverage": 0.7604166666666666,
+        "exact_accuracy": 0.7604166666666666,
+        "learned_positions": {
+          "action": 1,
+          "actor": 0,
+          "patient": 2,
+          "polarity": 4,
+          "tense": 3
+        },
+        "records": 96,
+        "train": 16
+      },
+      {
+        "coverage": 1.0,
+        "exact_accuracy": 1.0,
+        "learned_positions": {
+          "action": 1,
+          "actor": 0,
+          "patient": 2,
+          "polarity": 4,
+          "tense": 3
+        },
+        "records": 96,
+        "train": 32
+      },
+      {
+        "coverage": 1.0,
+        "exact_accuracy": 1.0,
+        "learned_positions": {
+          "action": 1,
+          "actor": 0,
+          "patient": 2,
+          "polarity": 4,
+          "tense": 3
+        },
+        "records": 96,
+        "train": 48
+      },
+      {
+        "coverage": 1.0,
+        "exact_accuracy": 1.0,
+        "learned_positions": {
+          "action": 1,
+          "actor": 0,
+          "patient": 2,
+          "polarity": 4,
+          "tense": 3
+        },
+        "records": 96,
+        "train": 64
+      },
+      {
+        "coverage": 1.0,
+        "exact_accuracy": 1.0,
+        "learned_positions": {
+          "action": 1,
+          "actor": 0,
+          "patient": 2,
+          "polarity": 4,
+          "tense": 3
+        },
+        "records": 96,
+        "train": 96
+      }
+    ],
+    "holdout_sha256": "5d1609f9d6e6ef1fba863b973dff269f97ee8e960b9088064f46d18661935a4a",
+    "phrasebook_control": {
+      "coverage": 0.0,
+      "exact_accuracy": 0.0,
+      "records": 96
+    },
+    "seed": 61,
+    "shuffled_label_control": {
+      "coverage": 0.0,
+      "exact_accuracy": 0.0,
+      "records": 96
+    },
+    "train_sha256": "f859085f1442f3d4392edbabf58c990665e96ed6f3807a20eebb8bcc5da9258f"
+  },
+  "schema": "UNV_SYNTHETIC_COMPOSITION_BENCHMARK_V1",
+  "seed": 61,
+  "sizes": [
+    8,
+    16,
+    32,
+    48,
+    64,
+    96
+  ]
+}

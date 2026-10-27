@@ -101,6 +101,7 @@ See [`docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md`](docs/R0_5_INFORMATION_INTEGRITY
 
 The current `main` candidate contains executable reference components in addition to the original research/design program:
 
+- raw multichannel recurrence discovery with no pre-annotated event boundaries and an **opt-in simulated interactive partner convention** with consent/feedback boundaries; neither is independently discovered communicative intent nor actual unknown-intelligence contact (see [synthetic contact study](research/AUTONOMOUS_CANDIDATES_AND_INTERACTIVE_CONTACT_20261027.md));
 - experimenter-framed, continuous-response active-probe contingency screening with negative controls; **not yet autonomous signalhood, negotiated semantics, or unknown-intelligence contact** (see [Phase 0-1 evidence](research/BOOTSTRAP_CONTINGENCY_20261027.md));
 - acoustic measurement and information channels;
 - candidate acoustic event discovery;

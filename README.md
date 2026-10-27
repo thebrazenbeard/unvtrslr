@@ -101,6 +101,7 @@ See [`docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md`](docs/R0_5_INFORMATION_INTEGRITY
 
 The current `main` candidate contains executable reference components in addition to the original research/design program:
 
+- experimenter-framed, continuous-response active-probe contingency screening with negative controls; **not yet autonomous signalhood, negotiated semantics, or unknown-intelligence contact** (see [Phase 0-1 evidence](research/BOOTSTRAP_CONTINGENCY_20261027.md));
 - acoustic measurement and information channels;
 - candidate acoustic event discovery;
 - non-destructive raw event descriptors;

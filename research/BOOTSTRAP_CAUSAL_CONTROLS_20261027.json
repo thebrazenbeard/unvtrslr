@@ -1,0 +1,932 @@
+{
+  "all_control_expectations_met": true,
+  "claim_ceiling": "CONTROLLED_SYNTHETIC_CONTINGENCY_NOT_SIGNALHOOD_OR_SEMANTICS",
+  "controls": [
+    {
+      "control_pass": true,
+      "expected_status": "RESPONSE_CONTINGENCY_REPLICATED_IN_HELDOUT_SETTINGS",
+      "heldout_trials": 108,
+      "mode": "contingent",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            3.1e-05
+          ],
+          [
+            "probe_b",
+            0.71892
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": "probe_b",
+        "semantic_qualification": false,
+        "status": "RESPONSE_CONTINGENCY_REPLICATED_IN_HELDOUT_SETTINGS",
+        "train_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.717492
+          ]
+        ]
+      },
+      "seed": 17,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "no_response",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            3.1e-05
+          ],
+          [
+            "probe_b",
+            0.00017
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ]
+      },
+      "seed": 17,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "context_confounded",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            3.1e-05
+          ],
+          [
+            "probe_b",
+            0.00017
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ]
+      },
+      "seed": 17,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "early_only",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            3.1e-05
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ]
+      },
+      "seed": 17,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "HELDOUT_CONTINGENCY_NOT_REPLICATED",
+      "heldout_trials": 108,
+      "mode": "training_only",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            3.1e-05
+          ],
+          [
+            "probe_b",
+            0.00017
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": "probe_b",
+        "semantic_qualification": false,
+        "status": "HELDOUT_CONTINGENCY_NOT_REPLICATED",
+        "train_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.717492
+          ]
+        ]
+      },
+      "seed": 17,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "ambiguous",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.720031
+          ],
+          [
+            "probe_b",
+            0.71892
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.717354
+          ],
+          [
+            "probe_b",
+            0.717492
+          ]
+        ]
+      },
+      "seed": 17,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "order_artifact",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.000796
+          ],
+          [
+            "probe_b",
+            0.00017
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.001922
+          ]
+        ]
+      },
+      "seed": 17,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "RESPONSE_CONTINGENCY_REPLICATED_IN_HELDOUT_SETTINGS",
+      "heldout_trials": 108,
+      "mode": "contingent",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            1e-06
+          ],
+          [
+            "probe_b",
+            0.719426
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": "probe_b",
+        "semantic_qualification": false,
+        "status": "RESPONSE_CONTINGENCY_REPLICATED_IN_HELDOUT_SETTINGS",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000818
+          ],
+          [
+            "probe_b",
+            0.721001
+          ]
+        ]
+      },
+      "seed": 41,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "no_response",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            1e-06
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000818
+          ],
+          [
+            "probe_b",
+            0.001001
+          ]
+        ]
+      },
+      "seed": 41,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "context_confounded",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            1e-06
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000818
+          ],
+          [
+            "probe_b",
+            0.001001
+          ]
+        ]
+      },
+      "seed": 41,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "early_only",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            1e-06
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000818
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ]
+      },
+      "seed": 41,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "HELDOUT_CONTINGENCY_NOT_REPLICATED",
+      "heldout_trials": 108,
+      "mode": "training_only",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            1e-06
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": "probe_b",
+        "semantic_qualification": false,
+        "status": "HELDOUT_CONTINGENCY_NOT_REPLICATED",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000818
+          ],
+          [
+            "probe_b",
+            0.721001
+          ]
+        ]
+      },
+      "seed": 41,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "ambiguous",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.718206
+          ],
+          [
+            "probe_b",
+            0.719426
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.720818
+          ],
+          [
+            "probe_b",
+            0.721001
+          ]
+        ]
+      },
+      "seed": 41,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "order_artifact",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.00248
+          ]
+        ]
+      },
+      "seed": 41,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "RESPONSE_CONTINGENCY_REPLICATED_IN_HELDOUT_SETTINGS",
+      "heldout_trials": 108,
+      "mode": "contingent",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.721531
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": "probe_b",
+        "semantic_qualification": false,
+        "status": "RESPONSE_CONTINGENCY_REPLICATED_IN_HELDOUT_SETTINGS",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000201
+          ],
+          [
+            "probe_b",
+            0.718556
+          ]
+        ]
+      },
+      "seed": 73,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "no_response",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.001531
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000201
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ]
+      },
+      "seed": 73,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "context_confounded",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.001531
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000201
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ]
+      },
+      "seed": 73,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "early_only",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000201
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ]
+      },
+      "seed": 73,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "HELDOUT_CONTINGENCY_NOT_REPLICATED",
+      "heldout_trials": 108,
+      "mode": "training_only",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.0
+          ],
+          [
+            "probe_b",
+            0.001531
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": "probe_b",
+        "semantic_qualification": false,
+        "status": "HELDOUT_CONTINGENCY_NOT_REPLICATED",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000201
+          ],
+          [
+            "probe_b",
+            0.718556
+          ]
+        ]
+      },
+      "seed": 73,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "ambiguous",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.719833
+          ],
+          [
+            "probe_b",
+            0.721531
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.720201
+          ],
+          [
+            "probe_b",
+            0.718556
+          ]
+        ]
+      },
+      "seed": 73,
+      "training_trials": 108
+    },
+    {
+      "control_pass": true,
+      "expected_status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+      "heldout_trials": 108,
+      "mode": "order_artifact",
+      "result": {
+        "claim_ceiling": "EXPERIMENTER_FRAMED_CONTINUOUS_RESPONSE_CONTINGENCY_ONLY",
+        "fitted_settings": [
+          "c0",
+          "c1"
+        ],
+        "holdout_effects": [
+          [
+            "probe_a",
+            0.000286
+          ],
+          [
+            "probe_b",
+            0.003461
+          ]
+        ],
+        "holdout_settings": [
+          "c2",
+          "c3"
+        ],
+        "os_isolation_verified": false,
+        "selected_probe": null,
+        "semantic_qualification": false,
+        "status": "NO_DISCRIMINATING_RESPONSE_CONTINGENCY",
+        "train_effects": [
+          [
+            "probe_a",
+            0.000748
+          ],
+          [
+            "probe_b",
+            0.0
+          ]
+        ]
+      },
+      "seed": 73,
+      "training_trials": 108
+    }
+  ],
+  "experimenter_assumptions": [
+    "predefined candidate probe actions",
+    "presegmented 16-point receiver traces",
+    "matched sham interventions",
+    "experimenter-designated observed target",
+    "known matched settings",
+    "no OS isolation, evaluator holds generated truth"
+  ],
+  "modes": [
+    "contingent",
+    "no_response",
+    "context_confounded",
+    "early_only",
+    "training_only",
+    "ambiguous",
+    "order_artifact"
+  ],
+  "schema": "UNV_EXPERIMENTER_FRAMED_BOOTSTRAP_CAUSAL_SCREEN_V1",
+  "seeds": [
+    17,
+    41,
+    73
+  ]
+}

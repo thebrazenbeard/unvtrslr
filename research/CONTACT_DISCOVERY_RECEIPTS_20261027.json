@@ -1,0 +1,1877 @@
+{
+  "claim_ceiling": "SYNTHETIC_WITH_EXPERIMENTER_SENSOR_CHANNELS_NO_REAL_CONTACT",
+  "discovery": [
+    {
+      "kind": "candidate",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [
+          {
+            "motif": 0,
+            "signature": [
+              1.0,
+              0.0001173
+            ],
+            "start": 34,
+            "stop": 40
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0021321,
+              0.9999977
+            ],
+            "start": 98,
+            "stop": 104
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999998,
+              0.000662
+            ],
+            "start": 142,
+            "stop": 148
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0006692,
+              0.9999998
+            ],
+            "start": 208,
+            "stop": 214
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999992,
+              0.0012494
+            ],
+            "start": 253,
+            "stop": 259
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0019193,
+              0.9999982
+            ],
+            "start": 327,
+            "stop": 333
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999987,
+              0.0016033
+            ],
+            "start": 369,
+            "stop": 375
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0014711,
+              0.9999989
+            ],
+            "start": 441,
+            "stop": 447
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999985,
+              -0.0017204
+            ],
+            "start": 516,
+            "stop": 522
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0021599,
+              0.9999977
+            ],
+            "start": 564,
+            "stop": 570
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999997,
+              -0.0008251
+            ],
+            "start": 632,
+            "stop": 638
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0003752,
+              0.9999999
+            ],
+            "start": 697,
+            "stop": 703
+          }
+        ],
+        "intent_inferred": false,
+        "recurring_motifs": [
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            6
+          ]
+        ],
+        "semantics_inferred": false,
+        "status": "RECURRENT_CANDIDATE_UNINTERPRETED"
+      },
+      "seed": 17
+    },
+    {
+      "kind": "noise",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [],
+        "intent_inferred": false,
+        "recurring_motifs": [],
+        "semantics_inferred": false,
+        "status": "NO_RECURRENT_CANDIDATE"
+      },
+      "seed": 17
+    },
+    {
+      "kind": "periodic",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [
+          {
+            "motif": 0,
+            "signature": [
+              0.9999996,
+              0.0009268
+            ],
+            "start": 32,
+            "stop": 38
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0026156,
+              0.9999966
+            ],
+            "start": 88,
+            "stop": 94
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999965,
+              0.0026413
+            ],
+            "start": 144,
+            "stop": 150
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0027158,
+              0.9999963
+            ],
+            "start": 200,
+            "stop": 206
+          },
+          {
+            "motif": 0,
+            "signature": [
+              1.0,
+              -0.0001815
+            ],
+            "start": 256,
+            "stop": 262
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0012439,
+              0.9999992
+            ],
+            "start": 312,
+            "stop": 318
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999972,
+              0.002382
+            ],
+            "start": 368,
+            "stop": 374
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.001662,
+              0.9999986
+            ],
+            "start": 424,
+            "stop": 430
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999994,
+              0.0010741
+            ],
+            "start": 480,
+            "stop": 486
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0023365,
+              0.9999973
+            ],
+            "start": 536,
+            "stop": 542
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999992,
+              0.0012521
+            ],
+            "start": 592,
+            "stop": 598
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0007841,
+              0.9999997
+            ],
+            "start": 648,
+            "stop": 654
+          }
+        ],
+        "intent_inferred": false,
+        "recurring_motifs": [
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            6
+          ]
+        ],
+        "semantics_inferred": false,
+        "status": "PERIODIC_REGULARITY_UNINTERPRETED"
+      },
+      "seed": 17
+    },
+    {
+      "kind": "candidate",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [
+          {
+            "motif": 0,
+            "signature": [
+              0.999999,
+              0.0013899
+            ],
+            "start": 34,
+            "stop": 40
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0014696,
+              0.9999989
+            ],
+            "start": 98,
+            "stop": 104
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999999,
+              0.0003823
+            ],
+            "start": 142,
+            "stop": 148
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0013002,
+              0.9999992
+            ],
+            "start": 208,
+            "stop": 214
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999945,
+              -0.0033074
+            ],
+            "start": 253,
+            "stop": 259
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0018427,
+              0.9999983
+            ],
+            "start": 327,
+            "stop": 333
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999987,
+              0.0016179
+            ],
+            "start": 369,
+            "stop": 375
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0002234,
+              1.0
+            ],
+            "start": 441,
+            "stop": 447
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999988,
+              0.0015745
+            ],
+            "start": 516,
+            "stop": 522
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0016236,
+              0.9999987
+            ],
+            "start": 564,
+            "stop": 570
+          },
+          {
+            "motif": 0,
+            "signature": [
+              1.0,
+              -0.0001328
+            ],
+            "start": 632,
+            "stop": 638
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0015743,
+              0.9999988
+            ],
+            "start": 697,
+            "stop": 703
+          }
+        ],
+        "intent_inferred": false,
+        "recurring_motifs": [
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            6
+          ]
+        ],
+        "semantics_inferred": false,
+        "status": "RECURRENT_CANDIDATE_UNINTERPRETED"
+      },
+      "seed": 41
+    },
+    {
+      "kind": "noise",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [],
+        "intent_inferred": false,
+        "recurring_motifs": [],
+        "semantics_inferred": false,
+        "status": "NO_RECURRENT_CANDIDATE"
+      },
+      "seed": 41
+    },
+    {
+      "kind": "periodic",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [
+          {
+            "motif": 0,
+            "signature": [
+              0.9999973,
+              0.0023283
+            ],
+            "start": 32,
+            "stop": 38
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0002369,
+              1.0
+            ],
+            "start": 88,
+            "stop": 94
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999998,
+              -0.0006388
+            ],
+            "start": 144,
+            "stop": 150
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0020345,
+              0.9999979
+            ],
+            "start": 200,
+            "stop": 206
+          },
+          {
+            "motif": 0,
+            "signature": [
+              1.0,
+              -0.0001569
+            ],
+            "start": 256,
+            "stop": 262
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.000352,
+              0.9999999
+            ],
+            "start": 312,
+            "stop": 318
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999999,
+              0.00053
+            ],
+            "start": 368,
+            "stop": 374
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0017922,
+              0.9999984
+            ],
+            "start": 424,
+            "stop": 430
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999983,
+              -0.0018594
+            ],
+            "start": 480,
+            "stop": 486
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0041734,
+              0.9999913
+            ],
+            "start": 536,
+            "stop": 542
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999956,
+              -0.002963
+            ],
+            "start": 592,
+            "stop": 598
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0023675,
+              0.9999972
+            ],
+            "start": 648,
+            "stop": 654
+          }
+        ],
+        "intent_inferred": false,
+        "recurring_motifs": [
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            6
+          ]
+        ],
+        "semantics_inferred": false,
+        "status": "PERIODIC_REGULARITY_UNINTERPRETED"
+      },
+      "seed": 41
+    },
+    {
+      "kind": "candidate",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [
+          {
+            "motif": 0,
+            "signature": [
+              1.0,
+              -0.0002448
+            ],
+            "start": 34,
+            "stop": 40
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0010948,
+              0.9999994
+            ],
+            "start": 98,
+            "stop": 104
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999998,
+              0.000579
+            ],
+            "start": 142,
+            "stop": 148
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0029765,
+              0.9999956
+            ],
+            "start": 208,
+            "stop": 214
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999999,
+              0.0005315
+            ],
+            "start": 253,
+            "stop": 259
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0008945,
+              0.9999996
+            ],
+            "start": 327,
+            "stop": 333
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.999998,
+              0.001983
+            ],
+            "start": 369,
+            "stop": 375
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0004939,
+              0.9999999
+            ],
+            "start": 441,
+            "stop": 447
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999988,
+              0.0015493
+            ],
+            "start": 516,
+            "stop": 522
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0021522,
+              0.9999977
+            ],
+            "start": 564,
+            "stop": 570
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999999,
+              -0.0003744
+            ],
+            "start": 632,
+            "stop": 638
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0015194,
+              0.9999988
+            ],
+            "start": 697,
+            "stop": 703
+          }
+        ],
+        "intent_inferred": false,
+        "recurring_motifs": [
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            6
+          ]
+        ],
+        "semantics_inferred": false,
+        "status": "RECURRENT_CANDIDATE_UNINTERPRETED"
+      },
+      "seed": 73
+    },
+    {
+      "kind": "noise",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [],
+        "intent_inferred": false,
+        "recurring_motifs": [],
+        "semantics_inferred": false,
+        "status": "NO_RECURRENT_CANDIDATE"
+      },
+      "seed": 73
+    },
+    {
+      "kind": "periodic",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [
+          {
+            "motif": 0,
+            "signature": [
+              0.9999995,
+              -0.0009798
+            ],
+            "start": 32,
+            "stop": 38
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0015532,
+              0.9999988
+            ],
+            "start": 88,
+            "stop": 94
+          },
+          {
+            "motif": 0,
+            "signature": [
+              1.0,
+              0.0002582
+            ],
+            "start": 144,
+            "stop": 150
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0040256,
+              0.9999919
+            ],
+            "start": 200,
+            "stop": 206
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999932,
+              0.0036947
+            ],
+            "start": 256,
+            "stop": 262
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0007434,
+              0.9999997
+            ],
+            "start": 312,
+            "stop": 318
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999986,
+              0.001653
+            ],
+            "start": 368,
+            "stop": 374
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0017487,
+              0.9999985
+            ],
+            "start": 424,
+            "stop": 430
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.999998,
+              -0.0019837
+            ],
+            "start": 480,
+            "stop": 486
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0013253,
+              0.9999991
+            ],
+            "start": 536,
+            "stop": 542
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999987,
+              -0.0016263
+            ],
+            "start": 592,
+            "stop": 598
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0017374,
+              0.9999985
+            ],
+            "start": 648,
+            "stop": 654
+          }
+        ],
+        "intent_inferred": false,
+        "recurring_motifs": [
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            6
+          ]
+        ],
+        "semantics_inferred": false,
+        "status": "PERIODIC_REGULARITY_UNINTERPRETED"
+      },
+      "seed": 73
+    },
+    {
+      "kind": "candidate",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [
+          {
+            "motif": 0,
+            "signature": [
+              0.9999926,
+              0.0038487
+            ],
+            "start": 34,
+            "stop": 40
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0026944,
+              0.9999964
+            ],
+            "start": 98,
+            "stop": 104
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999972,
+              -0.0023678
+            ],
+            "start": 142,
+            "stop": 148
+          },
+          {
+            "motif": 1,
+            "signature": [
+              1.79e-05,
+              1.0
+            ],
+            "start": 208,
+            "stop": 214
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999978,
+              -0.0021111
+            ],
+            "start": 253,
+            "stop": 259
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0001647,
+              1.0
+            ],
+            "start": 327,
+            "stop": 333
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999977,
+              0.0021558
+            ],
+            "start": 369,
+            "stop": 375
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0019225,
+              0.9999982
+            ],
+            "start": 441,
+            "stop": 447
+          },
+          {
+            "motif": 0,
+            "signature": [
+              1.0,
+              -0.0001982
+            ],
+            "start": 516,
+            "stop": 522
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0018115,
+              0.9999984
+            ],
+            "start": 564,
+            "stop": 570
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999992,
+              0.0013036
+            ],
+            "start": 632,
+            "stop": 638
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0015592,
+              0.9999988
+            ],
+            "start": 697,
+            "stop": 703
+          }
+        ],
+        "intent_inferred": false,
+        "recurring_motifs": [
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            6
+          ]
+        ],
+        "semantics_inferred": false,
+        "status": "RECURRENT_CANDIDATE_UNINTERPRETED"
+      },
+      "seed": 107
+    },
+    {
+      "kind": "noise",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [],
+        "intent_inferred": false,
+        "recurring_motifs": [],
+        "semantics_inferred": false,
+        "status": "NO_RECURRENT_CANDIDATE"
+      },
+      "seed": 107
+    },
+    {
+      "kind": "periodic",
+      "result": {
+        "claim_ceiling": "UNSUPERVISED_RECURRENCE_NOT_COMMUNICATIVE_SIGNALHOOD",
+        "events": [
+          {
+            "motif": 0,
+            "signature": [
+              0.9999987,
+              0.0016422
+            ],
+            "start": 32,
+            "stop": 38
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0016375,
+              0.9999987
+            ],
+            "start": 88,
+            "stop": 94
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999947,
+              -0.0032428
+            ],
+            "start": 144,
+            "stop": 150
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0011839,
+              0.9999993
+            ],
+            "start": 200,
+            "stop": 206
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999983,
+              -0.0018241
+            ],
+            "start": 256,
+            "stop": 262
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0030529,
+              0.9999953
+            ],
+            "start": 312,
+            "stop": 318
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999987,
+              0.0016206
+            ],
+            "start": 368,
+            "stop": 374
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0007693,
+              0.9999997
+            ],
+            "start": 424,
+            "stop": 430
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.999998,
+              -0.0019818
+            ],
+            "start": 480,
+            "stop": 486
+          },
+          {
+            "motif": 1,
+            "signature": [
+              -0.0001323,
+              1.0
+            ],
+            "start": 536,
+            "stop": 542
+          },
+          {
+            "motif": 0,
+            "signature": [
+              0.9999991,
+              0.0013784
+            ],
+            "start": 592,
+            "stop": 598
+          },
+          {
+            "motif": 1,
+            "signature": [
+              0.0003047,
+              1.0
+            ],
+            "start": 648,
+            "stop": 654
+          }
+        ],
+        "intent_inferred": false,
+        "recurring_motifs": [
+          [
+            0,
+            6
+          ],
+          [
+            1,
+            6
+          ]
+        ],
+        "semantics_inferred": false,
+        "status": "PERIODIC_REGULARITY_UNINTERPRETED"
+      },
+      "seed": 107
+    }
+  ],
+  "discovery_expected_matched": true,
+  "experimenter_provided": [
+    "2 numeric sensor dimensions",
+    "4 accessible probe scenes",
+    "known trial capture windows for negotiation",
+    "single scalar environmental success metric",
+    "partner offer/observation affordance"
+  ],
+  "git_version": "phase-0/2 source-bound executable",
+  "interaction": [
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+      "mode": "responsive",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.9,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 12,
+        "selected_sensor_axis": 1,
+        "status": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 17
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_DECODABLE_CANDIDATE",
+      "mode": "silent",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 0,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_DECODABLE_CANDIDATE",
+        "training_interactions": 1,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 17
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "fixed",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 1,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 17
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "independent",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 17
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "xor",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 17
+    },
+    {
+      "control_pass": true,
+      "expected": "PROPOSAL_NOT_CONFIRMED",
+      "mode": "no_adaptation",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 24,
+        "selected_sensor_axis": 1,
+        "status": "PROPOSAL_NOT_CONFIRMED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 17
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_CONVENTION_NOT_REPLICATED",
+      "mode": "partner_drift",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.5,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 12,
+        "selected_sensor_axis": 1,
+        "status": "RECIPROCAL_CONVENTION_NOT_REPLICATED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 17
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+      "mode": "slow_adaptation",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.9,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 24,
+        "selected_sensor_axis": 1,
+        "status": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 17
+    },
+    {
+      "control_pass": true,
+      "expected": "PROPOSAL_NOT_CONFIRMED",
+      "mode": "always_reward",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 24,
+        "selected_sensor_axis": 1,
+        "status": "PROPOSAL_NOT_CONFIRMED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 17
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+      "mode": "responsive",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.9,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 12,
+        "selected_sensor_axis": 1,
+        "status": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 41
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_DECODABLE_CANDIDATE",
+      "mode": "silent",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 0,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_DECODABLE_CANDIDATE",
+        "training_interactions": 1,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 41
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "fixed",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 1,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 41
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "independent",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 41
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "xor",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 41
+    },
+    {
+      "control_pass": true,
+      "expected": "PROPOSAL_NOT_CONFIRMED",
+      "mode": "no_adaptation",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 24,
+        "selected_sensor_axis": 1,
+        "status": "PROPOSAL_NOT_CONFIRMED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 41
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_CONVENTION_NOT_REPLICATED",
+      "mode": "partner_drift",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.5,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 12,
+        "selected_sensor_axis": 1,
+        "status": "RECIPROCAL_CONVENTION_NOT_REPLICATED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 41
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+      "mode": "slow_adaptation",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.9,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 24,
+        "selected_sensor_axis": 1,
+        "status": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 41
+    },
+    {
+      "control_pass": true,
+      "expected": "PROPOSAL_NOT_CONFIRMED",
+      "mode": "always_reward",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 24,
+        "selected_sensor_axis": 1,
+        "status": "PROPOSAL_NOT_CONFIRMED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 41
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+      "mode": "responsive",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.9,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 12,
+        "selected_sensor_axis": 1,
+        "status": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 73
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_DECODABLE_CANDIDATE",
+      "mode": "silent",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 0,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_DECODABLE_CANDIDATE",
+        "training_interactions": 1,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 73
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "fixed",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 1,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 73
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "independent",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 73
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "xor",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 73
+    },
+    {
+      "control_pass": true,
+      "expected": "PROPOSAL_NOT_CONFIRMED",
+      "mode": "no_adaptation",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 24,
+        "selected_sensor_axis": 1,
+        "status": "PROPOSAL_NOT_CONFIRMED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 73
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_CONVENTION_NOT_REPLICATED",
+      "mode": "partner_drift",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.5,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 12,
+        "selected_sensor_axis": 1,
+        "status": "RECIPROCAL_CONVENTION_NOT_REPLICATED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 73
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+      "mode": "slow_adaptation",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.9,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 24,
+        "selected_sensor_axis": 1,
+        "status": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 73
+    },
+    {
+      "control_pass": true,
+      "expected": "PROPOSAL_NOT_CONFIRMED",
+      "mode": "always_reward",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 24,
+        "selected_sensor_axis": 1,
+        "status": "PROPOSAL_NOT_CONFIRMED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 73
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+      "mode": "responsive",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.9,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 12,
+        "selected_sensor_axis": 0,
+        "status": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 107
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_DECODABLE_CANDIDATE",
+      "mode": "silent",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 0,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_DECODABLE_CANDIDATE",
+        "training_interactions": 1,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 107
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "fixed",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 1,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 107
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "independent",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 107
+    },
+    {
+      "control_pass": true,
+      "expected": "NO_IDENTIFIABLE_SENSOR_RELATION",
+      "mode": "xor",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 0,
+        "selected_sensor_axis": null,
+        "status": "NO_IDENTIFIABLE_SENSOR_RELATION",
+        "training_interactions": 24,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 107
+    },
+    {
+      "control_pass": true,
+      "expected": "PROPOSAL_NOT_CONFIRMED",
+      "mode": "no_adaptation",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 24,
+        "selected_sensor_axis": 0,
+        "status": "PROPOSAL_NOT_CONFIRMED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 107
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_CONVENTION_NOT_REPLICATED",
+      "mode": "partner_drift",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.5,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 12,
+        "selected_sensor_axis": 0,
+        "status": "RECIPROCAL_CONVENTION_NOT_REPLICATED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 107
+    },
+    {
+      "control_pass": true,
+      "expected": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+      "mode": "slow_adaptation",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": 0.9,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": [
+          0,
+          1
+        ],
+        "proposed_signals": 24,
+        "selected_sensor_axis": 0,
+        "status": "RECIPROCAL_OPERATIONAL_CONVENTION_ON_HELDOUT_CONTEXTS",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 4
+      },
+      "seed": 107
+    },
+    {
+      "control_pass": true,
+      "expected": "PROPOSAL_NOT_CONFIRMED",
+      "mode": "always_reward",
+      "observed": {
+        "actual_unknown_intelligence_contacted": false,
+        "claim_ceiling": "SYNTHETIC_INTERACTIVE_OPERATIONAL_CONVENTION_ONLY",
+        "heldout_success": null,
+        "intent_inferred": false,
+        "observed_motifs": 2,
+        "outbound_motifs": null,
+        "proposed_signals": 24,
+        "selected_sensor_axis": 0,
+        "status": "PROPOSAL_NOT_CONFIRMED",
+        "training_interactions": 12,
+        "universal_semantics": false,
+        "withheld_contexts": 0
+      },
+      "seed": 107
+    }
+  ],
+  "interaction_expected_matched": true,
+  "learner_does_not_receive": [
+    "partner sensor axis",
+    "partner signal codebook",
+    "private reference interpretation",
+    "true partner mode",
+    "synthetic evaluator oracle labels"
+  ],
+  "os_isolation_verified": false,
+  "real_unknown_partner_contacted": false,
+  "schema": "UNV_AUTONOMOUS_SIGNAL_AND_RECIPROCAL_CONVENTION_SYNTHETIC_V1",
+  "seeds": [
+    17,
+    41,
+    73,
+    107
+  ]
+}

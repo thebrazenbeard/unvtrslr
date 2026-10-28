@@ -65,7 +65,8 @@ def test_worker_nonzero_exit_rejected(monkeypatch):
         gate.checked_run(["command"])
 
 @pytest.mark.parametrize("output",['{}','not json',
-    '{"public_result_sha256":"x","private_canary_read":1,"host_loopback_reachable":true,"network_namespace":"net:[1]","peer_private_home_mounted":false}'])
+    '{"public_result_sha256":"x","private_canary_read":1,"host_loopback_reachable":true,"network_namespace":"net:[1]","peer_private_home_mounted":false}',
+    '{"public_result_sha256":"x","private_canary_read":false,"host_loopback_reachable":false,"network_namespace":null,"peer_private_home_mounted":false}'])
 def test_invalid_subprocess_evidence_refused(monkeypatch,output):
     monkeypatch.setattr(gate.subprocess,"run",lambda *a,**k:
         SimpleNamespace(returncode=0,stdout=output,stderr=""))

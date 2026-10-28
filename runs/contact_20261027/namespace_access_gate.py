@@ -65,6 +65,10 @@ def checked_run(argv:list[str]):
               "peer_private_home_mounted"}
     if type(record) is not dict or set(record)!=expected:
         raise ValueError("unexpected worker output")
+    ns=record["network_namespace"]
+    if (type(ns) is not str or not ns.startswith("net:[")
+            or not ns.endswith("]") or not ns[5:-1].isdigit()):
+        raise ValueError("malformed network namespace identifier")
     if (type(record["private_canary_read"]) is not bool or
         type(record["host_loopback_reachable"]) is not bool or
         type(record["peer_private_home_mounted"]) is not bool):

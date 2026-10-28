@@ -1,0 +1,22 @@
+{
+  "bwrap_executable": "/usr/bin/bwrap",
+  "claim_ceiling": "ONE_FIXED_WORKER_FILESYSTEM_NETWORK_NEGATIVE_ACCESS_ONLY",
+  "host_control": {
+    "network_reachable": true,
+    "private_read": true,
+    "public_compute": true
+  },
+  "host_kernel_protection_against_malicious_code_proven": false,
+  "independent_third_party_verified": false,
+  "real_partner_causality_proven": false,
+  "sandbox_test": {
+    "home_mounted": false,
+    "network_namespace_distinct": true,
+    "network_reachable": false,
+    "private_read": false,
+    "public_compute": true
+  },
+  "schema": "UNV_LINUX_BWRAP_ACCESS_GATE_V1",
+  "status": "CONTROLLED_NAMESPACE_ACCESS_GATE_PASS",
+  "worker_sha256": "a6172abe8fb863e1285c81b759a98f9fcf39fc23481d2f8b6d4821a5f63a5bed"
+}

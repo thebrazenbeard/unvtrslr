@@ -101,6 +101,7 @@ See [`docs/R0_5_INFORMATION_INTEGRITY_AUDIT.md`](docs/R0_5_INFORMATION_INTEGRITY
 
 The current `main` candidate contains executable reference components in addition to the original research/design program:
 
+- **VN2 Linux namespace custody diagnostic** with positive host controls, read-only worker mounts and explicit negative access tests for evaluator-private files and host-network ports; strictly a fixed-worker gate, not general malicious-model containment (see [VN2 namespace evidence](research/VN2_NAMESPACE_ACCESS_GATE_20261027.md));
 - an opt-in **real two-host scripted peer trial** with private per-session rules on VN2, learner-only protocol on Lappy, evaluator-owned hidden contexts and counterfactual wrong-signal checks; **not independently authored intelligence or external semantic grounding** (see [cross-host evidence](research/CROSSHOST_SCRIPTED_PEER_20261027.md));
 - raw multichannel recurrence discovery with no pre-annotated event boundaries and an **opt-in simulated interactive partner convention** with consent/feedback boundaries; neither is independently discovered communicative intent nor actual unknown-intelligence contact (see [synthetic contact study](research/AUTONOMOUS_CANDIDATES_AND_INTERACTIVE_CONTACT_20261027.md));
 - experimenter-framed, continuous-response active-probe contingency screening with negative controls; **not yet autonomous signalhood, negotiated semantics, or unknown-intelligence contact** (see [Phase 0-1 evidence](research/BOOTSTRAP_CONTINGENCY_20261027.md));

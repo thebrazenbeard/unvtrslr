@@ -8,7 +8,7 @@ Linux Mint VN2 exposes Bubblewrap user/mount/PID/IPC/UTS/network namespaces. The
 
 Worker `runs/contact_20261027/sandbox_canary_worker.py` is a deliberately adversarial but **known and inspected** stdlib Python process. It can compute a SHA-256 using allowed challenge data, but also attempts to read a newly generated private evaluator-only canary (even when told the exact path) and to connect to the host's concurrently listening loopback socket. The trusted host first runs exactly the same probe **outside** the sandbox. If host canary read and network connection do not succeed, the gate fails: thus false negatives from nonexistent secret files or dead ports cannot qualify an isolation claim.
 
-The VN2 execution used source bytes identical to the tracked source: worker SHA-256 `a6172abe8fb863e1285c81b759a98f9fcf39fc23481d2f8b6d4821a5f63a5bed`, gate SHA-256 `71008b54bb66ee4359386079aa8454ddaacbe06768551201e1e74b8cb2b8af1a`. These are actual live VN2 hashes matched against the authored Git-tree candidate before integration.
+The VN2 execution used source bytes identical to the tracked source: worker SHA-256 `a6172abe8fb863e1285c81b759a98f9fcf39fc23481d2f8b6d4821a5f63a5bed`, gate SHA-256 `b163fe51b6356f344bda1b5da55c2c625b01b7f7a3cb11f52552b8a343b79785`. These are actual live VN2 hashes matched against the authored Git-tree candidate before integration.
 
 ## Recorded result
 

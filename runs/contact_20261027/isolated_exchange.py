@@ -139,6 +139,27 @@ def sandbox_argv(repo,secret):
            "--chdir","/app","/usr/bin/python3","-I","-B",
            "/app/isolated_learner_worker.py",str(secret)]
     return args
+def read_worker_message(proc, deadline):
+    """Never block on a partial stdout line after readiness of only one byte."""
+    packet=bytearray()
+    while True:
+        remain=deadline-time.monotonic()
+        if remain<=0 or not select.select([proc.stdout],[],[],remain)[0]:
+            raise ValueError("worker stdout deadline exceeded")
+        chunk=os.read(proc.stdout.fileno(),4096)
+        if not chunk:
+            raise ValueError("worker stopped before complete JSON line")
+        packet.extend(chunk)
+        if len(packet)>MAX_LINE:
+            raise ValueError("worker oversized JSON line")
+        if b"\n" in packet:
+            if packet.count(b"\n")!=1 or packet[-1]!=10:
+                raise ValueError("worker emitted unsolicited extra output")
+            try:
+                return json.loads(packet.decode("utf-8"))
+            except (UnicodeDecodeError,ValueError):
+                raise ValueError("worker emitted invalid JSON") from None
+
 def session(repo:Path,seed:int,mode:str):
     private=PrivatePartner(seed,mode)
     with tempfile.TemporaryDirectory(prefix="unv-broker-private-",dir=str(Path.home())) as hidden:
@@ -159,13 +180,7 @@ def session(repo:Path,seed:int,mode:str):
                 remain=deadline-time.monotonic()
                 if remain<=0 or count>=MAX_REQUESTS:
                     raise ValueError("worker request/time budget exceeded")
-                if not select.select([p.stdout],[],[],remain)[0]:
-                    raise ValueError("worker response timed out")
-                line=p.stdout.readline(MAX_LINE+1)
-                if not line or len(line)>MAX_LINE:
-                    raise ValueError("worker ended or emitted oversized message")
-                try:request=json.loads(line)
-                except ValueError:raise ValueError("malformed worker request") from None
+                request=read_worker_message(p,deadline)
                 if type(request) is not dict:
                     raise ValueError("worker request must be object")
                 op=request.get("op")
@@ -225,7 +240,7 @@ def session(repo:Path,seed:int,mode:str):
     expected=EXPECTED[mode]
     return {"mode":mode,"seed":seed,"worker_status":final.get("status"),
             "private_heldout":result,
-            "expected":expected,"matched":result["status"]==expected,
+            "expected":expected,"matched_expected_control":result["status"]==expected,
             "attested":attested,"rpc_count":count,
             "worker_sha256":sha256((repo/"runs"/"contact_20261027"/"isolated_learner_worker.py").read_bytes()).hexdigest(),
             "namespaced_known_source":True,"independent_peer":False}
@@ -245,10 +260,10 @@ def main():
         "private_partner_and_heldouts_outside_worker_mount":True,
         "actual_unknown_intelligence":False,
         "os_security_against_arbitrary_malicious_models_verified":False,
-        "cases":cases,"all_expected_met":all(c["matched"] for c in cases)}
+        "cases":cases,"all_expected_controls_matched":all(c["matched_expected_control"] for c in cases)}
     ap.report_out.parent.mkdir(parents=True,exist_ok=True)
     ap.report_out.write_text(json.dumps(result,indent=2,sort_keys=True)+"\n")
-    print(json.dumps({"case_count":len(cases),"matched":sum(c["matched"] for c in cases),
+    print(json.dumps({"case_count":len(cases),"expected_controls_matched":sum(c["matched_expected_control"] for c in cases),
         "statuses":{c["mode"]:c["private_heldout"]["status"] for c in cases}},sort_keys=True))
 
 if __name__=="__main__":

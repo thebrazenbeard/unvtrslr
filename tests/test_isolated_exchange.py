@@ -83,3 +83,18 @@ def test_fails_closed_without_linux(monkeypatch,tmp_path):
     monkeypatch.setattr(gate.sys,"platform","win32")
     with pytest.raises(ValueError,match="Linux"):
         gate.sandbox_argv(tmp_path,tmp_path/"secret")
+
+def test_partial_stdout_does_not_escape_deadline_on_linux():
+    if gate.sys.platform!="linux":
+        pytest.skip("Linux select supports pipe descriptors")
+    import subprocess
+    import time
+    p=subprocess.Popen([gate.sys.executable,"-u","-c",
+        "import sys,time; sys.stdout.write('{'); sys.stdout.flush(); time.sleep(2)"],
+        stdout=subprocess.PIPE,stdin=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+    try:
+        with pytest.raises(ValueError,match="deadline"):
+            gate.read_worker_message(p,time.monotonic()+.15)
+    finally:
+        p.kill()
+        p.wait()

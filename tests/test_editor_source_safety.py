@@ -99,6 +99,48 @@ class EditorSourceSafetyTests(unittest.TestCase):
         )
         self.assertTrue(any("folderOpen" in error for error in self.violations()))
 
+    def test_nested_vscode_task_rejected(self):
+        nested = self.root / "subproject" / ".vscode"
+        nested.mkdir(parents=True)
+        (nested / "tasks.json").write_text(
+            '{"tasks":[{"runOptions":{"runOn":"folderOpen"}}]}', encoding="utf-8"
+        )
+        self.assertTrue(any("folderOpen" in error for error in self.violations()))
+
+    def test_nested_vscode_settings_auto_tasks_rejected(self):
+        nested = self.root / "subproject" / ".vscode"
+        nested.mkdir(parents=True)
+        (nested / "settings.json").write_text(
+            '{"task.allowAutomaticTasks":true}', encoding="utf-8"
+        )
+        self.assertTrue(any("automatic" in error for error in self.violations()))
+
+    def test_case_variant_editor_directory_and_task_filename_rejected(self):
+        editor = self.root / ".VSCODE"
+        editor.mkdir()
+        (editor / "TASKS.JSON").write_text(
+            '{"tasks":[{"runOptions":{"runOn":"folderOpen"}}]}', encoding="utf-8"
+        )
+        errors = self.violations()
+        self.assertTrue(any("case-variant editor directory" in error for error in errors))
+        self.assertTrue(any("case-variant editor filename" in error for error in errors))
+        self.assertTrue(any("folderOpen" in error for error in errors))
+
+    def test_case_variant_nested_workspace_file_rejected(self):
+        nested = self.root / "subproject"
+        nested.mkdir()
+        (nested / "danger.CODE-WORKSPACE").write_text(
+            '{"tasks":{"tasks":[{"runOptions":{"runOn":"folderOpen"}}]}}',
+            encoding="utf-8",
+        )
+        self.assertTrue(any("folderOpen" in error for error in self.violations()))
+
+    def test_nested_symlink_editor_directory_rejected(self):
+        nested = self.root / "subproject"
+        nested.mkdir()
+        (nested / ".vscode").symlink_to(self.root / ".vscode", target_is_directory=True)
+        self.assertTrue(any("symlink editor directory" in error for error in self.violations()))
+
     def test_inherited_command_font_argument_rejected(self):
         self.task('{"tasks":[{"command":"node",'
                   '"windows":{"args":["./public/fonts/fa-solid-900.ttf"]}}]}')

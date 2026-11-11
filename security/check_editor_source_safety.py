@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import sys
 
@@ -166,26 +167,41 @@ def check(root: Path) -> list[str]:
     editor = root / ".vscode"
     if editor.is_symlink() or not editor.is_dir():
         violations.append("missing or symlink .vscode directory")
-    else:
-        paths = [
-            editor / "tasks.json",
-            editor / "settings.json",
-            *sorted(
-                path for path in editor.glob("*.json")
-                if path.name not in {"tasks.json", "settings.json"}
-            ),
-            *sorted(path for path in root.rglob("*.code-workspace") if ".git" not in path.parts),
-        ]
-        for path in paths:
-            try:
-                payload = _load_jsonc(path)
-                _inspect(payload, path.stem)
-                if path.name == "settings.json" and payload.get("task.allowAutomaticTasks") != "off":
-                    raise UnsafeSource("workspace task.allowAutomaticTasks is not string 'off'")
-                if path.name == "tasks.json" and not isinstance(payload.get("tasks"), list):
-                    raise UnsafeSource("tasks.json tasks must be an array")
-            except UnsafeSource as error:
-                violations.append(str(error))
+    paths = {editor / "tasks.json", editor / "settings.json"}
+    # A root-only glob misses nested workspace folders. Casefold is necessary
+    # because a tree checked on Linux may later be opened on case-insensitive
+    # Windows, where .VSCODE and TASKS.JSON can resolve to editor paths.
+    for dirname, subdirs, filenames in os.walk(root, followlinks=False):
+        current = Path(dirname)
+        subdirs[:] = [name for name in subdirs if name != ".git"]
+        for name in subdirs:
+            if name.casefold() != ".vscode":
+                continue
+            candidate = current / name
+            if name != ".vscode":
+                violations.append(f"case-variant editor directory: {candidate}")
+            if candidate.is_symlink():
+                violations.append(f"symlink editor directory: {candidate}")
+        if current.name.casefold() == ".vscode":
+            for name in filenames:
+                if not name.casefold().endswith(".json"):
+                    continue
+                if name.casefold() in {"tasks.json", "settings.json"} and name != name.lower():
+                    violations.append(f"case-variant editor filename: {current / name}")
+                paths.add(current / name)
+        for name in filenames:
+            if name.casefold().endswith(".code-workspace"):
+                paths.add(current / name)
+    for path in sorted(paths):
+        try:
+            payload = _load_jsonc(path)
+            _inspect(payload, path.stem.casefold())
+            if path == editor / "settings.json" and payload.get("task.allowAutomaticTasks") != "off":
+                raise UnsafeSource("workspace task.allowAutomaticTasks is not string 'off'")
+            if path.name.casefold() == "tasks.json" and not isinstance(payload.get("tasks"), list):
+                raise UnsafeSource("tasks.json tasks must be an array")
+        except UnsafeSource as error:
+            violations.append(str(error))
 
     fonts = root / "public" / "fonts"
     if fonts.is_symlink() or not fonts.is_dir():

@@ -83,7 +83,7 @@ def _installed_graph(provider: Any | None, *, no_sbd_download: bool = False):
                 unwrapped = unwrapped.underlying
             if isinstance(unwrapped, direct_type) and origin == code and target in languages and origin != target:
                 edges[(code, target)] = direct
-    return languages, edges
+    return languages, edges, engine
 
 
 def _require_cached_sbd(engine: Any, route: tuple[str, ...], edges) -> None:
@@ -170,14 +170,14 @@ def translate_known_text(
     if len(source_text) > MAX_SOURCE_CHARS:
         raise KnownLanguageError(f"Source text exceeds {MAX_SOURCE_CHARS} characters.")
 
-    languages, edges = _installed_graph(provider, no_sbd_download=no_sbd_download)
+    languages, edges, engine = _installed_graph(provider, no_sbd_download=no_sbd_download)
     if source_language not in languages or target_language not in languages:
         raise KnownLanguageError(
             f"Both languages need installed Argos packages: {source_language}, {target_language}."
         )
     route = _route(source_language, target_language, edges, allow_pivot=allow_pivot)
     if no_sbd_download:
-        _require_cached_sbd(_engine(provider, no_sbd_download=True), route, edges)
+        _require_cached_sbd(engine, route, edges)
     candidate = source_text
     for origin, target in zip(route, route[1:]):
         try:

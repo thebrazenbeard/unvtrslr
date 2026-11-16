@@ -171,3 +171,64 @@ def test_json_escapes_non_ascii_for_windows_stdout_without_losing_unicode(capsys
     raw = capsys.readouterr().out
     assert "\\u00e9" in raw
     assert json.loads(raw)["translated_text"] == "fr[caf\u00e9]"
+
+def test_no_sbd_download_mode_refuses_initialized_non_none_sbd():
+    b = backend(("en", "fr"))
+    b.settings = SimpleNamespace(
+        ChunkType=SimpleNamespace(NONE="NONE"), chunk_type="MINISBD",
+    )
+    with pytest.raises(KnownLanguageError, match="active ARGOS_CHUNK_TYPE=NONE"):
+        translate_known_text(
+            "en", "fr", "Hello", provider=b, no_sbd_download=True,
+        )
+
+
+def test_no_sbd_download_mode_accepts_none_and_preserves_provenance(capsys):
+    b = backend(("en", "fr"))
+    b.settings = SimpleNamespace(
+        ChunkType=SimpleNamespace(NONE="NONE"), chunk_type="NONE",
+    )
+    code = main([
+        "--from-lang", "en", "--to-lang", "fr", "--text", "Hello",
+        "--no-sbd-download", "--json",
+    ], provider=b)
+    assert code == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["route"] == ["en", "fr"]
+    assert payload["translated_text"] == "fr[Hello]"
+    assert payload["status"] == "EXTERNAL_MODEL_OUTPUT_UNVERIFIED"
+
+
+def test_no_sbd_download_mode_refuses_unverifiable_provider_settings():
+    b = backend(("en", "fr"))
+    with pytest.raises(KnownLanguageError, match="active ARGOS_CHUNK_TYPE=NONE"):
+        translate_known_text(
+            "en", "fr", "Hello", provider=b, no_sbd_download=True,
+        )
+
+def test_no_sbd_configures_environment_before_argos_import(monkeypatch):
+    import builtins
+    import os
+
+    b = backend(("en", "fr"))
+    b.settings = SimpleNamespace(
+        ChunkType=SimpleNamespace(NONE="NONE"), chunk_type="NONE",
+        ModelProvider=SimpleNamespace(OPENNMT="OPENNMT"),
+        model_provider="OPENNMT",
+    )
+    original_import = builtins.__import__
+    observed = []
+
+    def fake_import(name, globals=None, locals=None, fromlist=(), level=0):
+        if name == "argostranslate.translate":
+            observed.append(os.environ.get("ARGOS_CHUNK_TYPE"))
+            return SimpleNamespace(translate=b)
+        return original_import(name, globals, locals, fromlist, level)
+
+    monkeypatch.setenv("ARGOS_CHUNK_TYPE", "MINISBD")
+    monkeypatch.setattr(builtins, "__import__", fake_import)
+    result = translate_known_text(
+        "en", "fr", "Hello", no_sbd_download=True,
+    )
+    assert observed == ["NONE"]
+    assert result.translated_text == "fr[Hello]"

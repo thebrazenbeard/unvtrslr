@@ -23,13 +23,15 @@ def main(argv: list[str] | None = None, *, provider=None) -> int:
     parser.add_argument("--text", help="Source text; otherwise read stdin (preferred)")
     parser.add_argument("--allow-pivot", action="store_true", help="Opt into lossy multi-hop translation")
     parser.add_argument("--list-routes", action="store_true", help="List directly installed routes")
+    parser.add_argument("--no-sbd-download", action="store_true",
+                        help="Disable Argos sentence splitting to avoid first-use SBD downloads (may reduce quality)")
     parser.add_argument("--json", action="store_true", help="Structured output with provenance and route")
     args = parser.parse_args(argv)
     try:
         if args.list_routes:
             if args.from_lang or args.to_lang or args.text is not None or args.allow_pivot:
                 parser.error("--list-routes cannot be combined with translation arguments")
-            routes = direct_routes(provider=provider)
+            routes = direct_routes(provider=provider, no_sbd_download=args.no_sbd_download)
             if args.json:
                 print(json.dumps({"provenance": "ARGOS_EXTERNAL_NOT_UNVTRSLR_NATIVE",
                                   "direct_routes": [{"source": a, "target": b} for a,b in routes]}))
@@ -47,6 +49,7 @@ def main(argv: list[str] | None = None, *, provider=None) -> int:
         result = translate_known_text(
             args.from_lang, args.to_lang, source_text,
             allow_pivot=args.allow_pivot, provider=provider,
+            no_sbd_download=args.no_sbd_download,
         )
         if args.json:
             print(json.dumps(result.to_dict(), ensure_ascii=True, allow_nan=False))

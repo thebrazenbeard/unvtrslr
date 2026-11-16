@@ -17,14 +17,23 @@ $env:ARGOS_DEVICE_TYPE = "cpu"
 $env:PYTHONIOENCODING = "utf-8"
 python -m unvtrslr.known_language_cli --list-routes
 python -m unvtrslr.known_language_cli --from-lang en --to-lang fr --text "Hello" --json
+python -m unvtrslr.known_language_cli --from-lang en --to-lang fr --text "Hello" --json --no-sbd-download
 "Turn off the light" | python -m unvtrslr.known_language_cli --from-lang en --to-lang de --json
 ```
 
 Use only model packages obtained and installed separately after checking their
 source, license, file integrity, and resource requirements. This CLI implements no index updates, model downloads or installations and
-refuses Argos API model providers. Argos may nevertheless fetch first-use
-sentence boundary resources unless MINISBD is configured; enforce
-`ARGOS_CHUNK_TYPE=MINISBD` and preinstall model packages when offline.
+refuses Argos API model providers. **MINISBD alone does not guarantee an
+offline first run**: if a MiniSBD model is not bundled or cached, Argos can
+download it on first inference. Either prepare and test the sentence splitter
+while connected, then rerun with networking disabled, or use
+`--no-sbd-download` (sets `ARGOS_CHUNK_TYPE=NONE` before Argos import
+and verifies the effective mode). This disables sentence splitting and
+can degrade multi-sentence or long-text output. If Argos was already imported
+with another setting, this mode fails closed; run it in a fresh process.
+It prevents the known automatic SBD-download path, **not** all possible
+network access by dependencies; a network-disabled host or sandbox is needed
+for a hard offline guarantee.
 If the local Argos engine or requested model is absent, it fails rather than
 inventing a translation. `--list-routes` lists only independently installed
 direct directions, not automatically synthesized paths. `--allow-pivot`

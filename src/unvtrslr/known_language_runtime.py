@@ -1,12 +1,14 @@
 """Offline known-human-language translation via an EXTERNAL, installed Argos engine.
 
-This is not UNVTRSLR's native semantic learner. No model downloads, installs,
-language inference, quality certification, or network calls occur here.
+This is not UNVTRSLR's native semantic learner. This adapter never requests
+model downloads or installation; external Argos may initialize/download SBD
+resources unless explicitly disabled. No semantic-quality certification occurs.
 """
 from __future__ import annotations
 
 from collections import deque
 from dataclasses import asdict, dataclass
+import os
 import re
 from typing import Any
 
@@ -32,25 +34,39 @@ class KnownLanguageTranslation:
         return asdict(self)
 
 
-def _engine(provider: Any | None) -> Any:
+def _engine(provider: Any | None, *, no_sbd_download: bool = False) -> Any:
     if provider is not None:
-        return provider
-    try:
-        import argostranslate.translate as argos
-    except ImportError as exc:
-        raise KnownLanguageError(
-            "Argos Translate is not installed. Install the optional known-languages "
-            "dependency and model packages deliberately; no automatic downloads."
-        ) from exc
-    if argos.settings.model_provider != argos.settings.ModelProvider.OPENNMT:
-        raise KnownLanguageError(
-            "Only the local Argos OpenNMT backend is permitted; remote model provider refused."
-        )
+        argos = provider
+    else:
+        # Select NONE before import: MINISBD can download missing models.
+        if no_sbd_download:
+            os.environ["ARGOS_CHUNK_TYPE"] = "NONE"
+        try:
+            import argostranslate.translate as argos
+        except ImportError as exc:
+            raise KnownLanguageError(
+                "Argos Translate is not installed. Install the optional known-languages "
+                "dependency and model packages deliberately; no automatic downloads."
+            ) from exc
+        if argos.settings.model_provider != argos.settings.ModelProvider.OPENNMT:
+            raise KnownLanguageError(
+                "Only the local Argos OpenNMT backend is permitted; remote model provider refused."
+            )
+    if no_sbd_download:
+        settings = getattr(argos, "settings", None)
+        types = getattr(settings, "ChunkType", None)
+        none_type = getattr(types, "NONE", None)
+        if none_type is None or getattr(settings, "chunk_type", None) != none_type:
+            raise KnownLanguageError(
+                "No-SBD-download mode requires active ARGOS_CHUNK_TYPE=NONE. "
+                "Run in a fresh process with --no-sbd-download; an already-imported "
+                "Argos engine may have initialized another sentence splitter."
+            )
     return argos
 
 
-def _installed_graph(provider: Any | None):
-    engine = _engine(provider)
+def _installed_graph(provider: Any | None, *, no_sbd_download: bool = False):
+    engine = _engine(provider, no_sbd_download=no_sbd_download)
     direct_type = getattr(engine, "PackageTranslation", None)
     if direct_type is None:
         raise KnownLanguageError("Backend lacks the installed-package translation interface.")
@@ -69,9 +85,9 @@ def _installed_graph(provider: Any | None):
     return languages, edges
 
 
-def direct_routes(*, provider: Any | None = None) -> tuple[tuple[str, str], ...]:
+def direct_routes(*, provider: Any | None = None, no_sbd_download: bool = False) -> tuple[tuple[str, str], ...]:
     """Only directly installed pairs; never imply a pivot was independently trained."""
-    return tuple(sorted(_installed_graph(provider)[1]))
+    return tuple(sorted(_installed_graph(provider, no_sbd_download=no_sbd_download)[1]))
 
 
 def _route(source: str, target: str, edges, *, allow_pivot: bool) -> tuple[str, ...]:
@@ -104,6 +120,7 @@ def translate_known_text(
     *,
     allow_pivot: bool = False,
     provider: Any | None = None,
+    no_sbd_download: bool = False,
 ) -> KnownLanguageTranslation:
     """Translate source text using explicit installed direct edges and record every hop."""
     if any(
@@ -118,7 +135,7 @@ def translate_known_text(
     if len(source_text) > MAX_SOURCE_CHARS:
         raise KnownLanguageError(f"Source text exceeds {MAX_SOURCE_CHARS} characters.")
 
-    languages, edges = _installed_graph(provider)
+    languages, edges = _installed_graph(provider, no_sbd_download=no_sbd_download)
     if source_language not in languages or target_language not in languages:
         raise KnownLanguageError(
             f"Both languages need installed Argos packages: {source_language}, {target_language}."

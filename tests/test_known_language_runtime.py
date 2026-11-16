@@ -172,22 +172,49 @@ def test_json_escapes_non_ascii_for_windows_stdout_without_losing_unicode(capsys
     assert "\\u00e9" in raw
     assert json.loads(raw)["translated_text"] == "fr[caf\u00e9]"
 
-def test_no_sbd_download_mode_refuses_initialized_non_none_sbd():
+
+def cached_minisbd_backend(tmp_path, *, has_cache=True, configured="MINISBD"):
     b = backend(("en", "fr"))
     b.settings = SimpleNamespace(
-        ChunkType=SimpleNamespace(NONE="NONE"), chunk_type="MINISBD",
+        ChunkType=SimpleNamespace(MINISBD="MINISBD"), chunk_type=configured,
+        ModelProvider=SimpleNamespace(OPENNMT="OPENNMT"), model_provider="OPENNMT",
     )
-    with pytest.raises(KnownLanguageError, match="active ARGOS_CHUNK_TYPE=NONE"):
+
+    class MiniSBDSentencizer:
+        def __init__(self, lang):
+            self.lang = lang
+
+    b.sbd = SimpleNamespace(
+        MiniSBDSentencizer=MiniSBDSentencizer,
+        minisbd_models=SimpleNamespace(
+            cache_dir=str(tmp_path), MODELS={"en": "en.onnx"},
+        ),
+    )
+    lang = next(l for l in b.get_installed_languages() if l.code == "en")
+    lang.translations_from[0].sentencizer = MiniSBDSentencizer("en")
+    if has_cache:
+        (tmp_path / "en.onnx").write_bytes(b"local-model")
+    return b
+
+
+def test_no_sbd_download_mode_refuses_other_active_splitter(tmp_path):
+    b = cached_minisbd_backend(tmp_path, configured="NONE")
+    with pytest.raises(KnownLanguageError, match="active ARGOS_CHUNK_TYPE=MINISBD"):
         translate_known_text(
             "en", "fr", "Hello", provider=b, no_sbd_download=True,
         )
 
 
-def test_no_sbd_download_mode_accepts_none_and_preserves_provenance(capsys):
-    b = backend(("en", "fr"))
-    b.settings = SimpleNamespace(
-        ChunkType=SimpleNamespace(NONE="NONE"), chunk_type="NONE",
-    )
+def test_no_sbd_download_mode_requires_cached_model(tmp_path):
+    b = cached_minisbd_backend(tmp_path, has_cache=False)
+    with pytest.raises(KnownLanguageError, match="MiniSBD model is not cached"):
+        translate_known_text(
+            "en", "fr", "Hello", provider=b, no_sbd_download=True,
+        )
+
+
+def test_no_sbd_download_mode_accepts_cached_model_and_preserves_provenance(capsys, tmp_path):
+    b = cached_minisbd_backend(tmp_path)
     code = main([
         "--from-lang", "en", "--to-lang", "fr", "--text", "Hello",
         "--no-sbd-download", "--json",
@@ -201,21 +228,17 @@ def test_no_sbd_download_mode_accepts_none_and_preserves_provenance(capsys):
 
 def test_no_sbd_download_mode_refuses_unverifiable_provider_settings():
     b = backend(("en", "fr"))
-    with pytest.raises(KnownLanguageError, match="active ARGOS_CHUNK_TYPE=NONE"):
+    with pytest.raises(KnownLanguageError, match="active ARGOS_CHUNK_TYPE=MINISBD"):
         translate_known_text(
             "en", "fr", "Hello", provider=b, no_sbd_download=True,
         )
 
-def test_no_sbd_configures_environment_before_argos_import(monkeypatch):
+
+def test_no_sbd_configures_minisbd_before_argos_import(monkeypatch, tmp_path):
     import builtins
     import os
 
-    b = backend(("en", "fr"))
-    b.settings = SimpleNamespace(
-        ChunkType=SimpleNamespace(NONE="NONE"), chunk_type="NONE",
-        ModelProvider=SimpleNamespace(OPENNMT="OPENNMT"),
-        model_provider="OPENNMT",
-    )
+    b = cached_minisbd_backend(tmp_path)
     original_import = builtins.__import__
     observed = []
 
@@ -225,10 +248,10 @@ def test_no_sbd_configures_environment_before_argos_import(monkeypatch):
             return SimpleNamespace(translate=b)
         return original_import(name, globals, locals, fromlist, level)
 
-    monkeypatch.setenv("ARGOS_CHUNK_TYPE", "MINISBD")
+    monkeypatch.setenv("ARGOS_CHUNK_TYPE", "NONE")
     monkeypatch.setattr(builtins, "__import__", fake_import)
     result = translate_known_text(
         "en", "fr", "Hello", no_sbd_download=True,
     )
-    assert observed == ["NONE"]
+    assert observed == ["MINISBD"]
     assert result.translated_text == "fr[Hello]"

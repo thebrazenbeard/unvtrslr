@@ -1,8 +1,8 @@
 """Offline known-human-language translation via an EXTERNAL, installed Argos engine.
 
 This is not UNVTRSLR's native semantic learner. This adapter never requests
-model downloads or installation; external Argos may initialize/download SBD
-resources unless explicitly disabled. No semantic-quality certification occurs.
+model downloads or installation; external Argos may fetch missing SBD
+resources unless the cache-only preflight succeeds. No quality certification.
 """
 from __future__ import annotations
 
@@ -38,9 +38,10 @@ def _engine(provider: Any | None, *, no_sbd_download: bool = False) -> Any:
     if provider is not None:
         argos = provider
     else:
-        # Select NONE before import: MINISBD can download missing models.
+        # Select the supported MiniSBD splitter before importing Argos.
+        # Cached-model verification below rejects a missing SBD file.
         if no_sbd_download:
-            os.environ["ARGOS_CHUNK_TYPE"] = "NONE"
+            os.environ["ARGOS_CHUNK_TYPE"] = "MINISBD"
         try:
             import argostranslate.translate as argos
         except ImportError as exc:
@@ -55,10 +56,10 @@ def _engine(provider: Any | None, *, no_sbd_download: bool = False) -> Any:
     if no_sbd_download:
         settings = getattr(argos, "settings", None)
         types = getattr(settings, "ChunkType", None)
-        none_type = getattr(types, "NONE", None)
-        if none_type is None or getattr(settings, "chunk_type", None) != none_type:
+        mini_type = getattr(types, "MINISBD", None)
+        if mini_type is None or getattr(settings, "chunk_type", None) != mini_type:
             raise KnownLanguageError(
-                "No-SBD-download mode requires active ARGOS_CHUNK_TYPE=NONE. "
+                "No-SBD-download mode requires active ARGOS_CHUNK_TYPE=MINISBD. "
                 "Run in a fresh process with --no-sbd-download; an already-imported "
                 "Argos engine may have initialized another sentence splitter."
             )
@@ -83,6 +84,40 @@ def _installed_graph(provider: Any | None, *, no_sbd_download: bool = False):
             if isinstance(unwrapped, direct_type) and origin == code and target in languages and origin != target:
                 edges[(code, target)] = direct
     return languages, edges
+
+
+def _require_cached_sbd(engine: Any, route: tuple[str, ...], edges) -> None:
+    """Refuse known MiniSBD first-use downloads on every selected direct hop."""
+    sbd = getattr(engine, "sbd", None)
+    splitter_type = getattr(sbd, "MiniSBDSentencizer", None)
+    models = getattr(sbd, "minisbd_models", None)
+    cache_dir = getattr(models, "cache_dir", None)
+    catalog = getattr(models, "MODELS", None)
+    if splitter_type is None or not isinstance(catalog, dict) or not isinstance(cache_dir, (str, os.PathLike)):
+        raise KnownLanguageError("MiniSBD cache cannot be verified; refusing cache-only translation.")
+
+    cached_type = getattr(engine, "CachedTranslation", None)
+    for source, target in zip(route, route[1:]):
+        direct = edges[(source, target)]
+        if cached_type is not None and isinstance(direct, cached_type):
+            direct = direct.underlying
+        splitter = getattr(direct, "sentencizer", None)
+        if not isinstance(splitter, splitter_type):
+            raise KnownLanguageError("Installed route does not use verifiable MiniSBD sentence splitting.")
+        model = getattr(splitter, "lang", None)
+        if not isinstance(model, str) or not model:
+            raise KnownLanguageError("MiniSBD source model path is unavailable.")
+        if model in catalog:
+            candidate = os.path.join(cache_dir, catalog[model])
+        elif os.path.isabs(model):
+            candidate = model
+        else:
+            candidate = ""
+        if not candidate or not os.path.isfile(candidate) or os.path.getsize(candidate) == 0:
+            raise KnownLanguageError(
+                f"MiniSBD model is not cached for {source}->{target}; "
+                "prepare its model during setup, or disable cache-only mode."
+            )
 
 
 def direct_routes(*, provider: Any | None = None, no_sbd_download: bool = False) -> tuple[tuple[str, str], ...]:
@@ -141,6 +176,8 @@ def translate_known_text(
             f"Both languages need installed Argos packages: {source_language}, {target_language}."
         )
     route = _route(source_language, target_language, edges, allow_pivot=allow_pivot)
+    if no_sbd_download:
+        _require_cached_sbd(_engine(provider, no_sbd_download=True), route, edges)
     candidate = source_text
     for origin, target in zip(route, route[1:]):
         try:

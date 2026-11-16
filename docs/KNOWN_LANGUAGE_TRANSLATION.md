@@ -12,6 +12,7 @@ Install the explicitly optional Python engine in your own isolated environment:
 ```powershell
 python -m pip install -e ".[known-languages]"
 $env:ARGOS_PACKAGES_DIR = "D:\path\to\previously-installed\argos\packages"
+$env:XDG_DATA_HOME = "D:\path\to\prepared\argos-data"
 $env:ARGOS_CHUNK_TYPE = "MINISBD"
 $env:ARGOS_DEVICE_TYPE = "cpu"
 $env:PYTHONIOENCODING = "utf-8"
@@ -27,13 +28,16 @@ refuses Argos API model providers. **MINISBD alone does not guarantee an
 offline first run**: if a MiniSBD model is not bundled or cached, Argos can
 download it on first inference. Either prepare and test the sentence splitter
 while connected, then rerun with networking disabled, or use
-`--no-sbd-download` (sets `ARGOS_CHUNK_TYPE=NONE` before Argos import
-and verifies the effective mode). This disables sentence splitting and
-can degrade multi-sentence or long-text output. If Argos was already imported
-with another setting, this mode fails closed; run it in a fresh process.
-It prevents the known automatic SBD-download path, **not** all possible
-network access by dependencies; a network-disabled host or sandbox is needed
-for a hard offline guarantee.
+`--no-sbd-download` (selects `ARGOS_CHUNK_TYPE=MINISBD` before Argos
+import, then verifies a local MiniSBD ONNX file for **every** translation hop
+before inference). An uncached model is refused rather than downloaded. This
+cache-only preflight works with Argos 1.11.0, whose `NONE` mode cannot
+construct translation routes. If Argos was already imported with a different
+splitter, run in a fresh process. Preparing `XDG_DATA_HOME` and the
+package directory under the same account matters: the package files and
+MiniSBD cache are separate. The preflight does **not** provide OS-level
+network isolation or verify model integrity; use a network-disabled host or
+sandbox for a hard offline guarantee.
 If the local Argos engine or requested model is absent, it fails rather than
 inventing a translation. `--list-routes` lists only independently installed
 direct directions, not automatically synthesized paths. `--allow-pivot`

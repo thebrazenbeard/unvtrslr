@@ -24,7 +24,7 @@ def main(argv: list[str] | None = None, *, provider=None) -> int:
     parser.add_argument("--allow-pivot", action="store_true", help="Opt into lossy multi-hop translation")
     parser.add_argument("--list-routes", action="store_true", help="List directly installed routes")
     parser.add_argument("--no-sbd-download", action="store_true",
-                        help="Disable Argos sentence splitting to avoid first-use SBD downloads (may reduce quality)")
+                        help="Require locally cached MiniSBD models; refuse missing SBD resources before inference")
     parser.add_argument("--json", action="store_true", help="Structured output with provenance and route")
     args = parser.parse_args(argv)
     try:

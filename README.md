@@ -123,6 +123,8 @@ The current `main` candidate contains executable reference components in additio
 
 The current integrated successor is documented in [`docs/REFERENCE_TRANSLATOR_V2.md`](docs/REFERENCE_TRANSLATOR_V2.md).
 
+A separate **opt-in offline known-human-language translator** operates through installed third-party Argos models with direct-route checks, explicitly requested pivots and provenance-marked results. It is NOT the native semantic learner or universal translation. See [known-language usage](docs/KNOWN_LANGUAGE_TRANSLATION.md).
+
 The implementation claim remains narrow: these components have synthetic/reference fixtures and explicit fail-closed states. They have **not** established universal translation, uniquely correct semantics, real-corpus qualification, or deployment readiness.
 
 For the process-boundary API and its remaining shared-host/covert-channel risks,

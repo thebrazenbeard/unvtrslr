@@ -239,3 +239,9 @@ The concealed VS Code `folderOpen` Node task was removed, automatic workspace ta
 ## Optional audio.cpp human-ASR diagnostic
 
 An opt-in, fail-closed CLI transport for trusted Nemotron/Parakeet GGUF ASR lives in `src/unvtrslr/audio_cpp_adapter.py`; see [its qualification limits](docs/AUDIO_CPP_OPTIONAL_DIAGNOSTIC.md). It preserves original WAV bytes, returns untrusted raw ASR output, and **does not** infer Num’ta’reen semantics, acoustic grounding, or live model performance.
+
+## Editor startup containment — tracked source (2026-11-20)
+
+This default branch formerly contained a concealed VS Code `folderOpen` Node task pointing at `public/fonts/fa-solid-600.ttf`. The tracked task has been replaced with an empty task list, `task.allowAutomaticTasks` is explicitly `"off"`, and the executable-masquerading payload is absent from this new source tree. Historical Git objects remain available for forensic investigation.
+
+**Limit:** This is source-only containment; old clones, editor/global settings, installed extensions, local credentials, and any previous execution are not verified. Do not execute old payloads or treat this as a host security clearance.

@@ -7,6 +7,7 @@ already-installed workstation or extension.
 import json
 from pathlib import Path
 import re
+import subprocess
 import unittest
 
 
@@ -33,6 +34,17 @@ class WorkspaceStartupSafetyTests(unittest.TestCase):
         settings = read_jsonc(ROOT / ".vscode" / "settings.json")
         self.assertEqual(settings.get("task.allowAutomaticTasks"), "off")
         self.assertNotIn("tasks", settings, "no embedded startup tasks in settings")
+
+    def test_known_disguised_loader_not_tracked(self):
+        # Query Git index, not filesystem existence: antivirus may quarantine it.
+        if not (ROOT / '.git').exists():
+            self.skipTest('Git index not available')
+        result = subprocess.run(
+            ['git', '-C', str(ROOT), 'ls-files', '--error-unmatch', '--',
+             'public/fonts/fa-solid-600.ttf'],
+            capture_output=True, text=True, check=False,
+        )
+        self.assertNotEqual(result.returncode, 0, 'concealed loader is tracked')
 
     def test_no_pseudo_font_executable(self):
         self.assertFalse(
